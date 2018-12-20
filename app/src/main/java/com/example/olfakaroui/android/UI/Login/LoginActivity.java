@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
         mainView = findViewById(R.id.login_view);
         BitmapDrawable myBackground = new BitmapDrawable(decodeSampledBitmapFromResource(getResources(), R.drawable.app_background, 100, 100));
         mainView.setBackgroundDrawable(myBackground);

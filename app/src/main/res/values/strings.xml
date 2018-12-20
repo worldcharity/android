@@ -14,7 +14,7 @@
     <string name="isconnected">isconnectedw</string>
 
 
-    <!-- drawer -->
+    <!-- menus -->
     <string name="events">Events</string>
     <string name="charities">Charities</string>
     <string name="causes">Causes</string>
@@ -26,6 +26,24 @@
     <!-- facebook & google -->
     <string name="facebook_app_id">570364166708868</string>
     <string name="fb_login_protocol_scheme">fb570364166708868</string>
+
+    <!-- pager  -->
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">World Charity</string>
+    <string name="slide_1_desc">The easiest way to contribute to the world!</string>
+
+    <string name="slide_2_title">Donate to the world</string>
+    <string name="slide_2_desc">Help charities make a positive impact by donating resources!</string>
+
+    <string name="slide_3_title">Worldwide</string>
+    <string name="slide_3_desc">Find charities from around the globe!</string>
+
+    <string name="slide_4_title">Community</string>
+    <string name="slide_4_desc">Find latest news and discuss them with the local community!</string>
 
 
 </resources>

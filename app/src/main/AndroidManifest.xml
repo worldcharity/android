@@ -16,13 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:value="@string/facebook_app_id">
-        <activity android:name=".UI.Login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".UI.Login.LoginActivity"></activity>
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
@@ -37,7 +31,16 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".UI.Login.ChoosingRoleActivity" />
-        <activity android:name=".UI.Login.MainActivity"></activity>
+        <activity android:name=".UI.Login.MainActivity">
+
+        </activity>
+        <activity android:name=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
