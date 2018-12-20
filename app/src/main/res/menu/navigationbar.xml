@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+     <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_event"
+                android:icon="@drawable/ic_events_unselected_16dp"
+                android:title="@string/events" />
+            <item
+                android:id="@+id/nav_charities"
+                android:icon="@drawable/ic_charities_unselected_16dp"
+                android:title="@string/charities" />
+            <item
+             android:id="@+id/nav_causes"
+             android:icon="@drawable/ic_causes_unselected_16dp"
+             android:title="@string/causes" />
+            <item
+             android:id="@+id/nav_settings"
+             android:icon="@drawable/ic_settings_unselected_16dp"
+             android:title="@string/settings" />
+
+        </group>
+</menu>

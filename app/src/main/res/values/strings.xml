@@ -15,7 +15,7 @@
 
 
     <!-- drawer -->
-    <string name="events">Charitable events</string>
+    <string name="events">Events</string>
     <string name="charities">Charities</string>
     <string name="causes">Causes</string>
     <string name="subs">Subscriptions</string>

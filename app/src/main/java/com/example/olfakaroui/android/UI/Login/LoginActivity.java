@@ -25,7 +25,7 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.UI.MainActivity;
+import com.example.olfakaroui.android.UI.Login.MainActivity;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.services.SessionManager;
