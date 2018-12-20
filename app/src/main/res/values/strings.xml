@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">World Charity</string>
+    <string name="welcome_message">Welcome to <b>World Charity</b></string>
+    <string name="welcome_text">Make a positive impact in our world, start your journey now</string>
+
+    <!-- shared prefs -->
+
+    <string name="prefs">user</string>
+    <string name="user_id">user_id</string>
+    <string name="user_name">user_name</string>
+    <string name="user_lastname">user_lastname</string>
+    <string name="user_role">user_role</string>
+    <string name="user_photo">user_photo</string>
+    <string name="isconnected">isconnectedw</string>
+
+
+    <!-- drawer -->
+    <string name="events">Charitable events</string>
+    <string name="charities">Charities</string>
+    <string name="causes">Causes</string>
+    <string name="subs">Subscriptions</string>
+    <string name="collab">Collaborations</string>
+    <string name="fav">Favorites</string>
+    <string name="settings">Settings</string>
+
+    <!-- facebook & google -->
+    <string name="facebook_app_id">570364166708868</string>
+    <string name="fb_login_protocol_scheme">fb570364166708868</string>
+
+
+</resources>
