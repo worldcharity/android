@@ -7,7 +7,7 @@
     android:theme="@style/AppTheme.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Login.MainActivity">
+    tools:context=".UI.MainActivity">
 
     <FrameLayout
         android:id="@+id/frame_container"

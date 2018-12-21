@@ -3,6 +3,7 @@ package com.example.olfakaroui.android;
 public class UrlConst {
     public static String SERVER = "http://10.0.2.2:3000/";
     public static String checkUser = SERVER + "user";
+    public static String editRole = SERVER + "role";
     public static String allEvents = SERVER + "events";
     public static String addVote = SERVER + "votes";
     public static String updateVote = SERVER + "vote";

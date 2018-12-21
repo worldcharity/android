@@ -2,6 +2,9 @@
     <string name="app_name">World Charity</string>
     <string name="welcome_message">Welcome to <b>World Charity</b></string>
     <string name="welcome_text">Make a positive impact in our world, start your journey now</string>
+    <string name="role_title">Start your journey now</string>
+    <string name="role_text">Make a positive impact as an association, or as a simple kind person</string>
+
 
     <!-- shared prefs -->
 
@@ -22,6 +25,10 @@
     <string name="collab">Collaborations</string>
     <string name="fav">Favorites</string>
     <string name="settings">Settings</string>
+
+    <!-- roles -->
+    <string name="user">user</string>
+    <string name="charity">charity</string>
 
     <!-- facebook & google -->
     <string name="facebook_app_id">570364166708868</string>
@@ -44,6 +51,8 @@
 
     <string name="slide_4_title">Community</string>
     <string name="slide_4_desc">Find latest news and discuss them with the local community!</string>
+
+    <string name="mapbox_access_token">pk.eyJ1Ijoib2xmYWthcm91aSIsImEiOiJjanB4YzlhcWMwOWVmNDNsOTYxbGpkeTc3In0.hHfBO_bGoPFkBrSwVIGYXg</string>
 
 
 </resources>

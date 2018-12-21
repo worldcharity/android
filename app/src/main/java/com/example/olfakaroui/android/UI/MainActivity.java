@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android.UI.Login;
+package com.example.olfakaroui.android.UI;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;

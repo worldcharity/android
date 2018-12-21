@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android;
+package com.example.olfakaroui.android.UI.Login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.olfakaroui.android.UI.Login.MainActivity;
+import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.UI.MainActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.Login.ConfirmationPhotoActivity">
+    <TextView
+        android:id="@+id/messageconf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textAlignment="center"
+        android:textSize="@dimen/title"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="Provide us with a proof that you are a certified association" />
+    <Button
+        android:id="@+id/button_logo"
+        style="@android:style/Widget.DeviceDefault.Light.Button"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounededbutton"
+        android:layout_gravity="center"
+        android:text="Choose your photo"
+        android:layout_marginTop="70dp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/colorBackground" />
+
+    <ImageView
+        android:id="@+id/confirmation_picture"
+        android:layout_width="221dp"
+        android:layout_height="189dp"
+        android:layout_gravity="center"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <Button
+        android:id="@+id/confirmation"
+        android:layout_width="350dp"
+        android:layout_marginTop="70dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/rounededbutton"
+        android:fontFamily="@font/montserrat"
+        android:gravity="center"
+        android:text="Finish"
+        android:textColor="@color/colorBackground" />
+
+</LinearLayout>

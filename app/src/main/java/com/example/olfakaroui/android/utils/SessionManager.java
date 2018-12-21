@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android.services;
+package com.example.olfakaroui.android.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -34,6 +34,7 @@ public class SessionManager {
         editor.putInt(_context.getResources().getString(R.string.user_id), user.getId());
         editor.putString(_context.getResources().getString(R.string.user_lastname), user.getLastName());
         editor.putString(_context.getResources().getString(R.string.user_photo), user.getPhoto());
+        editor.putString(_context.getResources().getString(R.string.user_role), user.getRole());
         if(!createdAccount)
         {
             editor.putString(_context.getResources().getString(R.string.user_role), user.getrole());
@@ -44,6 +45,16 @@ public class SessionManager {
         editor.commit();
 
         Log.d(TAG, "User login session modified!");
+    }
+
+    public void setRole(User user) {
+
+       editor.putString(_context.getResources().getString(R.string.user_role), user.getRole());
+       editor.apply();
+        // commit changes
+        editor.commit();
+
+        Log.d(TAG, "User role modified!");
     }
 
     public boolean getLogin(User user) {
