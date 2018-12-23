@@ -1,5 +1,6 @@
 package com.example.olfakaroui.android.UI;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -11,9 +12,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.UI.events.EventsByCauseFragment;
+import com.example.olfakaroui.android.UI.events.HomePageFragment;
 import com.example.olfakaroui.android.utils.BottomNavigationBehavior;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomePageFragment.OnFragmentInteractionListener, EventsByCauseFragment.OnFragmentInteractionListener {
 
     private ActionBar toolbar;
 
@@ -32,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         layoutParams.setBehavior(new BottomNavigationBehavior());
 
 
-        toolbar.setTitle("Charitable Events");
+        toolbar.hide();
+        loadFragment(new HomePageFragment());
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -44,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
             item.setChecked(true);
             switch (item.getItemId()) {
                 case R.id.nav_event:
-                    toolbar.setTitle("Charitable Events");
+                    toolbar.hide();
+                    loadFragment(new HomePageFragment());
                     return true;
                 case R.id.nav_charities:
                     toolbar.setTitle("Charities");
@@ -66,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
 

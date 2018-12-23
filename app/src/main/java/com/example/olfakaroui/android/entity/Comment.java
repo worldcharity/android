@@ -2,10 +2,11 @@ package com.example.olfakaroui.android.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Comment {
+public class Comment implements Serializable {
 
     @SerializedName("id")
     private int id;

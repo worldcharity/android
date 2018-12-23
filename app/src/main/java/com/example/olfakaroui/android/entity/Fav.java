@@ -1,6 +1,8 @@
 package com.example.olfakaroui.android.entity;
 
-public class Fav {
+import java.io.Serializable;
+
+public class Fav implements Serializable {
 
     private User faved_by;
     private Event event;

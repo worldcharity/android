@@ -3,8 +3,9 @@ package com.example.olfakaroui.android.entity;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class Event implements Serializable {
 
@@ -12,6 +13,8 @@ public class Event implements Serializable {
     private int id;
     @SerializedName("name")
     private String name;
+    @SerializedName("infoline")
+    private String infoline;
     @SerializedName("description")
     private String description;
     @SerializedName("starting_date")
@@ -25,17 +28,19 @@ public class Event implements Serializable {
     @SerializedName("cause")
     private Cause cause;
     @SerializedName("Photos")
-    private ArrayList<Photo> photos;
-    @SerializedName("Places")
-    private ArrayList<Place> places;
+    private List<Photo> photos;
     @SerializedName("Votes")
-    private ArrayList<Vote> votes;
+    private List<Vote> votes;
     @SerializedName("Comments")
-    private ArrayList<Comment> comments;
+    private List<Comment> comments;
     @SerializedName("Types")
-    private ArrayList<DonationEvent> donationEvents;
+    private List<DonationEvent> donationEvents;
     @SerializedName("type")
     private String type;
+    @SerializedName("longitude")
+    private double longitude;
+    @SerializedName("latitude")
+    private  double latitude;
 
     public Event() {
     }
@@ -104,44 +109,44 @@ public class Event implements Serializable {
         this.cause = cause;
     }
 
-    public ArrayList<Photo> getPhotos() {
+    public List<Photo> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(ArrayList<Photo> photos) {
+    public void setPhotos(List<Photo> photos) {
         this.photos = photos;
     }
 
-    public ArrayList<Place> getPlaces() {
-        return places;
-    }
-
-    public void setPlaces(ArrayList<Place> places) {
-        this.places = places;
-    }
-
-    public ArrayList<Vote> getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void setVotes(ArrayList<Vote> votes) {
+    public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 
-    public ArrayList<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
-    public ArrayList<DonationEvent> getDonationEvents() {
+    public List<DonationEvent> getDonationEvents() {
         return donationEvents;
     }
 
-    public void setDonationEvents(ArrayList<DonationEvent> donationEvents) {
+    public void setDonationEvents(List<DonationEvent> donationEvents) {
         this.donationEvents = donationEvents;
+    }
+
+    public String getInfoline() {
+        return infoline;
+    }
+
+    public void setInfoline(String infoline) {
+        this.infoline = infoline;
     }
 
     public String getType() {
@@ -150,5 +155,21 @@ public class Event implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }

@@ -19,15 +19,15 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends BaseAdapter {
+public class CausesListAdapter extends BaseAdapter {
 
     private List<Cause> listData;
-    public static List selectedPositions;
+    public static List<Integer> selectedPositions;
     private LayoutInflater layoutInflater;
     private Context context;
 
 
-    public ListAdapter(Context aContext, List<Cause> listData) {
+    public CausesListAdapter(Context aContext, List<Cause> listData) {
         this.context = aContext;
         this.listData = listData;
         selectedPositions = new ArrayList<>();
@@ -66,7 +66,7 @@ public class ListAdapter extends BaseAdapter {
         }
 
         Cause cause = this.listData.get(position);
-        Picasso.get().load(UrlConst.causesImages+cause.getPhoto()).resize(525, 559).centerCrop().into(holder.imageView);
+        Picasso.get().load(UrlConst.IMAGES+cause.getPhoto()).resize(525, 559).centerCrop().into(holder.imageView);
         holder.nomView.setText(cause.getName());
         return convertView;
     }

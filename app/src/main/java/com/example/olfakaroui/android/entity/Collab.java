@@ -2,9 +2,10 @@ package com.example.olfakaroui.android.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Collab {
+public class Collab implements Serializable {
 
     @SerializedName("id")
     private int id;

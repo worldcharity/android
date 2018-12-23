@@ -5,10 +5,11 @@ import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Post implements Comparable<Post> {
+public class Post implements Comparable<Post>, Serializable {
 
     @SerializedName("id")
     private int id;

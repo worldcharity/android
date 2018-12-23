@@ -1,6 +1,8 @@
 package com.example.olfakaroui.android.entity;
 
-public class Subscription {
+import java.io.Serializable;
+
+public class Subscription implements Serializable {
 
     private User subscriber;
     private User subscribedTo;

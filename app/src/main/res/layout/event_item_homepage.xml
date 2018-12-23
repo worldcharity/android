@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="170dp"
+    android:layout_height="280dp"
+    android:layout_margin="10dp"
+    android:elevation="5dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/event_photo"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars[0]" />
+
+            <LinearLayout
+                android:id="@+id/event_date"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/circle_shape"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/event_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/event_photo">
+
+                <TextView
+                    android:id="@+id/event_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Oct"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorBackground"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/event_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="31-2018"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBackground"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/event_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat"
+            android:maxLines="2"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:text="This is a very long text name test"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <ImageView
+
+            android:layout_marginEnd="10dp"
+            android:id="@+id/like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/colorPrimaryDark"
+            app:srcCompat="@drawable/ic_like_unselected_24dp"
+            android:contentDescription="TODO" />
+            <ImageView
+                android:id="@+id/bookmark"
+                android:layout_marginEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/colorPrimaryDark"
+                app:srcCompat="@drawable/ic_bookmark_24dp"
+                android:contentDescription="TODO" />
+
+        <ImageView
+            android:id="@+id/share"
+            android:tint="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_share_24dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

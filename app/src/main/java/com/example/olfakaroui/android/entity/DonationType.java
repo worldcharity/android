@@ -2,7 +2,9 @@ package com.example.olfakaroui.android.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DonationType {
+import java.io.Serializable;
+
+public class DonationType implements Serializable {
 
     @SerializedName("id")
     private int id;

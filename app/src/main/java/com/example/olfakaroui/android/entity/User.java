@@ -2,9 +2,12 @@ package com.example.olfakaroui.android.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
     @SerializedName("id")
     private int id;
@@ -30,6 +33,8 @@ public class User {
     private double latitude;
     @SerializedName("confirmation_photo")
     private String confirmationPhoto;
+    @SerializedName("Prefrences")
+    private List<Cause> prefrences = new ArrayList<>();
     private Float rating;
 
 
@@ -43,6 +48,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public List<Cause> getPrefrences() {
+        return prefrences;
+    }
+
+    public void setPrefrences(ArrayList<Cause> prefrences) {
+        this.prefrences = prefrences;
     }
 
     public String getSocialId() {

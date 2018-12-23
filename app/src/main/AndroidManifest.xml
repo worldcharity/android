@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".AppController"
@@ -32,20 +33,23 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".UI.Login.ChoosingRoleActivity" />
-        <activity android:name=".UI.MainActivity" />
-        <activity android:name=".UI.Login.WelcomeActivity" />
-        <activity android:name=".UI.Login.CharityRegistrationActivity" />
-        <activity android:name=".UI.Login.UserRegistrationActivity">
-
-        </activity>
-        <activity android:name=".UI.Login.ConfirmationPhotoActivity" />
-        <activity android:name=".UI.Login.ChooseLocationCharityActivity">
+        <activity android:name=".UI.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UI.Login.WelcomeActivity" />
+        <activity android:name=".UI.Login.CharityRegistrationActivity" />
+        <activity android:name=".UI.Login.UserRegistrationActivity" />
+        <activity android:name=".UI.Login.ConfirmationPhotoActivity" />
+        <activity android:name=".UI.Login.ChooseLocationCharityActivity"></activity>
+        <activity
+            android:name=".UI.events.EventDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".UI.events.MoreActivity"></activity>
+        <activity android:name=".UI.events.CommentsActivity"></activity>
     </application>
 
 </manifest>
