@@ -6,62 +6,76 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UrlConst;
+import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.Photo;
 import com.example.olfakaroui.android.entity.Photo;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 
-public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder> {
+public class PhotosAdapter extends BaseAdapter {
+
+    private List<Photo> listData;
+    private LayoutInflater layoutInflater;
+    private Context context;
 
 
-    public List<Photo> photosList;
-    private Context mContext;
-
-    public PhotosAdapter(List<Photo> photos, Context context){
-        photosList = photos;
-        mContext = context;
-    }
-
-    @NonNull
-    @Override
-    public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.photo_gallery_item, viewGroup, false);
-        return new PhotoViewHolder(view);
+    public PhotosAdapter(Context aContext, List<Photo> listData) {
+        this.context = aContext;
+        this.listData = listData;
+        layoutInflater = LayoutInflater.from(aContext);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PhotoViewHolder eventViewHolder, int i) {
-        eventViewHolder.bind(photosList.get(i), mContext);
+    public int getCount() {
+        return listData.size();
     }
 
     @Override
-    public int getItemCount() {
-        return photosList.size();
+    public Object getItem(int position) {
+        return listData.get(position);
     }
 
-    static class PhotoViewHolder extends RecyclerView.ViewHolder{
-        private ImageView mImageView;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-        PhotoViewHolder(View itemView){
-            super(itemView);
-            mImageView = itemView.findViewById(R.id.photo_item);
+    public View getView(final int position,  View convertView, ViewGroup parent) {
+
+        final PhotosAdapter.ViewHolder holder;
+
+        if (convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.photo_gallery_item, null);
+            convertView.setBackgroundResource(R.drawable.rounded_cell);
+            holder = new PhotosAdapter.ViewHolder();
+            holder.imageView = (ImageView) convertView.findViewById(R.id.photo_item);
+            convertView.setTag(holder);
+        } else {
+            holder = (PhotosAdapter.ViewHolder) convertView.getTag();
 
         }
 
-        void bind(final Photo photo, final Context context){
+        Photo photo = this.listData.get(position);
+        Picasso.get().load(UrlConst.IMAGES+photo.getPhoto()).resize(800, 800).centerCrop().into(holder.imageView);
 
-            Picasso.get().load(UrlConst.IMAGES+photo.getPhoto()).resize(525, 559).centerCrop().into(mImageView);
-
-        }
+        return convertView;
     }
+
+    static class ViewHolder {
+        ImageView imageView;
+    }
+
+
 }

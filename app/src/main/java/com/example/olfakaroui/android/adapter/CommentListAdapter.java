@@ -58,7 +58,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(position, paire);
         User user = new User();
-        user.setId(5);
+        user.setId(6);
         user.setLastName("Karoui");
         user.setFirstName("Olfa");
         Comment comment = listData.get(position);

@@ -44,12 +44,17 @@
         <activity android:name=".UI.Login.CharityRegistrationActivity" />
         <activity android:name=".UI.Login.UserRegistrationActivity" />
         <activity android:name=".UI.Login.ConfirmationPhotoActivity" />
-        <activity android:name=".UI.Login.ChooseLocationCharityActivity"></activity>
+        <activity android:name=".UI.Login.ChooseLocationCharityActivity" />
         <activity
             android:name=".UI.events.EventDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".UI.events.MoreActivity"></activity>
-        <activity android:name=".UI.events.CommentsActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.events.MoreActivity" />
+        <activity android:name=".UI.events.CommentsActivity" />
+        <activity android:name=".UI.users.UserProfileActivity" />
+        <activity android:name=".UI.users.FollowersFollowingActivity" />
+        <activity android:name=".UI.events.EventPlaceMapActivity" />
+        <activity android:name=".UI.events.EventsByTypeActivity" />
+        <activity android:name=".UI.events.PhotosGalleryActivity"></activity>
     </application>
 
 </manifest>

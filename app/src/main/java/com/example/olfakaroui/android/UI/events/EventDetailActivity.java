@@ -19,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +31,13 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.PhotosAdapter;
 import com.example.olfakaroui.android.entity.Event;
+import com.example.olfakaroui.android.entity.Photo;
+import com.example.olfakaroui.android.utils.RecyclerTouchListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -62,11 +67,11 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView mEndTimeTextView;
     private TextView mAddressTextView;
     private TextView mInfoLineButton;
+    private TextView mPhotosButton;
     private TextView comments;
     private LinearLayout mExpiredLayout;
     private LinearLayout mCountLayout;
     private Button causeBtn, typeBtn;
-    private RecyclerView photos;
     //private TabLayout mReservationTabLayout;
     //private ReservationViewPager mReservationViewPager;
 
@@ -89,7 +94,6 @@ public class EventDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         comments = findViewById(R.id.activity_event_comments);
-        photos = findViewById(R.id.photos_event);
         mImageView = findViewById(R.id.details_event_image_view);
         mNameTextView = findViewById(R.id.activity_event_details_name_text);
         mAddressTextView = findViewById(R.id.activity_event_details_address_text);
@@ -105,6 +109,7 @@ public class EventDetailActivity extends AppCompatActivity {
         mSecondCountTextView = findViewById(R.id.activity_event_details_second_count_text);
         mExpiredLayout = findViewById(R.id.activity_event_details_expired_layout);
         mCountLayout = findViewById(R.id.activity_event_details_count_layout);
+        mPhotosButton = findViewById(R.id.activity_event_details_gallery);
         causeBtn = findViewById(R.id.cause_btn);
         typeBtn =  findViewById(R.id.type_btn);
 
@@ -123,6 +128,7 @@ public class EventDetailActivity extends AppCompatActivity {
                 });
             }
         });*/
+
         LinearLayout infolineLayout = findViewById(R.id.activity_event_infoline_layout);
         infolineLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,18 +149,23 @@ public class EventDetailActivity extends AppCompatActivity {
     private void updateUI(){
         Picasso.get().load(UrlConst.IMAGES+mEvent.getPhotos().get(0).getPhoto()).resize(525, 559).centerCrop().into(mImageView);
         mNameTextView.setText(mEvent.getName());
+        SpannableString content1;
+
         if(mEvent.getComments().size() > 1)
         {
-            comments.setText(mEvent.getComments().size() + " comments");
+            content1 = new SpannableString(mEvent.getComments().size() + " comments");
+
         }
-        if(mEvent.getComments().size() == 1)
+        else if(mEvent.getComments().size() == 1)
         {
-            comments.setText(mEvent.getComments().size() + " comment");
+            content1 = new SpannableString(mEvent.getComments().size() + " comment");
         }
-        if(mEvent.getComments().size() == 0)
+        else
         {
-            comments.setText("no comments");
+            content1 = new SpannableString("no comment");
         }
+        content1.setSpan(new UnderlineSpan(), 0, content1.length(), 0);
+        comments.setText(content1);
         comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,10 +175,30 @@ public class EventDetailActivity extends AppCompatActivity {
 
             }
         });
+        mPhotosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventDetailActivity.this, PhotosGalleryActivity.class);
+                intent.putExtra("event", mEvent);
+                startActivity(intent);
 
-        mAddressTextView.setText(mEvent.getLongitude() + " "+ mEvent.getLatitude());
+            }
+        });
+        mAddressTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        SpannableString content = new SpannableString(mEvent.getLongitude() + " "+ mEvent.getLatitude());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+
+        mAddressTextView.setText(content);
         mDescriptionTextView.setText(mEvent.getDescription());
-        mInfoLineButton.setText(mEvent.getInfoline());
+        content = new SpannableString(mEvent.getInfoline());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        mInfoLineButton.setText(content);
         getSupportActionBar().setTitle("");
         typeBtn.setText(mEvent.getType());
         typeBtn.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +207,10 @@ public class EventDetailActivity extends AppCompatActivity {
 
             }
         });
+        content = new SpannableString(mEvent.getPhotos().size() + " photos");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 
+        mPhotosButton.setText(content);
         causeBtn.setText(mEvent.getCause().getName());
         causeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,10 +218,6 @@ public class EventDetailActivity extends AppCompatActivity {
 
             }
         });
-        Log.d("PHOTOOOOOOOOOOOOOOOOS", mEvent.getPhotos().get(0).getPhoto());
-        PhotosAdapter photosAdapter = new PhotosAdapter(mEvent.getPhotos(), this);
-        photos.setAdapter(photosAdapter);
-
 
         /*Button reserveButton = findViewById(R.id.activity_event_details_first_reserver_button);
         if(getSharedPreferences(getString(R.string.prefs_name), MODE_PRIVATE).getInt(getString(R.string.prefs_user_id), 0) == 0){

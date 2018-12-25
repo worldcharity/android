@@ -17,6 +17,11 @@ public class UrlConst {
 
     public static String USER_PREFRENCES = SERVER + "prefs/byuser/";
     public static String ADD_PREFS = SERVER + "prefs";
+    public static String USER_INFOS = SERVER + "users/infos/";
+    public static String FIND_A_USER= SERVER + "users/findauser/";
+    public static String USER_Collabs= SERVER + "users/collabs/";
+    public static String FOLLOW = SERVER + "users/follow";
+    public static String UNFOLLOW = SERVER + "users/unfollow/";
 
     /////////////////////////// votes //////////////////////////////
     public static String addVote = SERVER + "votes";

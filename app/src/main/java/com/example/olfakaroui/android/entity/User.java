@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class User implements Serializable {
 
@@ -35,7 +36,12 @@ public class User implements Serializable {
     private String confirmationPhoto;
     @SerializedName("Prefrences")
     private List<Cause> prefrences = new ArrayList<>();
-    private Float rating;
+    @SerializedName("Users")
+    private List<User> following = new ArrayList<>();
+    @SerializedName("Subs")
+    private List<User> followers = new ArrayList<>();
+    @SerializedName("Events")
+    private List<Event> events = new ArrayList<>();
 
 
 
@@ -145,7 +151,6 @@ public class User implements Serializable {
     public void setConfirmationPhoto(String confirmationPhoto) {
         this.confirmationPhoto = confirmationPhoto;
     }
-
     public String getRole() {
         return role;
     }
@@ -154,11 +159,45 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public Float getRating() {
-        return rating;
+    public void setPrefrences(List<Cause> prefrences) {
+        this.prefrences = prefrences;
     }
 
-    public void setRating(Float rating) {
-        this.rating = rating;
+    public List<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId() == user.getId();
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId());
     }
 }
