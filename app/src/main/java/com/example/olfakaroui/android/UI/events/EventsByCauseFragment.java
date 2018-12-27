@@ -76,7 +76,7 @@ public class EventsByCauseFragment extends Fragment {  private static final Stri
     private RecyclerView.LayoutManager mLayoutManager;
     private EventsByCauseListAdapter adapter;
     private Cause mCause;
-    private List<Event> allevents = new ArrayList<>();
+    public static List<Event> allevents = new ArrayList<>();
 
 
     @Override
@@ -103,7 +103,7 @@ public class EventsByCauseFragment extends Fragment {  private static final Stri
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        adapter = new EventsByCauseListAdapter(allevents);
+        adapter = new EventsByCauseListAdapter(getActivity(),allevents);
         mRecyclerView.setAdapter(adapter);
         EventService.getInstance().getEventsByCause(mCause.getId(), new EventService.EventServiceGetCallBack() {
             @Override
@@ -122,7 +122,7 @@ public class EventsByCauseFragment extends Fragment {  private static final Stri
             }
 
         });
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
+        /*mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Event event = allevents.get(position);
@@ -135,7 +135,7 @@ public class EventsByCauseFragment extends Fragment {  private static final Stri
             public void onLongClick(View view, int position) {
 
             }
-        }));
+        }));*/
 
         return fragment;
     }
@@ -168,4 +168,6 @@ public class EventsByCauseFragment extends Fragment {  private static final Stri
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

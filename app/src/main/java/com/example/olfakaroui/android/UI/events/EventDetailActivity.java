@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +38,11 @@ import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.PhotosAdapter;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.Photo;
+import com.example.olfakaroui.android.entity.User;
+import com.example.olfakaroui.android.entity.Vote;
+import com.example.olfakaroui.android.service.InteractionService;
 import com.example.olfakaroui.android.utils.RecyclerTouchListener;
+import com.example.olfakaroui.android.utils.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -50,11 +55,12 @@ import java.util.Locale;
 public class EventDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "EventDetailsActivity";
-    public static final String EXTRA_EVENT_ID = "eventId";
+    public static final String EXTRA_EVENT_ID = "event";
     private static final int RC_PERM_PHONE = 1;
+    private int INDEX_OF_EVENT;
 
-        private ImageView mImageView;
-        CollapsingToolbarLayout bar;
+    private ImageView mImageView;
+    private CollapsingToolbarLayout bar;
     private TextView mDayCountTextView;
     private TextView mHourCountTextView;
     private TextView mMinuteCountTextView;
@@ -72,6 +78,13 @@ public class EventDetailActivity extends AppCompatActivity {
     private LinearLayout mExpiredLayout;
     private LinearLayout mCountLayout;
     private Button causeBtn, typeBtn;
+    private boolean isLiked = false;
+    private boolean isFav = false;
+    private User current = new User();
+    private MenuItem like,share,bookmark;
+    private int positionOfVote = -1;
+    private int positionOfFav = -1;
+
     //private TabLayout mReservationTabLayout;
     //private ReservationViewPager mReservationViewPager;
 
@@ -82,9 +95,13 @@ public class EventDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-        int eventId = getIntent().getIntExtra(EXTRA_EVENT_ID, 0);
+        //SessionManager sessionManager = new SessionManager(this);
+        //sessionManager.getLogin(current);
+        current.setId(6);
+
         getViewReferences();
-        getEvent(eventId);
+        getEvent();
+
 
     }
 
@@ -282,8 +299,9 @@ public class EventDetailActivity extends AppCompatActivity {
         textView.setText(dateFormat.format(date));
     }
 
-    private void getEvent(int id) {
+    private void getEvent() {
         mEvent= (Event) getIntent().getSerializableExtra("event");
+        INDEX_OF_EVENT = getIntent().getIntExtra("index", -1);
         updateUI();
     }
 
@@ -291,6 +309,105 @@ public class EventDetailActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if(cTimer != null) cTimer.cancel();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.event_interaction_bar, menu);
+        bookmark = menu.findItem(R.id.toolbar_bookmark);
+        share = menu.findItem(R.id.toolbar_share);
+        like = menu.findItem(R.id.toolbar_like);
+        int index = 0;
+        while ((index < mEvent.getVotes().size()) && (!isLiked))
+        {
+            Vote v = mEvent.getVotes().get(index);
+            if(v.getVoted_by().getId() == current.getId())
+            {
+                isLiked = true;
+                positionOfVote = index;
+            }
+            index++;
+
+        }
+        index = 0;
+        while ((index < mEvent.getFavBy().size()) && (!isFav))
+        {
+            User u = mEvent.getFavBy().get(index);
+            if(u.getId() == current.getId())
+            {
+                isFav = true;
+                positionOfFav = index;
+            }
+            index++;
+        }
+        if(isLiked)
+        {
+            like.setIcon(R.drawable.ic_like_selected_24dp);
+        }
+        else
+        {
+            like.setIcon(R.drawable.ic_like_unselected_24dp);
+        }
+        if(isFav)
+        {
+            bookmark.setIcon(R.drawable.ic_bookmark_saved_24dp);
+        }
+        else
+        {
+            bookmark.setIcon(R.drawable.ic_bookmark_24dp);
+        }
+        bookmark.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(isFav)
+                {
+                    mEvent.getFavBy().remove(positionOfFav);
+                    unfav(mEvent,current);
+                    isFav = false;
+                    positionOfFav = -1;
+                    bookmark.setIcon(R.drawable.ic_bookmark_24dp);
+                }
+                else
+                {
+                    addFav(mEvent,current);
+                    mEvent.getFavBy().add(current);
+                    isFav = true;
+                    positionOfFav = mEvent.getFavBy().size() -1;
+                    bookmark.setIcon(R.drawable.ic_bookmark_saved_24dp);
+                }
+                return false;
+            }
+        });
+        like.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(isLiked)
+                {
+
+                    Log.d(TAG, positionOfVote + "voteeeeeeee");
+                    removeVote(mEvent.getVotes().get(positionOfVote));
+                    mEvent.getVotes().remove(positionOfVote);
+                    isLiked = false;
+                    positionOfVote = -1;
+                    like.setIcon(R.drawable.ic_like_unselected_24dp);
+                }
+                else
+                {
+                    Vote vo = new Vote();
+                    vo.setType("upvote");
+                    vo.setEvent(mEvent);
+                    vo.setVoted_by(current);
+                    vo.setState(0);
+                    mEvent.getVotes().add(vo);
+                    addVote(vo);
+                    isLiked = true;
+                    positionOfVote = mEvent.getVotes().size() - 1;
+                    like.setIcon(R.drawable.ic_like_selected_24dp);
+                }
+                return false;
+            }
+        });
+        return true;
     }
 
     /*@Override
@@ -364,6 +481,8 @@ public class EventDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK,returnIntent);
                 finish();
                 return true;
             default:
@@ -386,5 +505,63 @@ public class EventDetailActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+    public void addVote(Vote v)
+    {
+
+        InteractionService.getInstance().voteEvent(v, new InteractionService.InteractionServiceAddVoteCallBack() {
+            @Override
+            public void onResponse(int vote) {
+                v.setId(vote);
+            }
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+        });
+    }
+
+    public void removeVote(Vote v)
+    {
+        InteractionService.getInstance().unvote(v, new InteractionService.InteractionServiceUnVoteCallBack() {
+            @Override
+            public void onResponse() {
+            }
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+        });
+    }
+
+    public void addFav(Event event, User user)
+    {
+
+        InteractionService.getInstance().addToFav(user.getId(), event.getId(), new InteractionService.InteractionServiceFavEventCallBack() {
+            @Override
+            public void onResponse() {
+            }
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+        });
+    }
+
+    public void unfav(Event event, User user)
+    {
+        InteractionService.getInstance().unfav(user.getId(), event.getId(), new InteractionService.InteractionServiceUnFavEventCallBack() {
+            @Override
+            public void onResponse() {
+            }
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+        });
     }
 }

@@ -50,6 +50,56 @@ public class EventService {
             }
         }
         );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+
+    public void getEventsByUser(int userId, final EventServiceGetCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.CHARITY_EVENTS+userId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        Log.d("EVENTS", response);
+                        List<Event> events = Arrays.asList(mGson.fromJson(response, Event[].class));
+                        callBack.onResponse(events);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+    public void getAllEvents(final EventServiceGetCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.ALL_EVENTS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        Log.d("EVENTS", response);
+                        List<Event> events = Arrays.asList(mGson.fromJson(response, Event[].class));
+                        callBack.onResponse(events);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }

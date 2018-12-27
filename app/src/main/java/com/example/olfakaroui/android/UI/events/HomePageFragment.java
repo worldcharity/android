@@ -1,18 +1,26 @@
 package com.example.olfakaroui.android.UI.events;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.entity.Cause;
@@ -39,6 +47,7 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
     User user = new User();
     ImageView image;
     List<Cause> prefs;
+    TextView seeallevents;
     Fragment first,second,third,fourth,fifth;
 
     private OnFragmentInteractionListener mListener;
@@ -82,13 +91,16 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
         View fragment = inflater.inflate(R.layout.fragment_home_page, container, false);
         //load suggested fragment
         linearLayout = fragment.findViewById(R.id.fragment_container);
+        seeallevents = fragment.findViewById(R.id.all_events_button);
         image = fragment.findViewById(R.id.banner);
+        SpannableString content = new SpannableString("see all events");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        seeallevents.setText(content);
         BitmapDrawable myBackground = new BitmapDrawable(PictureRendrer.decodeSampledBitmapFromResource(getResources(), R.drawable.app_background, 100, 100));
         image.setBackgroundDrawable(myBackground);
         //final SessionManager session = new SessionManager(this.getActivity());
         //session.getLogin(user);
         user.setId(6);
-
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         UserService.getInstance().getPrefrences(user.getId(), new UserService.UserServiceGetCallBack() {
             @Override
@@ -117,6 +129,15 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
 
             }
 
+        });
+
+        seeallevents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SeeAllEventsActivity.class);
+                getActivity().startActivity(intent);
+
+            }
         });
 
         return fragment;
@@ -153,5 +174,46 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        Animation animation = super.onCreateAnimation(transit, enter, nextAnim);
+
+        // HW layer support only exists on API 11+
+        if (Build.VERSION.SDK_INT >= 11) {
+            if (animation == null && nextAnim != 0) {
+                animation = AnimationUtils.loadAnimation(getActivity(), nextAnim);
+            }
+
+            if (animation != null) {
+                getView().setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    public void onAnimationEnd(Animation animation) {
+                        getView().setLayerType(View.LAYER_TYPE_NONE, null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+
+                    // ...other AnimationListener methods go here...
+                });
+            }
+        }
+
+        return animation;
     }
 }

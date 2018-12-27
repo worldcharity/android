@@ -27,8 +27,8 @@ public class PhotosGalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photos_gallery);
         gridView = findViewById(R.id.gallery);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(event.getName()+"'s gallery");
         event= (Event) getIntent().getSerializableExtra("event");
+        getSupportActionBar().setTitle(event.getName()+"'s gallery");
         PhotosAdapter photosAdapter = new PhotosAdapter(this,event.getPhotos());
         gridView.setAdapter(photosAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

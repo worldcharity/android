@@ -12,6 +12,7 @@ public class Vote implements Serializable {
     private String type;
     private Comment comment;
     private Event event;
+    private Post post;
     @SerializedName("user")
     private User voted_by;
     @SerializedName("state")
@@ -67,4 +68,13 @@ public class Vote implements Serializable {
     public void setState(int state) {
         this.state = state;
     }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
 }

@@ -6,4 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".UI.users.FollowersFollowingActivity">
 
+    <GridView
+        android:id="@+id/followers_following_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:columnWidth="150dp"
+        android:gravity="center"
+        android:background="@drawable/rounded_cell"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
+        android:stretchMode="spacingWidthUniform"
+        android:verticalSpacing="10dp"
+        />
+
 </android.support.constraint.ConstraintLayout>

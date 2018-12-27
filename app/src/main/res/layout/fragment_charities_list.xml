@@ -4,11 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.users.CharitiesListFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    
+    <GridView
+        android:id="@+id/charities_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:columnWidth="150dp"
+        android:gravity="center"
+        android:background="@drawable/rounded_cell"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
+        android:stretchMode="spacingWidthUniform"
+        android:verticalSpacing="10dp"
+        />
 
 </FrameLayout>

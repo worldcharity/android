@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android.UI.events;
+package com.example.olfakaroui.android.UI.users;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,33 +9,33 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.service.EventService;
 import com.example.olfakaroui.android.adapter.MoreEventAdapter;
 import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.Event;
+import com.example.olfakaroui.android.entity.User;
+import com.example.olfakaroui.android.service.EventService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoreActivity extends AppCompatActivity {
+public class CharityEventsListActivity extends AppCompatActivity {
+    private static final String TAG = "CharityEventsList";
 
-    private static final String TAG = "MoreActivity";
-
-    public static final String EXTRA_EVENT_CATEGORY = "category";
+    public static final String EXTRA_EVENT_USER= "user";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_more);
+        setContentView(R.layout.activity_charity_events_list);
 
-        RecyclerView recyclerView = findViewById(R.id.activity_more_events_list);
+        RecyclerView recyclerView = findViewById(R.id.charity_events_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         final List<Event> events = new ArrayList<>();
         final MoreEventAdapter adapter = new MoreEventAdapter(events, this);
         recyclerView.setAdapter(adapter);
-        Cause cause = (Cause) getIntent().getSerializableExtra(EXTRA_EVENT_CATEGORY);
+        User user = (User) getIntent().getSerializableExtra(EXTRA_EVENT_USER);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(cause.getName() + " related events");
-        EventService.getInstance().getEventsByCause(cause.getId(), new EventService.EventServiceGetCallBack() {
+        getSupportActionBar().setTitle("Events by "+ user.getFirstName());
+        EventService.getInstance().getEventsByUser(user.getId(), new EventService.EventServiceGetCallBack() {
             @Override
             public void onResponse(List<Event> events) {
                 adapter.mEvents = events;
@@ -76,6 +76,4 @@ public class MoreActivity extends AppCompatActivity {
             }
         }
     }
-
 }
-

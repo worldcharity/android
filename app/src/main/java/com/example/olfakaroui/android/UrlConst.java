@@ -11,6 +11,7 @@ public class UrlConst {
     /////////////////////////// events //////////////////////////////
 
     public static String EVENTS_BY_CAUSE = SERVER + "events/bycause/";
+    public static String ALL_EVENTS = SERVER + "allevents";
 
 
     /////////////////////////// users //////////////////////////////
@@ -22,10 +23,25 @@ public class UrlConst {
     public static String USER_Collabs= SERVER + "users/collabs/";
     public static String FOLLOW = SERVER + "users/follow";
     public static String UNFOLLOW = SERVER + "users/unfollow/";
+    public static String FAV = SERVER + "users/fav";
+    public static String UNFAV = SERVER + "users/unfav/";
+    public static String CHARITY_EVENTS = SERVER + "events/byuser/";
+    public static String ALL_CHARITIES= SERVER + "users/charities";
+
 
     /////////////////////////// votes //////////////////////////////
-    public static String addVote = SERVER + "votes";
+    public static String addVote = SERVER + "votecomment";
     public static String updateVote = SERVER + "vote";
+    public static String addVoteEvent = SERVER + "voteevent";
+    public static String addVotePost = SERVER + "votepost";
+
+    /////////////////////////// comments //////////////////////////////
+    public static String COMMENT_EVENT = SERVER + "commentevent";
+    public static String COMMENT_POST = SERVER + "commentpost";
+    public static String DELETE_COMMENT = SERVER + "comment/";
+
+
+
 
     public static String allCauses = SERVER + "causes";
     ;

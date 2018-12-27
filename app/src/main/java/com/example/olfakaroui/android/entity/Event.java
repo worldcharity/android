@@ -3,6 +3,7 @@ package com.example.olfakaroui.android.entity;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,8 @@ public class Event implements Serializable {
     private double longitude;
     @SerializedName("latitude")
     private  double latitude;
+    @SerializedName("FavBy")
+    private List<User> favBy;
 
     public Event() {
     }
@@ -171,5 +174,13 @@ public class Event implements Serializable {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public List<User> getFavBy() {
+        return favBy;
+    }
+
+    public void setFavBy(List<User> favBy) {
+        this.favBy = favBy;
     }
 }

@@ -24,6 +24,7 @@
         app:itemBackground="@color/colorPrimary"
         android:foreground="?attr/selectableItemBackground"
         app:itemIconTint="@color/colorBackground"
+        android:layout_alignParentBottom="true"
         app:itemTextColor="@color/colorBackground"
         app:menu="@menu/navigationbar" />
 

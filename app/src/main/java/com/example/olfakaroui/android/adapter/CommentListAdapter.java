@@ -18,10 +18,14 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.entity.Comment;
+import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.Vote;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UrlConst;
+import com.example.olfakaroui.android.service.EventService;
+import com.example.olfakaroui.android.service.InteractionService;
+import com.example.olfakaroui.android.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -36,13 +40,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     private LayoutInflater layoutInflater;
     private Context context;
     int newid = 0;
+    User user = new User();
     Pair<Integer,Integer> paire;
-    String url = UrlConst.addVote;
-    String url2 = UrlConst.updateVote;
     HashMap<Integer,Pair<Integer,Integer>> infos = new HashMap<>();
     HashMap<Integer,Integer> votes = new HashMap<>();
     public CommentListAdapter(List<Comment> listData) {
         this.listData = listData;
+        //SessionManager sessionManager = new SessionManager(context);
+        //sessionManager.getLogin(user);
     }
 
     @Override
@@ -54,10 +59,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
-        //User user = MainActivity.connectedUser;
+
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(position, paire);
-        User user = new User();
+        user = new User();
         user.setId(6);
         user.setLastName("Karoui");
         user.setFirstName("Olfa");
@@ -123,7 +128,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     comment.getVotes().add(vo);
                     paire = new Pair<Integer, Integer>(-1,comment.getVotes().size() - 1);
                     infos.put(position, paire);
-                    vo.setId(addVote(vo));
+                    addVote(vo);
                     votes.put(position, votes.get(position) -1);
                     holder.downvote.setImageResource(R.drawable.ic_downvote_selected_48dp);
 
@@ -166,7 +171,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     comment.getVotes().add(vo);
                     paire = new Pair<Integer, Integer>(1,comment.getVotes().size() - 1);
                     infos.put(position, paire);
-                    vo.setId(addVote(vo));
+                    addVote(vo);
                     votes.put(position, votes.get(position) +1);
                     holder.upvote.setImageResource(R.drawable.ic_upvote_selected_48dp);
 
@@ -223,103 +228,46 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     }
 
-    public int addVote(Vote v)
+    public void addVote(Vote v)
     {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
-                        GsonBuilder builder = new GsonBuilder();
-                        Gson mGson = builder.create();
-                        Vote newVote  = mGson.fromJson(response, Vote.class);
-                        newid = newVote.getId();
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Log.d("Error.Response", error.getMessage());
-                    }
-                }
-        ) {
+        InteractionService.getInstance().voteComment(v, new InteractionService.InteractionServiceAddVoteCallBack() {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String,String>();
-                params.put("type", v.getType());
-                params.put("id_comment", String.valueOf(v.getComment().getId()));
-                params.put("id_user", String.valueOf(v.getVoted_by().getId()));
-                params.put("state", String.valueOf(v.getState()));
-
-                return params;
+            public void onResponse(int vote) {
+                v.setId(vote);
             }
-        };
-        AppController.getInstance().addToRequestQueue(postRequest);
-        return newid;
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+        });
     }
 
     public void removeVote(Vote v)
     {
-        StringRequest dr = new StringRequest(Request.Method.DELETE, url2+"/"+v.getId(),
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
+        InteractionService.getInstance().unvote(v, new InteractionService.InteractionServiceUnVoteCallBack() {
+            @Override
+            public void onResponse() {
+            }
 
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error.
+            @Override
+            public void onFailure(String error) {
+            }
 
-                    }
-                }
-        );
-        AppController.getInstance().addToRequestQueue(dr);
+        });
     }
 
-    public void updateVote(Vote v)
-    {
-        StringRequest postRequest = new StringRequest(Request.Method.PUT, url2+"/"+v.getId(),
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Log.d("Error.Response", error.getMessage());
-                    }
-                }
-        ) {
+    public void updateVote(Vote v) {
+        InteractionService.getInstance().updateVoteComment(v, new InteractionService.InteractionServiceUpdateVoteCallBack() {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String,String>();
-                params.put("type", v.getType());
-                params.put("id", String.valueOf(v.getId()));
-                params.put("id_comment", String.valueOf(v.getComment().getId()));
-                params.put("id_user", String.valueOf(v.getVoted_by().getId()));
-                params.put("state", String.valueOf(v.getState()));
-
-                return params;
+            public void onResponse() {
             }
-        };
-        AppController.getInstance().addToRequestQueue(postRequest);
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+        });
     }
 }

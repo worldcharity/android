@@ -51,6 +51,10 @@ public class UserService {
         void onResponse(User user);
         void onFailure(String error);
     }
+    public interface UserServiceGetCharitiesCallBack{
+        void onResponse(List<User> users);
+        void onFailure(String error);
+    }
     public interface UserServiceGetCollabsCallBack{
         void onResponse(List<Collab> collabs);
         void onFailure(String error);
@@ -116,6 +120,7 @@ public class UserService {
             }
         }
         );
+        stringRequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
@@ -141,6 +146,33 @@ public class UserService {
             }
         }
         );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+
+    public void getCharities(final UserServiceGetCharitiesCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.ALL_CHARITIES,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        List<User> users = Arrays.asList(mGson.fromJson(response, User[].class));
+                        callBack.onResponse(users);
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
