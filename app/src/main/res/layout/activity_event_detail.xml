@@ -115,7 +115,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/montserrat"
-                                android:text="Jours"
+                                android:text="Days"
                                 android:textColor="@android:color/white"
                                 android:textSize="12sp" />
 
@@ -163,7 +163,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/montserrat"
-                                android:text="Heures"
+                                android:text="Hours"
                                 android:textColor="@android:color/white"
                                 android:textSize="12sp" />
 
@@ -256,7 +256,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/montserrat"
-                                android:text="Secondes"
+                                android:text="Seconds"
                                 android:textColor="@android:color/white"
                                 android:textSize="12sp" />
 

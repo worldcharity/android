@@ -8,12 +8,19 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.UrlConst;
+import com.example.olfakaroui.android.entity.Collab;
 import com.example.olfakaroui.android.entity.Event;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventService {
 
@@ -29,6 +36,22 @@ public class EventService {
     public interface EventServiceGetCallBack{
         void onResponse(List<Event> events);
         void onFailure(String error);
+    }
+    public interface EventServiceGetPendingCollabsCallBack{
+        void onResponse(List<Collab> collabs);
+        void onFailure(String error);
+    }
+    public interface EventServiceConfirmOrRefuseCollabCallBack{
+        void onResponse(String response);
+        void onFailure(String error);
+    }
+    public interface EventServiceGetTotalCallBack{
+        void onResponse(double total);
+        void onFailure(String error);
+    }
+
+    public interface EventServiceAddCollabCallBack{
+        void onResponse(String responses);void onFailure(String error);
     }
     public void getEventsByCause(int causeId, final EventServiceGetCallBack callBack){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.EVENTS_BY_CAUSE+causeId,
@@ -103,6 +126,128 @@ public class EventService {
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
+
+    public void addCollab(Collab collab, final EventService.EventServiceAddCollabCallBack callBack){
+        StringRequest dr = new StringRequest(Request.Method.POST, UrlConst.ADD_COLLAB,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+                        callBack.onResponse("");
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        callBack.onResponse("");
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("id_event", String.valueOf(collab.getEvent().getId()));
+                params.put("id_user", String.valueOf(collab.getCollab_by().getId()));
+                params.put("id_type", String.valueOf(collab.getCollab_type().getId()));
+                params.put("body", collab.getBody());
+                params.put("amount", String.valueOf(collab.getAmount()));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(dr);
+
+    }
+
+    public void getTotal(int typeId, int eventId, final EventServiceGetTotalCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.TOTAL_COLLAB+eventId+"/"+typeId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jresponse =
+                                        jsonArray.getJSONObject(0);
+                                double total =
+                                        jresponse.getDouble("total");
+                            callBack.onResponse(total);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+
+                    }}
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+    public void getPendingCollabs(int userId, final EventServiceGetPendingCollabsCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.PENDING_COLLABS+userId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        List<Collab> events = Arrays.asList(mGson.fromJson(response, Collab[].class));
+                        callBack.onResponse(events);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+
+    public void confirmCollab(Collab c, final EventService.EventServiceConfirmOrRefuseCollabCallBack callBack) {
+        StringRequest postRequest = new StringRequest(Request.Method.PUT, UrlConst.UPDATE_COLLAB+"/"+c.getId(),
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        callBack.onResponse(" ");
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.getMessage());
+                        callBack.onResponse(error.getMessage());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String,String>();
+                params.put("state", String.valueOf(c.getState()));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(postRequest);
+    }
+
 
 
 }

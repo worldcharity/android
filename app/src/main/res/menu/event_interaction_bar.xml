@@ -5,23 +5,30 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/toolbar_donate"
+        android:orderInCategory="300"
+        android:title="User"
+        android:iconTint="@color/colorPrimary"
+        android:icon="@drawable/donation"
+        app:showAsAction="always"></item>
+    <item
         android:id="@+id/toolbar_like"
         android:orderInCategory="300"
         android:title="User"
         android:icon="@drawable/ic_like_unselected_24dp"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/toolbar_bookmark"
         android:orderInCategory="300"
         android:title="User"
         android:icon="@drawable/ic_bookmark_unselected_16dp"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/toolbar_share"
         android:orderInCategory="300"
         android:title="User"
         android:icon="@drawable/ic_share_24dp"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="always"></item>
 
 
 </menu>

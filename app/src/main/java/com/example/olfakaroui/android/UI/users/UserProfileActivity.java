@@ -35,10 +35,9 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        /*int id = getIntent().getIntExtra("user", 0);
-        SessionManager sessionManager = new SessionManager(this);
+        int id = getIntent().getIntExtra("user", 0);
+        /*SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(current);*/
-        int id = 5;
         current.setId(6);
         avatarView = findViewById(R.id.user_avatar);
         name = findViewById(R.id.user_name);

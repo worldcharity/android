@@ -17,14 +17,19 @@ import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.adapter.CommentListAdapter;
 import com.example.olfakaroui.android.adapter.MoreEventAdapter;
 import com.example.olfakaroui.android.entity.Cause;
+import com.example.olfakaroui.android.entity.Comment;
 import com.example.olfakaroui.android.entity.Event;
+import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.service.EventService;
+import com.example.olfakaroui.android.service.InteractionService;
+import com.example.olfakaroui.android.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentsActivity extends AppCompatActivity {
     Event event;
+    User user = new User();
     private static final String TAG = "CommentActivity";
 
     public static final String EXTRA_EVENT_CATEGORY = "event";
@@ -33,6 +38,9 @@ public class CommentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         event = (Event) getIntent().getSerializableExtra(EXTRA_EVENT_CATEGORY);
+        user.setId(6);
+        //SessionManager sessionManager = new SessionManager(this);
+        //sessionManager.getLogin(user);
         RecyclerView recyclerView = findViewById(R.id.comments_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         TextInputEditText commentaire = findViewById(R.id.add_comment);
@@ -48,7 +56,28 @@ public class CommentsActivity extends AppCompatActivity {
         commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    if(!commentaire.getText().toString().trim().isEmpty())
+                    {
+                        Comment comment = new Comment();
+                        comment.setBody(commentaire.getText().toString());
+                        comment.setEvent(event);
+                        comment.setState(0);
+                        comment.setPosted_by(user);
+                        InteractionService.getInstance().commentEvent(comment, new InteractionService.InteractionServiceAddCommentCallBack() {
+                            @Override
+                            public void onResponse(Comment c) {
+                                event.getComments().add(c);
+                                adapter.listData = event.getComments();
+                                adapter.notifyDataSetChanged();
+                            }
 
+                            @Override
+                            public void onFailure(String error) {
+                            }
+
+                        });
+
+                    }
             }
         });
 

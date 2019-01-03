@@ -48,7 +48,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/montserrat"
-                android:text="FIND CHARITABLE EVENTS AND CONTRIBUTE TO NOW"
+                android:text="FIND CHARITABLE EVENTS AND CONTRIBUTE NOW"
                 android:textAlignment="center"
                 android:textColor="@color/colorBackground"
                 android:textSize="22sp"

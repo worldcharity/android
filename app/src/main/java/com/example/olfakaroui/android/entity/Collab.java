@@ -17,8 +17,11 @@ public class Collab implements Serializable {
     private int state;
     @SerializedName("createdAt")
     private Date collab_date;
+    @SerializedName("user")
     private User collab_by;
+    @SerializedName("donationtype")
     private DonationType collab_type;
+    @SerializedName("event")
     private Event event;
 
     public Collab() {

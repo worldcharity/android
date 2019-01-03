@@ -35,7 +35,7 @@ public class Event implements Serializable {
     @SerializedName("Comments")
     private List<Comment> comments;
     @SerializedName("Types")
-    private List<DonationEvent> donationEvents;
+    private List<DonationType> donationEvents;
     @SerializedName("type")
     private String type;
     @SerializedName("longitude")
@@ -136,14 +136,6 @@ public class Event implements Serializable {
         this.comments = comments;
     }
 
-    public List<DonationEvent> getDonationEvents() {
-        return donationEvents;
-    }
-
-    public void setDonationEvents(List<DonationEvent> donationEvents) {
-        this.donationEvents = donationEvents;
-    }
-
     public String getInfoline() {
         return infoline;
     }
@@ -182,5 +174,13 @@ public class Event implements Serializable {
 
     public void setFavBy(List<User> favBy) {
         this.favBy = favBy;
+    }
+
+    public List<DonationType> getDonationEvents() {
+        return donationEvents;
+    }
+
+    public void setDonationEvents(List<DonationType> donationEvents) {
+        this.donationEvents = donationEvents;
     }
 }

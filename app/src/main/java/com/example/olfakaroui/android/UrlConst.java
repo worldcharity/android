@@ -28,7 +28,11 @@ public class UrlConst {
     public static String CHARITY_EVENTS = SERVER + "events/byuser/";
     public static String ALL_CHARITIES= SERVER + "users/charities";
 
-
+    /////////////////////////// collabs //////////////////////////////
+    public static String ADD_COLLAB = SERVER + "collabs";
+    public static String TOTAL_COLLAB = SERVER + "collab/total/";
+    public static String PENDING_COLLABS = SERVER+ "collabs/bycharitypending/";
+    public static String UPDATE_COLLAB = SERVER+ "collab/update/";
     /////////////////////////// votes //////////////////////////////
     public static String addVote = SERVER + "votecomment";
     public static String updateVote = SERVER + "vote";

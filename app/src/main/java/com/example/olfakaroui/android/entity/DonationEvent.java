@@ -6,24 +6,15 @@ import java.io.Serializable;
 
 public class DonationEvent implements Serializable {
 
-    private DonationType donation;
+
     @SerializedName("goal")
     private float goal;
-    private Event event;
 
 
     public DonationEvent() {
     }
 
-    public DonationType getDonation() {
-        return donation;
-    }
-
-    public void setDonation(DonationType donation) {
-        this.donation = donation;
-    }
-
-    public float getGoal() {
+     public float getGoal() {
         return goal;
     }
 
@@ -31,11 +22,5 @@ public class DonationEvent implements Serializable {
         this.goal = goal;
     }
 
-    public Event getEvent() {
-        return event;
-    }
 
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 }

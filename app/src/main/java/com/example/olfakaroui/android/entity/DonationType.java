@@ -8,10 +8,13 @@ public class DonationType implements Serializable {
 
     @SerializedName("id")
     private int id;
-    @SerializedName("name")
+    @SerializedName("type")
     private String name;
     @SerializedName("quota")
     private float quota;
+    @SerializedName("donationevent")
+    private DonationEvent donationevent;
+
 
     public DonationType() {
     }
@@ -38,5 +41,13 @@ public class DonationType implements Serializable {
 
     public void setQuota(float quota) {
         this.quota = quota;
+    }
+
+    public DonationEvent getDonationevent() {
+        return donationevent;
+    }
+
+    public void setDonationevent(DonationEvent donationevent) {
+        this.donationevent = donationevent;
     }
 }

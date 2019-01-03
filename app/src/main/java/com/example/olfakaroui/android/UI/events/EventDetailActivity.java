@@ -1,11 +1,8 @@
 package com.example.olfakaroui.android.UI.events;
 
 import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,8 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -26,23 +21,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UrlConst;
-import com.example.olfakaroui.android.adapter.PhotosAdapter;
+import com.example.olfakaroui.android.adapter.DonationPagerAdapter;
+import com.example.olfakaroui.android.adapter.DonationTypesAdapter;
+import com.example.olfakaroui.android.entity.DonationType;
 import com.example.olfakaroui.android.entity.Event;
-import com.example.olfakaroui.android.entity.Photo;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.Vote;
 import com.example.olfakaroui.android.service.InteractionService;
-import com.example.olfakaroui.android.utils.RecyclerTouchListener;
-import com.example.olfakaroui.android.utils.SessionManager;
+import com.example.olfakaroui.android.utils.DonationViewPager;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -52,7 +44,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class EventDetailActivity extends AppCompatActivity {
+public class EventDetailActivity extends AppCompatActivity
+
+        {
 
     private static final String TAG = "EventDetailsActivity";
     public static final String EXTRA_EVENT_ID = "event";
@@ -81,9 +75,10 @@ public class EventDetailActivity extends AppCompatActivity {
     private boolean isLiked = false;
     private boolean isFav = false;
     private User current = new User();
-    private MenuItem like,share,bookmark;
+    private MenuItem like,share,bookmark,donate;
     private int positionOfVote = -1;
     private int positionOfFav = -1;
+
 
     //private TabLayout mReservationTabLayout;
     //private ReservationViewPager mReservationViewPager;
@@ -130,21 +125,7 @@ public class EventDetailActivity extends AppCompatActivity {
         causeBtn = findViewById(R.id.cause_btn);
         typeBtn =  findViewById(R.id.type_btn);
 
-        /*final Button reserverButton = findViewById(R.id.activity_event_details_first_reserver_button);
-        reserverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reserverButton.setVisibility(View.GONE);
-                findViewById(R.id.activity_details_reservation_card_view).setVisibility(View.VISIBLE);
-                final NestedScrollView scrollView = findViewById(R.id.event_details_scroll_view);
-                scrollView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                    }
-                });
-            }
-        });*/
+
 
         LinearLayout infolineLayout = findViewById(R.id.activity_event_infoline_layout);
         infolineLayout.setOnClickListener(new View.OnClickListener() {
@@ -236,36 +217,26 @@ public class EventDetailActivity extends AppCompatActivity {
             }
         });
 
-        /*Button reserveButton = findViewById(R.id.activity_event_details_first_reserver_button);
-        if(getSharedPreferences(getString(R.string.prefs_name), MODE_PRIVATE).getInt(getString(R.string.prefs_user_id), 0) == 0){
-            reserveButton.setVisibility(View.GONE);
-        }*/
         setDate(mStartDateTextView, mEvent.getStartingDate());
         setDate(mEndDateTextView, mEvent.getEndingDate());
         setTime(mStartTimeTextView, mEvent.getStartingDate());
         setTime(mEndTimeTextView, mEvent.getEndingDate());
+
         long timeDiff = mEvent.getStartingDate().getTime() - new Date().getTime();
         if(timeDiff <= 0){
+
             mExpiredLayout.setVisibility(View.VISIBLE);
             mCountLayout.setVisibility(View.GONE);
-            //mReservationViewPager.setVisibility(View.GONE);
-            //reserveButton.setVisibility(View.GONE);
+
         }else{
+
             setupTimer(timeDiff);
-            //setupReservationViewPager();
+
         }
+
     }
 
-    /*private void setupReservationViewPager() {
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(TicketReservationFragment.newInstance(mEvent.getPrice(), this));
-        fragments.add(TicketCheckoutFragment.newInstance(this));
-        ReservationPagerAdapter adapter = new ReservationPagerAdapter(getSupportFragmentManager(), fragments);
-        mReservationViewPager.setPagingEnabled(false);
-        mReservationViewPager.setAdapter(adapter);
-        mReservationTabLayout.setupWithViewPager(mReservationViewPager, true);
-        mReservationTabLayout.setVisibility(View.INVISIBLE);
-    }*/
+
 
     private void setupTimer(final long timeDiff) {
         cTimer = new CountDownTimer(timeDiff, 1000) {
@@ -317,6 +288,16 @@ public class EventDetailActivity extends AppCompatActivity {
         bookmark = menu.findItem(R.id.toolbar_bookmark);
         share = menu.findItem(R.id.toolbar_share);
         like = menu.findItem(R.id.toolbar_like);
+        donate =  menu.findItem(R.id.toolbar_donate);
+        long timeDiff = mEvent.getStartingDate().getTime() - new Date().getTime();
+        if(timeDiff <= 0){
+            donate.setVisible(false);
+
+
+        }else{
+
+            donate.setVisible(true);
+        }
         int index = 0;
         while ((index < mEvent.getVotes().size()) && (!isLiked))
         {
@@ -378,6 +359,15 @@ public class EventDetailActivity extends AppCompatActivity {
                 return false;
             }
         });
+        donate.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(EventDetailActivity.this, DonateActivity.class);
+                intent.putExtra("event", mEvent);
+                startActivity(intent);
+                return false;
+            }
+        });
         like.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -409,73 +399,6 @@ public class EventDetailActivity extends AppCompatActivity {
         });
         return true;
     }
-
-    /*@Override
-    public void onAddTicketsClickListener(String ticketsString) {
-        try{
-            int tickets = Integer.parseInt(ticketsString);
-            if(tickets > mAvailableTickets){
-                new AlertDialog.Builder(EventDetailsActivity.this)
-                        .setTitle("Sorry")
-                        .setMessage("You can't buy more tickets than available.")
-                        .setPositiveButton("Ok", null)
-                        .show();
-                mReservationTabLayout.setVisibility(View.INVISIBLE);
-            }else{
-                mOrderedTickets = tickets;
-                mReservationViewPager.setCurrentItem(1);
-                mReservationTabLayout.setVisibility(View.VISIBLE);
-                mReservationViewPager.setPagingEnabled(true);
-            }
-        }catch (Exception e){
-            new AlertDialog.Builder(EventDetailsActivity.this)
-                    .setTitle("Warning")
-                    .setMessage("Make sure to write only numbers!")
-                    .setPositiveButton("Ok", null)
-                    .show();
-        }
-
-    }
-
-    @Override
-    public void onReserveTicketsClickListener() {
-        Reservation reservation = new Reservation();
-        reservation.setEventId(mEvent.getId());
-        int userId = getSharedPreferences(getString(R.string.prefs_name), MODE_PRIVATE).getInt(getString(R.string.prefs_user_id), 0);
-        reservation.setUserId(userId);
-        reservation.setTickets(mOrderedTickets);
-        Log.i(TAG, "onReserveTicketsClickListener: " + reservation.getTickets());
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Connecting...");
-        progressDialog.show();
-        EventService.getInstance().addReservation(reservation, new EventService.AddReservationCallBack() {
-            @Override
-            public void onResponse() {
-                mReservationTabLayout.setVisibility(View.INVISIBLE);
-                mReservationViewPager.setCurrentItem(0, true);
-                mReservationViewPager.setPagingEnabled(false);
-                mAvailableTickets -= mOrderedTickets;
-                mTicketsAvailableTextView.setText(mAvailableTickets + " places disponibles");
-                progressDialog.dismiss();
-                Snackbar.make(findViewById(R.id.activity_event_details_coordinator_layout),
-                        "Your reservation has been confirmed!",
-                        Snackbar.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure() {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_event_details_coordinator_layout),
-                        "There was an error!",
-                        Snackbar.LENGTH_LONG);
-                snackbar.setAction("Redo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onReserveTicketsClickListener();
-                    }
-                });
-            }
-        });
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -564,4 +487,6 @@ public class EventDetailActivity extends AppCompatActivity {
 
         });
     }
-}
+
+
+        }

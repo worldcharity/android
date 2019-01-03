@@ -1,7 +1,9 @@
 package com.example.olfakaroui.android.adapter;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
@@ -17,14 +19,18 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.example.olfakaroui.android.AppController;
+import com.example.olfakaroui.android.UI.users.CharityProfileActivity;
+import com.example.olfakaroui.android.UI.users.UserProfileActivity;
 import com.example.olfakaroui.android.entity.Comment;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
+import com.example.olfakaroui.android.entity.UserInfos;
 import com.example.olfakaroui.android.entity.Vote;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.service.EventService;
 import com.example.olfakaroui.android.service.InteractionService;
+import com.example.olfakaroui.android.service.UserService;
 import com.example.olfakaroui.android.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,7 +42,7 @@ import java.util.Map;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
 
-    private List<Comment> listData;
+    public List<Comment> listData;
     private LayoutInflater layoutInflater;
     private Context context;
     int newid = 0;
@@ -69,6 +75,29 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         Comment comment = listData.get(position);
         holder.body.setText(comment.getBody());
         holder.username.setText(comment.getPosted_by().getFirstName() + " " + comment.getPosted_by().getLastName() );
+        holder.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserProfileActivity.class);
+                intent.putExtra("user", user.getId());
+                ((Activity) context).startActivityForResult(intent, 2);
+
+
+            }
+        });
+
+        UserService.getInstance().getInfos(comment.getPosted_by().getId(), new UserService.UserServiceGetInfosCallBack() {
+            @Override
+            public void onResponse(UserInfos u) {
+                holder.rating.setRating((u.getRating()/100));
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+        });
         int vote = 0;
 //        holder.rating.setRating(comment.getPosted_by().getRating());
         int i = 0;

@@ -4,6 +4,7 @@
     <string name="welcome_text">Make a positive impact in our world, start your journey now</string>
     <string name="role_title">Start your journey now</string>
     <string name="role_text">Make a positive impact as an association, or as a simple kind person</string>
+    <string name="donation_text">Your donation has been submitted. You will get the confirmation as soon as possible.</string>
 
 
     <!-- shared prefs -->
@@ -21,9 +22,9 @@
     <string name="events">Events</string>
     <string name="charities">Charities</string>
     <string name="causes">Causes</string>
-    <string name="subs">Subscriptions</string>
-    <string name="collab">Collaborations</string>
-    <string name="fav">Favorites</string>
+    <string name="myevents">My Events</string>
+    <string name="collab">Donations</string>
+    <string name="chat">Chat Room</string>
     <string name="settings">Settings</string>
 
     <!-- roles -->

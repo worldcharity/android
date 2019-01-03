@@ -6,6 +6,10 @@
                 android:icon="@drawable/ic_events_unselected_16dp"
                 android:title="@string/events" />
             <item
+             android:id="@+id/nav_chat"
+             android:icon="@drawable/ic_chat_black_24dp"
+             android:title="@string/chat" />
+            <item
                 android:id="@+id/nav_charities"
                 android:icon="@drawable/ic_charities_unselected_16dp"
                 android:title="@string/charities" />
