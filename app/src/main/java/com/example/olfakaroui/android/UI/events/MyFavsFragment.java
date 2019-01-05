@@ -4,45 +4,42 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.adapter.MoreEventAdapter;
+import com.example.olfakaroui.android.adapter.MyEventsAdapter;
+import com.example.olfakaroui.android.adapter.MyFavEventsAdapter;
+import com.example.olfakaroui.android.entity.Event;
+import com.example.olfakaroui.android.entity.User;
+import com.example.olfakaroui.android.service.EventService;
+import com.example.olfakaroui.android.service.UserService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyFavsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyFavsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class MyFavsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
-
+    User user = new User();
     private OnFragmentInteractionListener mListener;
 
     public MyFavsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyFavsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static MyFavsFragment newInstance(String param1, String param2) {
         MyFavsFragment fragment = new MyFavsFragment();
         Bundle args = new Bundle();
@@ -65,10 +62,32 @@ public class MyFavsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_favs, container, false);
+        View view =  inflater.inflate(R.layout.fragment_my_favs, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.myeventslist);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        final List<Event> events = new ArrayList<>();
+        final MyFavEventsAdapter adapter = new MyFavEventsAdapter(events, getActivity());
+        recyclerView.setAdapter(adapter);
+        user.setId(6);
+        UserService.getInstance().getUser(user.getId(), new UserService.UserServiceGetUserCallBack() {
+            @Override
+            public void onResponse(User user) {
+                adapter.mEvents = user.getFavs();
+                adapter.itemsFiltered = user.getFavs();
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+
+            }
+
+        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -92,16 +111,6 @@ public class MyFavsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

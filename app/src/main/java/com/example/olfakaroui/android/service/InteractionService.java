@@ -230,6 +230,36 @@ public class InteractionService {
         };
         AppController.getInstance().addToRequestQueue(postRequest);
     }
+    public void hideComment(Comment v, final InteractionService.InteractionServiceUpdateVoteCallBack callBack) {
+        StringRequest postRequest = new StringRequest(Request.Method.PUT, UrlConst.HIDE_COMMENT+v.getId(),
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.getMessage());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String,String>();
+                params.put("state", String.valueOf(v.getState()));
+
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(postRequest);
+    }
 
     public void voteEvent(Vote v, final InteractionService.InteractionServiceAddVoteCallBack callBack) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, UrlConst.addVoteEvent,

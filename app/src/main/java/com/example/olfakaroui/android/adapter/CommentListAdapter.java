@@ -10,6 +10,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -113,6 +114,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
             }
         }
+
         votes.put(position, vote);
         while ((i < comment.getVotes().size()) && ( infos.get(position).first == 0))
         {
@@ -123,7 +125,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 {
                     paire = new Pair<Integer, Integer>(1,i);
                     infos.put(position, paire);
-                    holder.upvote.setImageResource(R.drawable.ic_upvote_selected_48dp);
+                    holder.upvote.setChecked(true);
+                    //holder.upvote.setImageResource(R.drawable.ic_upvote_selected_48dp);
 
                 }
                 else if(v.getType().equals("downvote"))
@@ -131,7 +134,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
                     paire = new Pair<Integer, Integer>(-1,i);
                     infos.put(position, paire);
-                    holder.downvote.setImageResource(R.drawable.ic_downvote_selected_48dp);
+                    holder.downvote.setChecked(true);
+                    //holder.downvote.setImageResource(R.drawable.ic_downvote_selected_48dp);
                 }
                 else
                 {
@@ -159,7 +163,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     infos.put(position, paire);
                     addVote(vo);
                     votes.put(position, votes.get(position) -1);
-                    holder.downvote.setImageResource(R.drawable.ic_downvote_selected_48dp);
+                    holder.downvote.setChecked(true);
+                   // holder.downvote.setImageResource(R.drawable.ic_downvote_selected_48dp);
 
                 }
                 else if(infos.get(position).first == 1)
@@ -169,8 +174,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     paire = new Pair<Integer, Integer>(-1,comment.getVotes().size() - 1);
                     votes.put(position, votes.get(position) -2);
                     infos.put(position, paire);
-                    holder.upvote.setImageResource(R.drawable.ic_upvote_unselected_48dp);
-                    holder.downvote.setImageResource(R.drawable.ic_downvote_selected_48dp);
+                    holder.upvote.setChecked(false);
+                    holder.downvote.setChecked(true);
+                    //holder.upvote.setImageResource(R.drawable.ic_upvote_unselected_48dp);
+                    //holder.downvote.setImageResource(R.drawable.ic_downvote_selected_48dp);
 
                 }
                 else if(infos.get(position).first == -1)
@@ -180,7 +187,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     paire = new Pair<Integer, Integer>(0,-1);
                     infos.put(position, paire);
                     votes.put(position, votes.get(position) +1);
-                    holder.downvote.setImageResource(R.drawable.ic_downvote_unselected_48dp);
+                    holder.downvote.setChecked(false);
+                    //holder.downvote.setImageResource(R.drawable.ic_downvote_unselected_48dp);
                 }
                 holder.voteNbr.setText(String.valueOf(votes.get(position)));
 
@@ -202,7 +210,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     infos.put(position, paire);
                     addVote(vo);
                     votes.put(position, votes.get(position) +1);
-                    holder.upvote.setImageResource(R.drawable.ic_upvote_selected_48dp);
+                    holder.upvote.setChecked(true);
+                    //holder.upvote.setImageResource(R.drawable.ic_upvote_selected_48dp);
 
                 }
                 else if(infos.get(position).first == -1)
@@ -212,8 +221,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     paire = new Pair<Integer, Integer>(1,comment.getVotes().size() - 1);
                     votes.put(position, votes.get(position) +2);
                     infos.put(position, paire);
-                    holder.upvote.setImageResource(R.drawable.ic_upvote_selected_48dp);
-                    holder.downvote.setImageResource(R.drawable.ic_downvote_unselected_48dp);
+                    holder.upvote.setChecked(true);
+                    holder.downvote.setChecked(false);
+                    //holder.upvote.setImageResource(R.drawable.ic_upvote_selected_48dp);
+                    //holder.downvote.setImageResource(R.drawable.ic_downvote_unselected_48dp);
 
                 }
                 else if(infos.get(position).first == 1)
@@ -223,7 +234,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     paire = new Pair<Integer, Integer>(0,-1);
                     infos.put(position, paire);
                     votes.put(position, votes.get(position) -1);
-                    holder.upvote.setImageResource(R.drawable.ic_upvote_unselected_48dp);
+                    holder.upvote.setChecked(false);
+                    //holder.upvote.setImageResource(R.drawable.ic_upvote_unselected_48dp);
                 }
                 holder.voteNbr.setText(String.valueOf(votes.get(position)));
 
@@ -243,7 +255,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     {
         TextView body, username, voteNbr, dateOfComment;
         RatingBar rating;
-        ImageButton upvote, downvote;
+        CheckBox upvote, downvote;
 
         public ViewHolder(View convertView) {
             super(convertView);
@@ -253,6 +265,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             upvote = convertView.findViewById(R.id.upvote);
             downvote = convertView.findViewById(R.id.downvote);
             dateOfComment = convertView.findViewById(R.id.dateOfComment);
+            rating = convertView.findViewById(R.id.ratingBar);
         }
 
     }

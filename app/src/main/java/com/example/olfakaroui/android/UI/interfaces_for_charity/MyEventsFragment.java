@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android.UI.events;
+package com.example.olfakaroui.android.UI.interfaces_for_charity;
 
 import android.content.Context;
 import android.net.Uri;
@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.adapter.MoreEventAdapter;
 import com.example.olfakaroui.android.adapter.MyEventsAdapter;
-import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.service.EventService;
@@ -65,6 +62,7 @@ public class MyEventsFragment extends Fragment {
         final List<Event> events = new ArrayList<>();
         final MyEventsAdapter adapter = new MyEventsAdapter(events, getActivity());
         recyclerView.setAdapter(adapter);
+        user.setId(5);
         EventService.getInstance().getEventsByUser(user.getId(), new EventService.EventServiceGetCallBack() {
             @Override
             public void onResponse(List<Event> events) {

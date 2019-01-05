@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,7 +25,8 @@ public class CharityProfileActivity extends AppCompatActivity {
 
     ImageView avatarView;
     TextView name,followers,following,events;
-    ImageView share,follow;
+    ImageView share;
+    CheckBox follow;
     User charity = new User();
     UserInfos infos = new UserInfos();
     User current = new User();
@@ -92,12 +94,14 @@ public class CharityProfileActivity extends AppCompatActivity {
 
                 if(charity.getFollowers().contains(current))
                 {
-                    follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
+                    //follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
+                    follow.setChecked(true);
                     isFollowed = true;
                 }
                 else
                 {
-                    follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
+                    follow.setChecked(false);
+                    //follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
                     isFollowed = false;
                 }
                 Picasso.get().load(charity.getPhoto()).resize(525, 559).centerCrop().into(avatarView);
@@ -122,7 +126,8 @@ public class CharityProfileActivity extends AppCompatActivity {
                                 public void onFailure(String error) {
                                 }
                             });
-                            follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
+                            follow.setChecked(false);
+                            //follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
                             charity.getFollowers().remove(current);
                             followers.setText(String.valueOf(charity.getFollowers().size()));
                             isFollowed =false;
@@ -138,7 +143,8 @@ public class CharityProfileActivity extends AppCompatActivity {
                                 public void onFailure(String error) {
                                 }
                             });
-                            follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
+                            follow.setChecked(true);
+                            //ollow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
                             charity.getFollowers().add(current);
                             followers.setText(String.valueOf(charity.getFollowers().size()));
                             isFollowed = true;

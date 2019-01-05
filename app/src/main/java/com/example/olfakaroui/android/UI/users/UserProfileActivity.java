@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,7 +25,8 @@ public class UserProfileActivity extends AppCompatActivity {
     ImageView avatarView;
     TextView name,followers,following,collabs;
     RatingBar rating;
-    ImageView share,follow;
+    CheckBox follow;
+    ImageView share;
     User user = new User();
     UserInfos infos = new UserInfos();
     User current = new User();
@@ -58,12 +60,14 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 if(user.getFollowers().contains(current))
                 {
-                    follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
+                    //follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
+                    follow.setChecked(true);
                     isFollowed = true;
                 }
                 else
                 {
-                    follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
+                    //follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
+                    follow.setChecked(false);
                     isFollowed = false;
                 }
                 if(user.getPhoto() == null)
@@ -92,7 +96,8 @@ public class UserProfileActivity extends AppCompatActivity {
                                 public void onFailure(String error) {
                                 }
                             });
-                            follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
+                            follow.setChecked(false);
+                            //follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_sub));
                             user.getFollowers().remove(current);
                             followers.setText(String.valueOf(user.getFollowers().size()));
                             isFollowed =false;
@@ -108,7 +113,8 @@ public class UserProfileActivity extends AppCompatActivity {
                                 public void onFailure(String error) {
                                 }
                             });
-                            follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
+                            follow.setChecked(true);
+                            //follow.setImageDrawable(getResources().getDrawable(R.drawable.ic_unsub));
                             user.getFollowers().add(current);
                             followers.setText(String.valueOf(user.getFollowers().size()));
                             isFollowed = true;

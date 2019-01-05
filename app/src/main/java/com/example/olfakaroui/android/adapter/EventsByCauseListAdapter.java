@@ -11,6 +11,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,8 +84,9 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
             holder.eventMonth.setText(new SimpleDateFormat("MMM").format(event.getStartingDate()));
             holder.eventDate.setText(new SimpleDateFormat("dd-yyyy").format(event.getStartingDate()));
             int index = 0;
-            holder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
-            holder.like.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
+            holder.like.setChecked(false);
+            //holder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
+            //holder.like.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
             while ((index < event.getVotes().size()) && ( infos.get(position).first == 0))
             {
                 Vote v = event.getVotes().get(index);
@@ -92,16 +94,18 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                 {
                         paire = new Pair<Integer, Integer>(1,index);
                         infos.put(position, paire);
-                        holder.like.setImageResource(R.drawable.ic_like_selected_24dp);
-                        holder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+                        holder.like.setChecked(true);
+                        //holder.like.setImageResource(R.drawable.ic_like_selected_24dp);
+                        //holder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
 
                 }
                 index++;
 
             }
             index = 0;
-            holder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
-            holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
+            holder.bookmark.setChecked(false);
+            //holder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
+            //holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
             while ((index < event.getFavBy().size()) && ( favorites.get(position).first == 0))
             {
                 User u = event.getFavBy().get(index);
@@ -109,8 +113,9 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                 {
                     fav = new Pair<Integer, Integer>(1,index);
                     favorites.put(position, fav);
-                    holder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
-                    holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+                    holder.bookmark.setChecked(true);
+                    //holder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
+                    //holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
                 }
                 index++;
 
@@ -129,8 +134,9 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                         paire = new Pair<Integer, Integer>(1,event.getVotes().size() - 1);
                         infos.put(position, paire);
                         addVote(vo);
-                        holder.like.setImageResource(R.drawable.ic_like_selected_24dp);
-                        holder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+                        //holder.like.setChecked(true);
+                        //holder.like.setImageResource(R.drawable.ic_like_selected_24dp);
+                        //holder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
 
                     }
                     else if(infos.get(position).first == 1)
@@ -139,8 +145,8 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                         removeVote(event.getVotes().get(infos.get(position).second));
                         paire = new Pair<Integer, Integer>(0,-1);
                         infos.put(position, paire);
-                        holder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
-                        holder.like.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
+                        //holder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
+                        //holder.like.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
                     }
                 }
             });
@@ -159,8 +165,8 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                         fav = new Pair<Integer, Integer>(1,event.getFavBy().size() - 1);
                         favorites.put(position, fav);
                         addFav(event,current);
-                        holder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
-                        holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+                        //holder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
+                        //holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
 
                     }
                     else if(favorites.get(position).first == 1)
@@ -169,8 +175,8 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                         unfav(event,current);
                         fav = new Pair<Integer, Integer>(0,-1);
                         favorites.put(position, fav);
-                        holder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
-                        holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
+                        //holder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
+                        //holder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
                     }
 
                 }
@@ -188,7 +194,8 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
         TextView eventName;
         TextView eventMonth;
         TextView eventDate;
-        ImageView eventImage, like, share, bookmark;
+        CheckBox like,bookmark;
+        ImageView eventImage, share;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);

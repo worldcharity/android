@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,7 +70,7 @@ public class UserListAdapter extends BaseAdapter {
             holder.charityName = (TextView) convertView.findViewById(R.id.charity_name);
             holder.charityImage = (ImageView) convertView.findViewById(R.id.charity_photo);
             holder.share = (ImageView) convertView.findViewById(R.id.share_charity);
-            holder.follow = (ImageView) convertView.findViewById(R.id.follow_charity);
+            holder.follow = convertView.findViewById(R.id.follow_charity);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -98,8 +99,9 @@ public class UserListAdapter extends BaseAdapter {
         holder.charityName.setText(user.getFirstName());
 
         int index = 0;
-        holder.follow.setImageResource(R.drawable.ic_sub);
-        holder.follow.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
+        holder.follow.setChecked(false);
+        //holder.follow.setImageResource(R.drawable.ic_sub);
+        //holder.follow.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
 
         while ((index < user.getFollowers().size()) && ( infos.get(position).first == 0))
         {
@@ -108,8 +110,9 @@ public class UserListAdapter extends BaseAdapter {
             {
                 paire = new Pair<Integer, Integer>(1,index);
                 infos.put(position, paire);
-                holder.follow.setImageResource(R.drawable.ic_unsub);
-                holder.follow.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
+                holder.follow.setChecked(true);
+                //holder.follow.setImageResource(R.drawable.ic_unsub);
+                //holder.follow.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
             }
             index++;
 
@@ -132,7 +135,8 @@ public class UserListAdapter extends BaseAdapter {
                         public void onFailure(String error) {
                         }
                     });
-                    holder.follow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sub));
+                    holder.follow.setChecked(false);
+                    //holder.follow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sub));
                     user.getFollowers().remove(current);
                     paire = new Pair<Integer, Integer>(0,-1);
                     infos.put(position, paire);
@@ -148,7 +152,8 @@ public class UserListAdapter extends BaseAdapter {
                         public void onFailure(String error) {
                         }
                     });
-                    holder.follow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_unsub));
+                    holder.follow.setChecked(true);
+                    //holder.follow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_unsub));
                     user.getFollowers().add(current);
                     paire = new Pair<Integer, Integer>(1,user.getFollowers().size() - 1);
                     infos.put(position, paire);
@@ -167,6 +172,7 @@ public class UserListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView charityName;
-        ImageView charityImage, follow, share;
+        CheckBox follow;
+        ImageView charityImage, share;
     }
 }

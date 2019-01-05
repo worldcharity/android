@@ -3,6 +3,7 @@ package com.example.olfakaroui.android.entity;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Vote implements Serializable {
 
@@ -77,4 +78,19 @@ public class Vote implements Serializable {
         this.post = post;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Vote))
+            return false;
+        Vote other = (Vote) obj;
+        return id == other.id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
+    }
 }

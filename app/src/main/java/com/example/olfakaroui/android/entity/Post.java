@@ -19,9 +19,12 @@ public class Post implements Comparable<Post>, Serializable {
     private Date postingDate;
     @SerializedName("user")
     private User user;
+    @SerializedName("cause")
     private Cause cause;
     @SerializedName("Comments")
     private ArrayList<Comment> comments = new ArrayList<>();
+    @SerializedName("Votes")
+    private ArrayList<Vote> votes = new ArrayList<>();
 
 
     public Post() {
@@ -75,10 +78,17 @@ public class Post implements Comparable<Post>, Serializable {
         this.comments = comments;
     }
 
+    public ArrayList<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(ArrayList<Vote> votes) {
+        this.votes = votes;
+    }
+
     @Override
     public int compareTo(@NonNull Post post) {
-        int ret = post.getComments().size()-this.getComments().size();
-        Log.d("khancompariw","loula "+post.getComments().size()+" thenya "+this.getComments().size());
+        int ret = post.getVotes().size()-this.getVotes().size();
         return ret;
     }
 }

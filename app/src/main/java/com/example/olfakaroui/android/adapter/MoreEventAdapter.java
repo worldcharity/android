@@ -10,6 +10,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -35,8 +36,8 @@ import java.util.Locale;
 public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.EventViewHolder> implements Filterable {
 
 
-    public List<Event> mEvents = new ArrayList<>();
-    public List<Event> itemsFiltered = new ArrayList<>();
+    public List<Event> mEvents;
+    public List<Event> itemsFiltered;
     private Context context;
     User current = new User();
     Pair<Integer,Integer> paire;
@@ -46,9 +47,9 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
 
 
     public MoreEventAdapter(List<Event> events, Context context){
-        mEvents = events;
+        this.mEvents = events;
+        this.itemsFiltered = events;
         this.context = context;
-        itemsFiltered = events;
         //SessionManager sessionManager = new SessionManager(context);
         //sessionManager.getLogin(current);
     }
@@ -85,8 +86,9 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
         fav = new Pair<Integer, Integer>(0,-1);
         favorites.put(i, fav);
         int index = 0;
-        eventViewHolder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
-        eventViewHolder.like.setColorFilter(Color.WHITE);
+        eventViewHolder.bookmark.setChecked(false);
+        //eventViewHolder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
+        //eventViewHolder.like.setColorFilter(Color.WHITE);
         while ((index < event.getVotes().size()) && ( infos.get(i).first == 0))
         {
             Vote v = event.getVotes().get(index);
@@ -94,16 +96,18 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
             {
                 paire = new Pair<Integer, Integer>(1,index);
                 infos.put(i, paire);
-                eventViewHolder.like.setImageResource(R.drawable.ic_like_selected_24dp);
-                eventViewHolder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+                eventViewHolder.like.setChecked(true);
+                //eventViewHolder.like.setImageResource(R.drawable.ic_like_selected_24dp);
+                //eventViewHolder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
 
             }
             index++;
 
         }
         index = 0;
-        eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
-        eventViewHolder.bookmark.setColorFilter(Color.WHITE);
+        //eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
+        //eventViewHolder.bookmark.setColorFilter(Color.WHITE);
+        eventViewHolder.bookmark.setChecked(false);
         while ((index < event.getFavBy().size()) && ( favorites.get(i).first == 0))
         {
             User u = event.getFavBy().get(index);
@@ -111,8 +115,9 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
             {
                 fav = new Pair<Integer, Integer>(1,index);
                 favorites.put(i, fav);
-                eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
-                eventViewHolder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+                eventViewHolder.bookmark.setChecked(true);
+                //eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
+                //eventViewHolder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
             }
             index++;
 
@@ -131,18 +136,20 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
                     paire = new Pair<Integer, Integer>(1,event.getVotes().size() - 1);
                     infos.put(i, paire);
                     addVote(vo);
-                    eventViewHolder.like.setImageResource(R.drawable.ic_like_selected_24dp);
-                    eventViewHolder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+
+                    //eventViewHolder.like.setImageResource(R.drawable.ic_like_selected_24dp);
+                    //eventViewHolder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
 
                 }
                 else if(infos.get(i).first == 1)
                 {
-                    event.getVotes().remove(infos.get(i).second);
+
                     removeVote(event.getVotes().get(infos.get(i).second));
+                    event.getVotes().remove(event.getVotes().get(infos.get(i).second));
                     paire = new Pair<Integer, Integer>(0,-1);
                     infos.put(i, paire);
-                    eventViewHolder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
-                    eventViewHolder.like.setColorFilter(Color.WHITE);
+                    //eventViewHolder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
+                    //eventViewHolder.like.setColorFilter(Color.WHITE);
                 }
             }
         });
@@ -161,8 +168,8 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
                     fav = new Pair<Integer, Integer>(1,event.getFavBy().size() - 1);
                     favorites.put(i, fav);
                     addFav(event,current);
-                    eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
-                    eventViewHolder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+                    //eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_saved_24dp);
+                    //eventViewHolder.bookmark.setColorFilter(context.getResources().getColor(R.color.colorAccent));
 
                 }
                 else if(favorites.get(i).first == 1)
@@ -171,8 +178,8 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
                     unfav(event,current);
                     fav = new Pair<Integer, Integer>(0,-1);
                     favorites.put(i, fav);
-                    eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
-                    eventViewHolder.bookmark.setColorFilter(Color.WHITE);
+                    //eventViewHolder.bookmark.setImageResource(R.drawable.ic_bookmark_24dp);
+                    //eventViewHolder.bookmark.setColorFilter(Color.WHITE);
                 }
 
             }
@@ -191,18 +198,22 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String query = charSequence.toString();
-
+                Log.d("query", query);
                 FilterResults results = new FilterResults();
                 List<Event> filtered = new ArrayList<>();
                 if (query.isEmpty()) {
                     results.count = itemsFiltered.size();
                     results.values = itemsFiltered;
+
                 } else {
+                    Log.d("size", itemsFiltered.size()+" ");
                     for (Event event : itemsFiltered) {
                         if (event.getName().toLowerCase().contains(query.toLowerCase()))
                         {
                             filtered.add(event);
+
                         }
+                        Log.d("query", "added");
                     }
                     results.count = filtered.size();
                     results.values = filtered;
@@ -214,7 +225,6 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults results) {
                 mEvents = (ArrayList<Event>) results.values;
-                Log.d("filter", "eeeey");
                 notifyDataSetChanged();
             }
         };
@@ -224,7 +234,8 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
         private TextView mDayTextView;
         private TextView mMonthTextView;
         private TextView mNameTextView;
-        private ImageView mImageView, like, share, bookmark;
+        CheckBox like,bookmark;
+        private ImageView mImageView, share;
 
         EventViewHolder(View itemView){
             super(itemView);

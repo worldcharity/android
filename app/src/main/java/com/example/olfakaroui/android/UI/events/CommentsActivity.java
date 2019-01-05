@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.adapter.CommentListAdapter;
@@ -43,7 +45,7 @@ public class CommentsActivity extends AppCompatActivity {
         //sessionManager.getLogin(user);
         RecyclerView recyclerView = findViewById(R.id.comments_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        TextInputEditText commentaire = findViewById(R.id.add_comment);
+        EditText commentaire = findViewById(R.id.add_comment);
         ImageView commentBtn = findViewById(R.id.add_comment_btn);
         final CommentListAdapter adapter = new CommentListAdapter(event.getComments());
         recyclerView.setAdapter(adapter);
@@ -68,7 +70,7 @@ public class CommentsActivity extends AppCompatActivity {
                             public void onResponse(Comment c) {
                                 event.getComments().add(c);
                                 adapter.listData = event.getComments();
-                                adapter.notifyDataSetChanged();
+                                adapter.notifyItemInserted(event.getComments().size());
                             }
 
                             @Override

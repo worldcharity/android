@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.UI.interfaces_for_charity.CommentsForCharityActivity;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.DonationPagerAdapter;
 import com.example.olfakaroui.android.adapter.DonationTypesAdapter;
@@ -93,6 +94,7 @@ public class EventDetailActivity extends AppCompatActivity
         //SessionManager sessionManager = new SessionManager(this);
         //sessionManager.getLogin(current);
         current.setId(6);
+        current.setRole("user");
 
         getViewReferences();
         getEvent();
@@ -167,9 +169,19 @@ public class EventDetailActivity extends AppCompatActivity
         comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EventDetailActivity.this, CommentsActivity.class);
-                intent.putExtra(CommentsActivity.EXTRA_EVENT_CATEGORY, mEvent);
-                startActivity(intent);
+                if(current.getRole().equals("user"))
+                {
+                    Intent intent = new Intent(EventDetailActivity.this, CommentsActivity.class);
+                    intent.putExtra(CommentsActivity.EXTRA_EVENT_CATEGORY, mEvent);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(EventDetailActivity.this, CommentsForCharityActivity.class);
+                    intent.putExtra(CommentsForCharityActivity.EXTRA_EVENT_CATEGORY, mEvent);
+                    startActivity(intent);
+                }
+
 
             }
         });
@@ -185,7 +197,9 @@ public class EventDetailActivity extends AppCompatActivity
         mAddressTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(EventDetailActivity.this,EventLocationActivity.class);
+                intent.putExtra("event",mEvent);
+                startActivity(intent);
             }
         });
 
@@ -198,24 +212,14 @@ public class EventDetailActivity extends AppCompatActivity
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         mInfoLineButton.setText(content);
         getSupportActionBar().setTitle("");
-        typeBtn.setText(mEvent.getType());
-        typeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        typeBtn.setText("#"+mEvent.getType().replaceAll("\\s+","_"));
 
-            }
-        });
         content = new SpannableString(mEvent.getPhotos().size() + " photos");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 
         mPhotosButton.setText(content);
-        causeBtn.setText(mEvent.getCause().getName());
-        causeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        causeBtn.setText("#"+mEvent.getCause().getName().replaceAll("\\s+","_"));
 
-            }
-        });
 
         setDate(mStartDateTextView, mEvent.getStartingDate());
         setDate(mEndDateTextView, mEvent.getEndingDate());
@@ -233,6 +237,30 @@ public class EventDetailActivity extends AppCompatActivity
             setupTimer(timeDiff);
 
         }
+        causeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(current.getRole().equals("user"))
+                {
+                Intent intent = new Intent(EventDetailActivity.this, MoreActivity.class);
+                intent.putExtra(MoreActivity.EXTRA_EVENT_CATEGORY, mEvent.getCause());
+                intent.putExtra("tag", 1);
+                startActivity(intent);
+            }}
+        });
+
+        typeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    if(current.getRole().equals("user"))
+                    {
+                        Intent intent = new Intent(EventDetailActivity.this, EventsByTypeSearchActivity.class);
+                        intent.putExtra(EventsByTypeSearchActivity.EXTRA_EVENT_CATEGORY, mEvent.getType());
+                        startActivity(intent);
+                }
+
+            }
+        });
 
     }
 
@@ -284,7 +312,10 @@ public class EventDetailActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.event_interaction_bar, menu);
+        if(current.getRole().equals("user"))
+        {
+            getMenuInflater().inflate(R.menu.event_interaction_bar, menu);
+
         bookmark = menu.findItem(R.id.toolbar_bookmark);
         share = menu.findItem(R.id.toolbar_share);
         like = menu.findItem(R.id.toolbar_like);
@@ -325,18 +356,12 @@ public class EventDetailActivity extends AppCompatActivity
         {
             like.setIcon(R.drawable.ic_like_selected_24dp);
         }
-        else
-        {
-            like.setIcon(R.drawable.ic_like_unselected_24dp);
-        }
+
         if(isFav)
         {
             bookmark.setIcon(R.drawable.ic_bookmark_saved_24dp);
         }
-        else
-        {
-            bookmark.setIcon(R.drawable.ic_bookmark_24dp);
-        }
+
         bookmark.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -397,6 +422,7 @@ public class EventDetailActivity extends AppCompatActivity
                 return false;
             }
         });
+        }
         return true;
     }
 

@@ -13,6 +13,8 @@ public class Cause implements Serializable {
     private String description;
     @SerializedName("photo")
     private String photo;
+    @SerializedName("link")
+    private String link;
 
     public Cause() {
 
@@ -47,5 +49,13 @@ public class Cause implements Serializable {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

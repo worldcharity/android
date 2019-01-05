@@ -11,6 +11,7 @@ public class UrlConst {
     /////////////////////////// events //////////////////////////////
 
     public static String EVENTS_BY_CAUSE = SERVER + "events/bycause/";
+    public static String EVENTS_BY_TYPE = SERVER + "events/bytype/";
     public static String ALL_EVENTS = SERVER + "allevents";
 
 
@@ -33,6 +34,7 @@ public class UrlConst {
     public static String TOTAL_COLLAB = SERVER + "collab/total/";
     public static String PENDING_COLLABS = SERVER+ "collabs/bycharitypending/";
     public static String UPDATE_COLLAB = SERVER+ "collab/update/";
+    public static String HIDE_COMMENT = SERVER+ "comment/hide/";
     /////////////////////////// votes //////////////////////////////
     public static String addVote = SERVER + "votecomment";
     public static String updateVote = SERVER + "vote";
@@ -48,7 +50,6 @@ public class UrlConst {
 
 
     public static String allCauses = SERVER + "causes";
-    ;
     public static String trendingPosts = SERVER+ "poststrending/";
     public static String posts = SERVER+ "posts/";
     public static String userModif = SERVER + "usermodif/";

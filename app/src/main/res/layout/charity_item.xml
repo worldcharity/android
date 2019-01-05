@@ -52,15 +52,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_gravity="right"
-                android:id="@+id/follow_charity"
-                android:layout_weight="1"
+            <CheckBox
                 android:layout_marginEnd="10dp"
+                android:id="@+id/follow_charity"
+                android:stateListAnimator="@animator/like_anim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/colorPrimaryDark"
-                app:srcCompat="@drawable/ic_sub"
+                android:button="@null"
+                android:checked="false"
+                android:background="@drawable/follow_icon"
                 android:contentDescription="TODO" />
 
             <ImageView

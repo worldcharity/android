@@ -122,20 +122,6 @@ public class EventsByCauseFragment extends Fragment {  private static final Stri
             }
 
         });
-        /*mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Event event = allevents.get(position);
-                Intent intent = new Intent(getActivity(), EventDetailActivity.class);
-                intent.putExtra("event", event);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));*/
 
         return fragment;
     }

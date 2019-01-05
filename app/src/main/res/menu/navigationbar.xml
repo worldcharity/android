@@ -6,10 +6,6 @@
                 android:icon="@drawable/ic_events_unselected_16dp"
                 android:title="@string/events" />
             <item
-             android:id="@+id/nav_chat"
-             android:icon="@drawable/ic_chat_black_24dp"
-             android:title="@string/chat" />
-            <item
                 android:id="@+id/nav_charities"
                 android:icon="@drawable/ic_charities_unselected_16dp"
                 android:title="@string/charities" />
@@ -17,9 +13,13 @@
              android:id="@+id/nav_causes"
              android:icon="@drawable/ic_causes_unselected_16dp"
              android:title="@string/causes" />
+         <item
+             android:id="@+id/nav_fav"
+             android:icon="@drawable/ic_favs"
+             android:title="@string/fav" />
             <item
              android:id="@+id/nav_settings"
-             android:icon="@drawable/ic_settings_unselected_16dp"
+             android:icon="@drawable/ic_unsub"
              android:title="@string/settings" />
 
         </group>

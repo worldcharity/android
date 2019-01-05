@@ -55,7 +55,6 @@ public class CausesListAdapter extends BaseAdapter {
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.cause_item, null);
-            convertView.setBackgroundResource(R.drawable.rounded_cell);
             holder = new ViewHolder();
             holder.nomView = (TextView) convertView.findViewById(R.id.causenom);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imageCause);

@@ -24,8 +24,8 @@
     <string name="causes">Causes</string>
     <string name="myevents">My Events</string>
     <string name="collab">Donations</string>
-    <string name="chat">Chat Room</string>
-    <string name="settings">Settings</string>
+    <string name="fav">My Favorites</string>
+    <string name="settings">My Profile</string>
 
     <!-- roles -->
     <string name="user">user</string>
@@ -57,6 +57,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_event_location">Event\'s Location</string>
 
 
 </resources>

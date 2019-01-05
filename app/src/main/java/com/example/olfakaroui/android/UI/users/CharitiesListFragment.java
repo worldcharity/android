@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.GridLayoutAnimationController;
 import android.widget.GridView;
 
 import com.example.olfakaroui.android.R;
@@ -67,6 +68,9 @@ public class CharitiesListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_charities_list, container, false);
         gridView = view.findViewById(R.id.charities_list);
+        Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.grid_anim);
+        GridLayoutAnimationController controller = new GridLayoutAnimationController(animation, .2f, .2f);
+        gridView.setLayoutAnimation(controller);
 
         UserService.getInstance().getCharities(new UserService.UserServiceGetCharitiesCallBack() {
             @Override

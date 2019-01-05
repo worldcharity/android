@@ -6,7 +6,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".UI.events.PendingCollabsFragment">
+tools:context=".UI.interfaces_for_charity.PendingCollabsFragment">
 
 <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
@@ -84,11 +84,12 @@ tools:context=".UI.events.PendingCollabsFragment">
 <android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="0dp"
+    android:paddingBottom="50dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:layout_marginTop="0dp">
 
     <android.support.v7.widget.RecyclerView
+        android:layoutAnimation="@anim/recycler_animation"
         android:id="@+id/pendingcollabs"
         android:layout_width="match_parent"
         android:orientation="vertical"

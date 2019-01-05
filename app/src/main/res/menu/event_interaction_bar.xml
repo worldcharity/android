@@ -7,27 +7,30 @@
     <item
         android:id="@+id/toolbar_donate"
         android:orderInCategory="300"
-        android:title="User"
-        android:iconTint="@color/colorPrimary"
-        android:icon="@drawable/donation"
+        android:title="Donate"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/donate"
         app:showAsAction="always"></item>
     <item
         android:id="@+id/toolbar_like"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/ic_like_unselected_24dp"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/ic_like_white"
         app:showAsAction="always"></item>
     <item
         android:id="@+id/toolbar_bookmark"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/ic_bookmark_unselected_16dp"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/ic_bookmark_white"
         app:showAsAction="always"></item>
     <item
         android:id="@+id/toolbar_share"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/ic_share_24dp"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/ic_share_white"
         app:showAsAction="always"></item>
 
 

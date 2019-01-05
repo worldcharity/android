@@ -22,16 +22,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
+                <CheckBox
+                    android:layout_marginEnd="10dp"
                     android:id="@+id/follow"
-                    android:layout_marginBottom="15dp"
+                    android:stateListAnimator="@animator/like_anim"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="TODO"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:tint="@android:color/white"
-                    app:srcCompat="@drawable/ic_sub" />
+                    android:button="@null"
+                    android:checked="false"
+                    android:background="@drawable/follow_icon"
+                    android:contentDescription="TODO" />
 
                 <ImageView
                     android:id="@+id/share_user"

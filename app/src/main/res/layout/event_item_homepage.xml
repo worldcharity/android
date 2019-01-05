@@ -87,21 +87,25 @@
             android:layout_marginStart="80dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <ImageView
-
+        <CheckBox
             android:layout_marginEnd="10dp"
             android:id="@+id/like"
+            android:stateListAnimator="@animator/like_anim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@color/colorPrimaryDark"
-            app:srcCompat="@drawable/ic_like_unselected_24dp"
+            android:button="@null"
+            android:checked="false"
+            android:background="@drawable/like_icon"
             android:contentDescription="TODO" />
-            <ImageView
+            <CheckBox
                 android:id="@+id/bookmark"
                 android:layout_marginEnd="10dp"
+                android:stateListAnimator="@animator/like_anim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/colorPrimaryDark"
+                android:button="@null"
+                android:checked="false"
+                android:background="@drawable/bookmark_icon"
                 app:srcCompat="@drawable/ic_bookmark_24dp"
                 android:contentDescription="TODO" />
 

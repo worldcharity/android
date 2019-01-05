@@ -95,6 +95,7 @@ public class UserService {
             }
         }
         );
+        stringRequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }

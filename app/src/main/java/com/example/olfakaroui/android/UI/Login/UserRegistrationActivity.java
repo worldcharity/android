@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.GridLayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.CausesListAdapter;
 import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;
+import com.example.olfakaroui.android.service.EventService;
 import com.example.olfakaroui.android.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,6 +55,9 @@ public class UserRegistrationActivity extends AppCompatActivity {
         SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(user);
         gridView.setBackgroundResource(R.drawable.rounded_cell);
+        Animation animation = AnimationUtils.loadAnimation(this,R.anim.grid_anim);
+        GridLayoutAnimationController controller = new GridLayoutAnimationController(animation, .2f, .2f);
+        gridView.setLayoutAnimation(controller);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -93,66 +100,44 @@ public class UserRegistrationActivity extends AppCompatActivity {
     {
         for(int x : adapter.selectedPositions)
 
-        { final Cause c = causes.get(x) ;
+        {
+            final Cause c = causes.get(x) ;
 
-            StringRequest sr = new StringRequest(Request.Method.POST, UrlConst.ADD_PREFS, new Response.Listener<String>() {
+            EventService.getInstance().addPref(c,user, new EventService.EventServiceAddPrefCallBack() {
                 @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
+                public void onResponse(String string) {
 
-                    }
-                    catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            }) {
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    HashMap<String, String> params2 = new HashMap<String, String>();
-                    params2.put("id_user", Integer.toString(user.getId()));
-                    params2.put("id_cause", Integer.toString(c.getId()));
-                    return new JSONObject(params2).toString().getBytes();
-                }
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
 
-            AppController.getInstance().addToRequestQueue(sr);
+                }
+
+                @Override
+                public void onFailure(String error) {
+
+                }
+
+            });
         }
 
     }
 
-    private void getCauses(){
+        private void getCauses(){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.allCauses, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+            EventService.getInstance().getCauses(new EventService.EventServiceGetCausesCallBack() {
+                @Override
+                public void onResponse(List<Cause> posts) {
 
-                Log.d("okay", "Response " + response);
-                GsonBuilder builder = new GsonBuilder();
-                Gson mGson = builder.create();
-                causes = Arrays.asList(mGson.fromJson(response, Cause[].class));
-                adapter = new CausesListAdapter(UserRegistrationActivity.this, causes);
-                gridView.setAdapter(adapter);
+                    adapter = new CausesListAdapter(UserRegistrationActivity.this, causes);
+                    gridView.setAdapter(adapter);
+                }
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("hell no", "Error " + error.getMessage());
+                @Override
+                public void onFailure(String error) {
 
-            }
+                }
+
+            });
+
         }
-        );
-        AppController.getInstance().addToRequestQueue(stringRequest);
 
-    }
 
 }

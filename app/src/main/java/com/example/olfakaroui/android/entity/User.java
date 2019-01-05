@@ -40,6 +40,8 @@ public class User implements Serializable {
     private List<User> following = new ArrayList<>();
     @SerializedName("Subs")
     private List<User> followers = new ArrayList<>();
+    @SerializedName("Favourites")
+    private List<Event> favs = new ArrayList<>();
     @SerializedName("Events")
     private List<Event> events = new ArrayList<>();
 
@@ -185,6 +187,14 @@ public class User implements Serializable {
 
     public void setEvents(List<Event> events) {
         this.events = events;
+    }
+
+    public List<Event> getFavs() {
+        return favs;
+    }
+
+    public void setFavs(List<Event> favs) {
+        this.favs = favs;
     }
 
     @Override

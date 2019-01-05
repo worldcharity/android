@@ -4,12 +4,15 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.UrlConst;
+import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.Collab;
 import com.example.olfakaroui.android.entity.Event;
+import com.example.olfakaroui.android.entity.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +53,14 @@ public class EventService {
         void onResponse(double total);
         void onFailure(String error);
     }
+    public interface EventServiceGetCausesCallBack{
+        void onResponse(List<Cause> causes);
+        void onFailure(String error);
+    }
+    public interface EventServiceAddPrefCallBack{
+        void onResponse(String response);
+        void onFailure(String error);
+    }
 
     public interface EventServiceAddCollabCallBack{
         void onResponse(String responses);void onFailure(String error);
@@ -61,11 +73,59 @@ public class EventService {
                 GsonBuilder builder = new GsonBuilder();
                 Gson mGson = builder.create();
                 Log.d("EVENTS", response);
-                List<Event> events = Arrays.asList(mGson.fromJson(response, Event[].class));
+                List events = new ArrayList(Arrays.asList(mGson.fromJson(response, Event[].class)));
                 callBack.onResponse(events);
 
             }
         }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+    public void getEventsByType(String type, final EventServiceGetCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.EVENTS_BY_TYPE+type,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        Log.d("EVENTS", response);
+                        List events = new ArrayList(Arrays.asList(mGson.fromJson(response, Event[].class)));
+                        callBack.onResponse(events);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+
+    public void getCauses(final EventServiceGetCausesCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.allCauses,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        List<Cause> causes = Arrays.asList(mGson.fromJson(response, Cause[].class));
+                        callBack.onResponse(causes);
+
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 callBack.onFailure(error.toString());
@@ -110,7 +170,7 @@ public class EventService {
                         GsonBuilder builder = new GsonBuilder();
                         Gson mGson = builder.create();
                         Log.d("EVENTS", response);
-                        List<Event> events = Arrays.asList(mGson.fromJson(response, Event[].class));
+                        List events = new ArrayList(Arrays.asList(mGson.fromJson(response, Event[].class)));
                         callBack.onResponse(events);
 
                     }
@@ -200,7 +260,9 @@ public class EventService {
                     public void onResponse(String response) {
                         GsonBuilder builder = new GsonBuilder();
                         Gson mGson = builder.create();
-                        List<Collab> events = Arrays.asList(mGson.fromJson(response, Collab[].class));
+                        Log.d("collabs", response);
+
+                        List events = new ArrayList(Arrays.asList(mGson.fromJson(response, Collab[].class)));
                         callBack.onResponse(events);
 
                     }
@@ -218,7 +280,7 @@ public class EventService {
     }
 
     public void confirmCollab(Collab c, final EventService.EventServiceConfirmOrRefuseCollabCallBack callBack) {
-        StringRequest postRequest = new StringRequest(Request.Method.PUT, UrlConst.UPDATE_COLLAB+"/"+c.getId(),
+        StringRequest postRequest = new StringRequest(Request.Method.PUT, UrlConst.UPDATE_COLLAB+c.getId(),
                 new Response.Listener<String>()
                 {
                     @Override
@@ -246,6 +308,35 @@ public class EventService {
             }
         };
         AppController.getInstance().addToRequestQueue(postRequest);
+    }
+
+    public void addPref(Cause c, User user, final EventService.EventServiceAddPrefCallBack callBack){
+
+        StringRequest sr = new StringRequest(Request.Method.POST, UrlConst.ADD_PREFS, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                callBack.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("id_user", Integer.toString(user.getId()));
+                params2.put("id_cause", Integer.toString(c.getId()));
+                return new JSONObject(params2).toString().getBytes();
+            }
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(sr);
+
     }
 
 

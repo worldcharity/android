@@ -18,30 +18,34 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <ImageButton
+            <CheckBox
+                android:layout_marginEnd="10dp"
                 android:id="@+id/upvote"
+                android:stateListAnimator="@animator/like_anim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@null"
+                android:checked="false"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/white"
                 android:textColor="@color/colorPrimaryLight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_upvote_unselected_48dp"
-                tools:ignore="VectorDrawableCompat" />
+                android:background="@drawable/upvote_icon"
+                android:contentDescription="TODO" />
 
-            <ImageButton
+
+            <CheckBox
                 android:id="@+id/downvote"
+                android:button="@null"
+                android:checked="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryLight"
                 android:layout_marginStart="25dp"
-                android:background="@android:color/white"
+                android:background="@drawable/downvote_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nbrOfVotes"
-                app:srcCompat="@drawable/ic_downvote_unselected_48dp"
                 tools:ignore="VectorDrawableCompat" />
 
             <TextView

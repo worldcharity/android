@@ -39,6 +39,7 @@ public class CharityEventsListActivity extends AppCompatActivity {
             @Override
             public void onResponse(List<Event> events) {
                 adapter.mEvents = events;
+                adapter.itemsFiltered = events;
                 adapter.notifyDataSetChanged();
             }
 

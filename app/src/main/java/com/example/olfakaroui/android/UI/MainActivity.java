@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -13,25 +14,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
 
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.UI.events.EventDetailActivity;
 import com.example.olfakaroui.android.UI.events.EventsByCauseFragment;
 import com.example.olfakaroui.android.UI.events.HomePageFragment;
-import com.example.olfakaroui.android.UI.events.MyEventsFragment;
-import com.example.olfakaroui.android.UI.events.PendingCollabsFragment;
+import com.example.olfakaroui.android.UI.events.MyFavsFragment;
+import com.example.olfakaroui.android.UI.interfaces_for_charity.MyEventsFragment;
+import com.example.olfakaroui.android.UI.interfaces_for_charity.PendingCollabsFragment;
+import com.example.olfakaroui.android.UI.posts.CausesDisplayFragment;
 import com.example.olfakaroui.android.UI.users.CharitiesListFragment;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.utils.BottomNavigationBehavior;
-import com.example.olfakaroui.android.utils.SessionManager;
 
 public class MainActivity extends AppCompatActivity implements HomePageFragment.OnFragmentInteractionListener,
-        EventsByCauseFragment.OnFragmentInteractionListener, CharitiesListFragment.OnFragmentInteractionListener {
+        EventsByCauseFragment.OnFragmentInteractionListener, CharitiesListFragment.OnFragmentInteractionListener,
+        MyEventsFragment.OnFragmentInteractionListener,
+        PendingCollabsFragment.OnFragmentInteractionListener, MyFavsFragment.OnFragmentInteractionListener{
 
     private ActionBar toolbar;
     private Fragment fragment;
     BottomNavigationView navigation;
+    FloatingActionButton fab;
     User user = new User();
 
     @Override
@@ -45,22 +48,35 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
 
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        fab = findViewById(R.id.fab);
         if(user.getRole().equals("user"))
         {
+            navigation.getMenu().clear();
             navigation.inflateMenu(R.menu.navigationbar);
+            toolbar.hide();
+            fragment = new HomePageFragment();
+            loadFragment(fragment);
         }
         else
         {
+            navigation.getMenu().clear();
             navigation.inflateMenu(R.menu.navigationbar_charity);
+            toolbar.hide();
+            fragment = new PendingCollabsFragment();
+            loadFragment(fragment);
         }
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationBehavior());
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ChatRoomActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
-        toolbar.hide();
-        fragment = new HomePageFragment();
-        loadFragment(fragment);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -81,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                     fragment = new MyEventsFragment();
                     loadFragment(fragment);
                     return true;
+                case R.id.nav_fav:
+                    toolbar.hide();
+                    fragment = new MyFavsFragment();
+                    loadFragment(fragment);
+                    return true;
                 case R.id.nav_donations:
                     toolbar.hide();
                     fragment = new PendingCollabsFragment();
@@ -94,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                     return true;
                 case R.id.nav_causes:
                     toolbar.setTitle("Causes");
+                    //toolbar.hide();
+                    fragment = new CausesDisplayFragment();
+                    loadFragment(fragment);
                     return true;
                 case R.id.nav_settings:
                     toolbar.setTitle("Settings");

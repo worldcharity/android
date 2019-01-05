@@ -37,8 +37,7 @@ public class SeeAllEventsActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.activity_see_all_events_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         final List<Event> events = new ArrayList<>();
-        adapter = new MoreEventAdapter(events, this);
-        recyclerView.setAdapter(adapter);
+
         Toolbar toolbar = findViewById(R.id.toolbar_search);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("All events");
@@ -47,8 +46,9 @@ public class SeeAllEventsActivity extends AppCompatActivity {
         EventService.getInstance().getAllEvents(new EventService.EventServiceGetCallBack() {
             @Override
             public void onResponse(List<Event> events) {
-                adapter.mEvents = events;
-                adapter.notifyDataSetChanged();
+                adapter = new MoreEventAdapter(events, SeeAllEventsActivity.this);
+                recyclerView.setAdapter(adapter);
+
             }
 
             @Override

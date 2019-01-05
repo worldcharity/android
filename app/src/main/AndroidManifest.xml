@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.olfakaroui.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:value="@string/facebook_app_id">
+        android:value="@string/facebook_app_id"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".UI.Login.LoginActivity" />
 
         <provider
@@ -74,21 +76,54 @@
         <activity
             android:name=".UI.events.EventDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.events.MoreActivity" />
+        <activity
+            android:name=".UI.events.MoreActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
         <activity android:name=".UI.events.CommentsActivity" />
         <activity android:name=".UI.users.UserProfileActivity" />
         <activity android:name=".UI.users.FollowersFollowingActivity" />
-        <activity android:name=".UI.events.EventPlaceMapActivity" />
-        <activity android:name=".UI.events.EventsByTypeActivity" />
+        <activity
+            android:name=".UI.events.EventsByTypeSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
         <activity android:name=".UI.events.PhotosGalleryActivity" />
         <activity android:name=".UI.users.CharityProfileActivity" />
         <activity android:name=".UI.users.CharityEventsListActivity" />
         <activity android:name=".UI.users.UserCollabsListActivity" />
         <activity
             android:name=".UI.events.SeeAllEventsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.events.DonateActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
 
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UI.events.DonateActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name=".UI.events.EventLocationActivity" />
+        <activity android:name=".UI.interfaces_for_charity.CommentsForCharityActivity"></activity>
     </application>
 
 </manifest>
