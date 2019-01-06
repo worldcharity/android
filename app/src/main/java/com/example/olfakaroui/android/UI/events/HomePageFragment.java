@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableString;
@@ -17,19 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.entity.Cause;
-import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
-import com.example.olfakaroui.android.service.EventService;
 import com.example.olfakaroui.android.service.UserService;
 import com.example.olfakaroui.android.utils.PictureRendrer;
-import com.example.olfakaroui.android.utils.SessionManager;
 
 import java.util.List;
 
@@ -98,9 +94,9 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
         seeallevents.setText(content);
         BitmapDrawable myBackground = new BitmapDrawable(PictureRendrer.decodeSampledBitmapFromResource(getResources(), R.drawable.app_background, 100, 100));
         image.setBackgroundDrawable(myBackground);
-        //final SessionManager session = new SessionManager(this.getActivity());
-        //session.getLogin(user);
-        user.setId(6);
+        final SessionManager session = new SessionManager(this.getActivity());
+        session.getLogin(user);
+
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         UserService.getInstance().getPrefrences(user.getId(), new UserService.UserServiceGetCallBack() {
             @Override
@@ -114,11 +110,13 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
                 getChildFragmentManager().beginTransaction().replace(R.id.third_container, third).commit();
                 if(prefs.size() > 3)
                 {
+                    Log.d("pref", "oui");
                     fourth = buildCategoryFragment(prefs.get(3));
                     getChildFragmentManager().beginTransaction().replace(R.id.fourth_container, fourth).commit();
                 }
                 if(prefs.size() == 5)
                 {
+                    Log.d("pref", "5");
                     fifth = buildCategoryFragment(prefs.get(4));
                     getChildFragmentManager().beginTransaction().replace(R.id.fifth_container, fifth).commit();
                 }

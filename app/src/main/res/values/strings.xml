@@ -10,7 +10,9 @@
     <!-- shared prefs -->
 
     <string name="prefs">user</string>
+    <string name="pref_notif">user</string>
     <string name="user_id">user_id</string>
+    <string name="token">token</string>
     <string name="user_name">user_name</string>
     <string name="user_lastname">user_lastname</string>
     <string name="user_role">user_role</string>

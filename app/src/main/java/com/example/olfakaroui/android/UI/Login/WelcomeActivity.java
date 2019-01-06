@@ -90,7 +90,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+        startActivity(new Intent(WelcomeActivity.this, ChoosingRoleActivity.class));
         finish();
     }
     private void addBottomDots(int currentPage) {

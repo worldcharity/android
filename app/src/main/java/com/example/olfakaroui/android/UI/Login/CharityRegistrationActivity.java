@@ -28,7 +28,7 @@ import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.entity.User;
-import com.example.olfakaroui.android.utils.SessionManager;
+import com.example.olfakaroui.android.SessionManager;
 
 import java.io.IOException;
 
@@ -78,8 +78,8 @@ public class CharityRegistrationActivity extends AppCompatActivity {
                     }
                     else {
                         SendImage(image);
-                        //Intent myIntent = new Intent(FirstLogCharityActivity.this, ConfirmationActivity.class);
-                        //FirstLogCharityActivity.this.startActivity(myIntent);
+                        Intent myIntent = new Intent(CharityRegistrationActivity.this, ConfirmationPhotoActivity.class);
+                        startActivity(myIntent);
                     }
 
                 } catch (IOException e) {

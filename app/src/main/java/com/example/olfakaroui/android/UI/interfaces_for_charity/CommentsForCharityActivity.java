@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.adapter.CommentListAdapter;
 import com.example.olfakaroui.android.adapter.CommentListForCharityAdapter;
 import com.example.olfakaroui.android.adapter.PendingCollabsAdapter;
@@ -36,9 +37,8 @@ public class CommentsForCharityActivity extends AppCompatActivity implements Swi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments_for_charity);
         event = (Event) getIntent().getSerializableExtra(EXTRA_EVENT_CATEGORY);
-        user.setId(6);
-        //SessionManager sessionManager = new SessionManager(this);
-        //sessionManager.getLogin(user);
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.getLogin(user);
         RecyclerView recyclerView = findViewById(R.id.comments_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

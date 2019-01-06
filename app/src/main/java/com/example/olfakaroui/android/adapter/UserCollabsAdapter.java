@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.entity.Collab;
 import com.example.olfakaroui.android.entity.DonationType;
 import com.example.olfakaroui.android.service.EventService;
@@ -39,8 +40,6 @@ public class UserCollabsAdapter extends RecyclerView.Adapter<UserCollabsAdapter.
         collabs = c;
         this.context = context;
 
-        //SessionManager sessionManager = new SessionManager(context);
-        //sessionManager.getLogin(current);
     }
 
     @NonNull

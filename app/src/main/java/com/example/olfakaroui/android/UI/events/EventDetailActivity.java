@@ -26,10 +26,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.UI.interfaces_for_charity.CommentsForCharityActivity;
+import com.example.olfakaroui.android.UI.interfaces_for_charity.EventCollabsActivity;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.DonationPagerAdapter;
 import com.example.olfakaroui.android.adapter.DonationTypesAdapter;
+import com.example.olfakaroui.android.entity.Comment;
 import com.example.olfakaroui.android.entity.DonationType;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
@@ -91,11 +94,8 @@ public class EventDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-        //SessionManager sessionManager = new SessionManager(this);
-        //sessionManager.getLogin(current);
-        current.setId(6);
-        current.setRole("user");
-
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.getLogin(current);
         getViewReferences();
         getEvent();
 
@@ -150,6 +150,15 @@ public class EventDetailActivity extends AppCompatActivity
         Picasso.get().load(UrlConst.IMAGES+mEvent.getPhotos().get(0).getPhoto()).resize(525, 559).centerCrop().into(mImageView);
         mNameTextView.setText(mEvent.getName());
         SpannableString content1;
+        ArrayList<Comment> filtered = new ArrayList<>();
+        for (Comment com : mEvent.getComments()) {
+            if (com.getState() == 0)
+            {
+                filtered.add(com);
+
+            }
+        }
+        mEvent.setComments(filtered);
 
         if(mEvent.getComments().size() > 1)
         {
@@ -422,6 +431,19 @@ public class EventDetailActivity extends AppCompatActivity
                 return false;
             }
         });
+        }
+        else
+        {
+            donate =  menu.findItem(R.id.toolbar_donate);
+            donate.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Intent intent = new Intent(EventDetailActivity.this, EventCollabsActivity.class);
+                    intent.putExtra("event", mEvent);
+                    startActivity(intent);
+                    return false;
+                }
+            });
         }
         return true;
     }

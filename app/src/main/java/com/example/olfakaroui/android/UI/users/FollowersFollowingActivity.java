@@ -1,42 +1,16 @@
 package com.example.olfakaroui.android.UI.users;
 
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.GridLayoutAnimationController;
-import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.error.AuthFailureError;
-import com.android.volley.error.VolleyError;
-import com.android.volley.request.StringRequest;
-import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.UI.Login.UserRegistrationActivity;
-import com.example.olfakaroui.android.UrlConst;
-import com.example.olfakaroui.android.adapter.CausesListAdapter;
 import com.example.olfakaroui.android.adapter.UserListAdapter;
-import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;
-import com.example.olfakaroui.android.utils.SessionManager;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class FollowersFollowingActivity extends AppCompatActivity {
 

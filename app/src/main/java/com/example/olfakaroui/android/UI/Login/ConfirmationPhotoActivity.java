@@ -11,7 +11,6 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,9 +22,10 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.UI.MainActivity;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.entity.User;
-import com.example.olfakaroui.android.utils.SessionManager;
+import com.example.olfakaroui.android.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +73,11 @@ public class ConfirmationPhotoActivity extends AppCompatActivity {
                     else
                     {
                         SendImage(image);
+                        Intent intent = new Intent(ConfirmationPhotoActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+
                     }
 
                 } catch (IOException e) {

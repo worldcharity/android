@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.UI.users.UserProfileActivity;
 import com.example.olfakaroui.android.entity.Comment;
 import com.example.olfakaroui.android.entity.User;
@@ -57,23 +58,12 @@ public class CommentListForCharityAdapter extends RecyclerView.Adapter<CommentLi
 
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(position, paire);
-        user = new User();
-        user.setId(6);
-        user.setLastName("Karoui");
-        user.setFirstName("Olfa");
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(user);
+
         Comment comment = listData.get(position);
         holder.body.setText(comment.getBody());
         holder.username.setText(comment.getPosted_by().getFirstName() + " " + comment.getPosted_by().getLastName() );
-        holder.username.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("user", user.getId());
-                ((Activity) context).startActivityForResult(intent, 2);
-
-
-            }
-        });
 
         UserService.getInstance().getInfos(comment.getPosted_by().getId(), new UserService.UserServiceGetInfosCallBack() {
             @Override

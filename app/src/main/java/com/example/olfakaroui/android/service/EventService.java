@@ -278,6 +278,31 @@ public class EventService {
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
+    public void getEventCollabs(int eventId, final EventServiceGetPendingCollabsCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.EVENT_COLLABS+eventId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        Log.d("collabs", response);
+
+                        List events = new ArrayList(Arrays.asList(mGson.fromJson(response, Collab[].class)));
+                        callBack.onResponse(events);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
 
     public void confirmCollab(Collab c, final EventService.EventServiceConfirmOrRefuseCollabCallBack callBack) {
         StringRequest postRequest = new StringRequest(Request.Method.PUT, UrlConst.UPDATE_COLLAB+c.getId(),

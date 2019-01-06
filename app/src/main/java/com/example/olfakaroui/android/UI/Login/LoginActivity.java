@@ -18,8 +18,10 @@ import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UI.MainActivity;
 import com.example.olfakaroui.android.UrlConst;
+import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;
-import com.example.olfakaroui.android.utils.SessionManager;
+import com.example.olfakaroui.android.SessionManager;
+import com.example.olfakaroui.android.service.UserService;
 import com.example.olfakaroui.android.utils.PictureRendrer;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -46,6 +48,7 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -64,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     boolean createdAccount = false;
     LinearLayout mainView;
     //google api client
+    User checked = new User();
     private GoogleApiClient mGoogleApiClient;
 
     //Signin constant to check the activity result
@@ -80,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         BitmapDrawable myBackground = new BitmapDrawable(PictureRendrer.decodeSampledBitmapFromResource(getResources(), R.drawable.app_background, 100, 100));
         mainView.setBackgroundDrawable(myBackground);
         session = new SessionManager(this);
-        if(session.getLogin(user))
+        if(session.isLoggedIn())
         {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -115,20 +119,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-
-        }
         callbackManager = CallbackManager.Factory.create();
-
         accessTokenTracker= new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
 
             }
         };
-
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
@@ -138,13 +135,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
-
         LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_signin);
-
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
 
                 Profile profile = Profile.getCurrentProfile();
                 displayMessage(profile);
@@ -234,8 +228,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onStop() {
         super.onStop();
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
+        //accessTokenTracker.stopTracking();
+        //profileTracker.stopTracking();
     }
     @Override
     public void onResume() {
@@ -261,18 +255,33 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 user.setPhoto(photo);
             }
 
-            session.setLogin(true, user, createdAccount);
-            checkUser();
-            if(createdAccount)
-            {
-                Intent intent = new Intent(LoginActivity.this, ChoosingRoleActivity.class);
-                startActivity(intent);
-            }
-            else
-            {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+            UserService.getInstance().checkUser(user, new UserService.UserServiceCheckUserCallBack() {
+                @Override
+                public void onResponse(User u, boolean isAdded) {
+                    user.setRole(u.getRole());
+
+                    session.setLogin(true, u, isAdded);
+
+                    if(isAdded)
+                    {
+                        Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(String error) {
+
+                }
+
+            });
+
+
             //Displaying name and email
             Log.d(TAG, "handleSignInResult: " + acct.getDisplayName());
         } else {
@@ -291,69 +300,34 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             user.setSocialPlatform("facebook");
             String photo =profile.getProfilePictureUri(400, 400).toString();
             user.setPhoto(photo);
-            session.setLogin(true,user,createdAccount);
-            checkUser();
-            if(createdAccount)
-            {
-                Intent intent = new Intent(LoginActivity.this, ChoosingRoleActivity.class);
-                startActivity(intent);
-            }
-            else
-            {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-            Log.d(TAG, "displayMessage: " + profile.getId());
-        }
-    }
-
-    public void checkUser()
-    {
-        String url = UrlConst.checkUser;
-        StringRequest putRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("Response", response);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            createdAccount = jsonObject.getBoolean("created");
-                            GsonBuilder builder = new GsonBuilder();
-                            Gson mGson = builder.create();
-                            user = mGson.fromJson(jsonObject.getString("user"), User.class);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+            UserService.getInstance().checkUser(user, new UserService.UserServiceCheckUserCallBack() {
+                @Override
+                public void onResponse(User u, boolean isAdded) {
+                    user.setRole(u.getRole());
+                    session.setLogin(true,u,isAdded);
+                    Log.d(TAG, "displayMessage: " + profile.getId());
+                    if(isAdded)
+                    {
+                        Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                        startActivity(intent);
                     }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
+                    else
+                    {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 }
-        ) {
 
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String> params = new HashMap<>();
-                params.put("social_id", user.getSocialId());
-                params.put("social_platform", user.getSocialPlatform());
-                params.put("first_name", user.getFirstName());
-                params.put("last_name", user.getLastName());
-                params.put("photo", user.getPhoto());
+                @Override
+                public void onFailure(String error) {
 
-                return params;
-            }
+                }
 
-        };
+            });
 
-        AppController.getInstance().addToRequestQueue(putRequest);
 
+
+        }
     }
 
 

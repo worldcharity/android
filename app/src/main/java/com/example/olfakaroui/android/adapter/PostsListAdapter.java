@@ -1,7 +1,8 @@
 package com.example.olfakaroui.android.adapter;
 
+import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,12 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
+import com.example.olfakaroui.android.UI.users.UserProfileActivity;
 import com.example.olfakaroui.android.entity.Post;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.Vote;
 import com.example.olfakaroui.android.service.InteractionService;
-import com.example.olfakaroui.android.utils.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,8 +40,8 @@ public class PostsListAdapter extends BaseAdapter {
         this.context = aContext;
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
-        //SessionManager sessionManager = new SessionManager();
-        //sessionManager.getLogin(current);
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(current);
     }
 
     @Override
@@ -80,18 +82,30 @@ public class PostsListAdapter extends BaseAdapter {
         Post post = this.listData.get(position);
 
         holder.titleView.setText(post.getUser().getFirstName() + " " +post.getUser().getLastName());
+        holder.titleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(current.getRole().equals("user"))
+                {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("user", post.getUser().getId());
+                    ((Activity) context).startActivityForResult(intent, 2);
+
+                }
+            }
+        });
         holder.bodyView.setText(post.getBody());
         holder.commentsView.setText("likes");
         if(post.getVotes().size()==0)
         {
-            holder.commentsView.setText("no likes");
+            holder.commentsView.setText("0");
         }
         else if(post.getVotes().size()==1)
         {
-            holder.commentsView.setText("1 like");
+            holder.commentsView.setText("1");
         }
         else {
-            holder.commentsView.setText(post.getVotes().size()+ " likes");
+            holder.commentsView.setText(post.getVotes().size()+ "");
         }
         if(post.getUser().getPhoto() == null)
         {
@@ -108,7 +122,6 @@ public class PostsListAdapter extends BaseAdapter {
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(position, paire);
         int index = 0;
-        current.setId(6);
         holder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
         holder.like.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
         while ((index < post.getVotes().size()) && ( infos.get(position).first == 0))
@@ -144,14 +157,14 @@ public class PostsListAdapter extends BaseAdapter {
                     //notifyDataSetChanged();
                     if(post.getVotes().size()==0)
                     {
-                        holder.commentsView.setText("no likes");
+                        holder.commentsView.setText("0");
                     }
                     else if(post.getVotes().size()==1)
                     {
-                        holder.commentsView.setText("1 like");
+                        holder.commentsView.setText("1");
                     }
                     else {
-                        holder.commentsView.setText(post.getVotes().size()+ " likes");
+                        holder.commentsView.setText(post.getVotes().size()+ "");
                     }
 
                 }
@@ -166,14 +179,14 @@ public class PostsListAdapter extends BaseAdapter {
                     infos.put(position, paire);
                     if(post.getVotes().size() == 0)
                     {
-                        holder.commentsView.setText("no likes");
+                        holder.commentsView.setText("0");
                     }
                     else if(post.getVotes().size() ==1)
                     {
-                        holder.commentsView.setText("1 like");
+                        holder.commentsView.setText("1");
                     }
                     else {
-                        holder.commentsView.setText(post.getVotes().size() + " likes");
+                        holder.commentsView.setText(post.getVotes().size() + "");
                     }
                     //notifyDataSetChanged();
                 }

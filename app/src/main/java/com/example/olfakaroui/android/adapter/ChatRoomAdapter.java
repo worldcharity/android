@@ -1,6 +1,8 @@
 package com.example.olfakaroui.android.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
+import com.example.olfakaroui.android.UI.users.UserProfileActivity;
 import com.example.olfakaroui.android.entity.Message;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.service.UserService;
@@ -52,6 +56,8 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
 
         this.MessageList = MessagesList;
         context = c;
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(current);
 
 
     }
@@ -90,6 +96,18 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
             @Override
             public void onResponse(User user) {
                 holder.username.setText(user.getFirstName() + " "+ user.getLastName());
+                holder.username.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(current.getRole().equals("user"))
+                        {
+                            Intent intent = new Intent(context, UserProfileActivity.class);
+                            intent.putExtra("user", user.getId());
+                            ((Activity) context).startActivityForResult(intent, 2);
+
+                        }
+                    }
+                });
                 if(user.getPhoto() == null)
                 {
                     TextDrawable drawable = TextDrawable.builder()

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.ChatRoomAdapter;
 import com.example.olfakaroui.android.entity.Message;
@@ -41,9 +42,8 @@ public class ChatRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
-        //SessionManager sessionManager = new SessionManager(getActivity());
-        //sessionManager.getLogin(user);
-        user.setId(6);
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.getLogin(user);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Chat with the community");
         messagetxt = (EditText) findViewById(R.id.message) ;

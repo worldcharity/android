@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.UI.events.DonateFragment;
 import com.example.olfakaroui.android.UI.events.EventDetailActivity;
 import com.example.olfakaroui.android.UrlConst;
@@ -62,8 +63,8 @@ public class DonationTypesAdapter extends RecyclerView.Adapter<DonationTypesAdap
         this.eventId = eventId;
         this.context = context;
 
-        //SessionManager sessionManager = new SessionManager(context);
-        //sessionManager.getLogin(current);
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(current);
     }
 
     @NonNull

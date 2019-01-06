@@ -28,12 +28,12 @@
             android:authorities="com.facebook.app.FacebookContentProvider570364166708868"
             android:exported="true" />
 
-        <service android:name=".utils.MyFirebaseMessagingService">
+        <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".utils.FirebaseIDService">
+        <service android:name=".service.FirebaseIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -123,7 +123,12 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".UI.events.EventLocationActivity" />
-        <activity android:name=".UI.interfaces_for_charity.CommentsForCharityActivity"></activity>
+        <activity android:name=".UI.interfaces_for_charity.CommentsForCharityActivity" />
+        <activity android:name=".UI.interfaces_for_charity.EventCollabsActivity" />
+        <activity android:name=".UI.interfaces_for_charity.ChooseCauseAddEventActivity" />
+        <activity android:name=".UI.interfaces_for_charity.AddEventFormActivity" />
+        <activity android:name=".UI.interfaces_for_charity.AddPicturesEventActivity" />
+        <activity android:name=".UI.interfaces_for_charity.AddDonationTypesActivity"></activity>
     </application>
 
 </manifest>

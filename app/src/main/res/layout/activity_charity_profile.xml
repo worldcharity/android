@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.charitys.CharityProfileActivity"
+    tools:context=".UI.users.CharityProfileActivity"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +30,8 @@
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:checked="false"
-                    android:background="@drawable/follow_icon"
+                    android:layout_gravity="center"
+                    android:background="@drawable/follow_icon_white"
                     android:contentDescription="TODO" />
 
                 <ImageView

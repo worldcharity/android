@@ -1,19 +1,25 @@
 package com.example.olfakaroui.android.UI.users;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.adapter.PostsListAdapter;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.UserInfos;
 import com.example.olfakaroui.android.service.UserService;
+import com.example.olfakaroui.android.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Nullable;
@@ -30,17 +36,22 @@ public class UserProfileActivity extends AppCompatActivity {
     User user = new User();
     UserInfos infos = new UserInfos();
     User current = new User();
+    String token;
+    ListView recyclerView;
     boolean isFollowed = false;
+    int finish;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
+        token = SessionManager.getToken(getApplicationContext());
         int id = getIntent().getIntExtra("user", 0);
-        /*SessionManager sessionManager = new SessionManager(this);
-        sessionManager.getLogin(current);*/
-        current.setId(6);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(" ");
+        finish = getIntent().getIntExtra("finish", 0);
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.getLogin(current);
         avatarView = findViewById(R.id.user_avatar);
         name = findViewById(R.id.user_name);
         followers = findViewById(R.id.user_followers);
@@ -49,14 +60,48 @@ public class UserProfileActivity extends AppCompatActivity {
         collabs = findViewById(R.id.user_collabs);
         share = findViewById(R.id.share_user);
         follow = findViewById(R.id.follow);
+        recyclerView = findViewById(R.id.user_profile_list);
 
         UserService.getInstance().getUser(id, new UserService.UserServiceGetUserCallBack() {
             @Override
             public void onResponse(User u) {
                 user = u;
+                PostsListAdapter adapter = new PostsListAdapter(UserProfileActivity.this,user.getPosts());
+                recyclerView.setAdapter(adapter);
+                if(current.getRole().equals("charity"))
+                {
+                    follow.setVisibility(View.GONE);
+                }
                 name.setText(user.getFirstName()+ " "+ user.getLastName());
                 following.setText(String.valueOf(user.getFollowing().size()));
                 followers.setText(String.valueOf(user.getFollowers().size()));
+                following.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UserProfileActivity.this,FollowersFollowingActivity.class);
+                        intent.putExtra("liste", 0);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                    }
+                });
+
+                followers.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UserProfileActivity.this,FollowersFollowingActivity.class);
+                        intent.putExtra("liste", 1);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                    }
+                });
+                collabs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UserProfileActivity.this,UserCollabsListActivity.class);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                    }
+                });
 
                 if(user.getFollowers().contains(current))
                 {
@@ -104,7 +149,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            UserService.getInstance().follow(id, current.getId(), new UserService.UserServiceFollowCallBack() {
+                            UserService.getInstance().follow(id, current.getId(),token, current.getFirstName()+ " "+ current.getLastName(), new UserService.UserServiceFollowCallBack() {
                                 @Override
                                 public void onResponse() {
                                 }
@@ -156,5 +201,15 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

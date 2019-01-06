@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.UI.events.EventDetailActivity;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.entity.Event;
@@ -50,8 +51,8 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
         this.mEvents = events;
         this.itemsFiltered = events;
         this.context = context;
-        //SessionManager sessionManager = new SessionManager(context);
-        //sessionManager.getLogin(current);
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(current);
     }
 
     @NonNull
@@ -79,8 +80,6 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
                     context.startActivity(intent);
             }
         });
-        current.setId(6);
-
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(i, paire);
         fav = new Pair<Integer, Integer>(0,-1);

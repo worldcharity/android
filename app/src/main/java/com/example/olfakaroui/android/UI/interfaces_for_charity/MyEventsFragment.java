@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.adapter.MyEventsAdapter;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
@@ -56,13 +57,14 @@ public class MyEventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        SessionManager sessionManager = new SessionManager(getActivity());
+        sessionManager.getLogin(user);
         View view =  inflater.inflate(R.layout.fragment_my_events, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.myeventslist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         final List<Event> events = new ArrayList<>();
         final MyEventsAdapter adapter = new MyEventsAdapter(events, getActivity());
         recyclerView.setAdapter(adapter);
-        user.setId(5);
         EventService.getInstance().getEventsByUser(user.getId(), new EventService.EventServiceGetCallBack() {
             @Override
             public void onResponse(List<Event> events) {

@@ -1,5 +1,6 @@
 package com.example.olfakaroui.android.UI.Login;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,28 +13,16 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.error.AuthFailureError;
-import com.android.volley.error.VolleyError;
-import com.android.volley.request.StringRequest;
-import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.UrlConst;
+import com.example.olfakaroui.android.UI.MainActivity;
 import com.example.olfakaroui.android.adapter.CausesListAdapter;
+import com.example.olfakaroui.android.adapter.CausesListForRegistrationAdapter;
 import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.service.EventService;
-import com.example.olfakaroui.android.utils.SessionManager;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.olfakaroui.android.SessionManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class UserRegistrationActivity extends AppCompatActivity {
@@ -41,7 +30,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
     private GridView gridView;
     private View btnGo;
     User user = new User();
-    CausesListAdapter adapter;
+    CausesListForRegistrationAdapter adapter;
     private List<Cause> causes = new ArrayList<>();
 
     @Override
@@ -55,9 +44,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(user);
         gridView.setBackgroundResource(R.drawable.rounded_cell);
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.grid_anim);
-        GridLayoutAnimationController controller = new GridLayoutAnimationController(animation, .2f, .2f);
-        gridView.setLayoutAnimation(controller);
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -66,13 +53,16 @@ public class UserRegistrationActivity extends AppCompatActivity {
                     adapter.selectedPositions.remove(selectedIndex);
                     v.setBackgroundColor(Color.WHITE);
                 }
-                if(adapter.selectedPositions.size() < 5)
+                else
                 {
-                    if (selectedIndex == -1) {
-                        adapter.selectedPositions.add(position);
-                        v.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+                    if(adapter.selectedPositions.size() < 5)
+                    {
+                            adapter.selectedPositions.add(position);
+                            v.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+
                     }
                 }
+
 
             }
         });
@@ -82,9 +72,33 @@ public class UserRegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(adapter.selectedPositions.size() >= 3)
                 {
-                    //Intent intent = new Intent(UserRegistrationActivity.this, SelectedItemsActivity.class);
-                    //startActivity(intent);
-                    //add prefs
+
+                    for(int x : adapter.selectedPositions)
+
+                    {
+                        Log.d("adding", "pref");
+                        final Cause c = causes.get(x) ;
+
+                        EventService.getInstance().addPref(c,user, new EventService.EventServiceAddPrefCallBack() {
+                            @Override
+                            public void onResponse(String string) {
+
+                                Intent intent = new Intent(UserRegistrationActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+
+                            }
+
+                        });
+                    }
+
+
+
                 }
                 else
                 {
@@ -96,37 +110,17 @@ public class UserRegistrationActivity extends AppCompatActivity {
         });
     }
 
-    private  void addPref()
-    {
-        for(int x : adapter.selectedPositions)
-
-        {
-            final Cause c = causes.get(x) ;
-
-            EventService.getInstance().addPref(c,user, new EventService.EventServiceAddPrefCallBack() {
-                @Override
-                public void onResponse(String string) {
-
-
-                }
-
-                @Override
-                public void onFailure(String error) {
-
-                }
-
-            });
-        }
-
-    }
-
         private void getCauses(){
 
             EventService.getInstance().getCauses(new EventService.EventServiceGetCausesCallBack() {
                 @Override
                 public void onResponse(List<Cause> posts) {
 
-                    adapter = new CausesListAdapter(UserRegistrationActivity.this, causes);
+                    Animation animation = AnimationUtils.loadAnimation(UserRegistrationActivity.this,R.anim.grid_anim);
+                    GridLayoutAnimationController controller = new GridLayoutAnimationController(animation, .2f, .2f);
+                    gridView.setLayoutAnimation(controller);
+                    causes = posts;
+                    adapter = new CausesListForRegistrationAdapter(UserRegistrationActivity.this, causes);
                     gridView.setAdapter(adapter);
                 }
 

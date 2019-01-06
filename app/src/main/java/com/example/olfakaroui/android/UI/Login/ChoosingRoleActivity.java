@@ -1,5 +1,6 @@
 package com.example.olfakaroui.android.UI.Login;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,13 +17,8 @@ import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.entity.User;
-import com.example.olfakaroui.android.utils.SessionManager;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.utils.PictureRendrer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +46,9 @@ public class ChoosingRoleActivity extends AppCompatActivity {
                 user.setRole(getResources().getString(R.string.user));
                 session.setRole(user);
                 editRole();
+                Intent intent = new Intent(ChoosingRoleActivity.this, UserRegistrationActivity.class);
+                startActivity(intent);
+
             }
         });
         charityBtn.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +57,8 @@ public class ChoosingRoleActivity extends AppCompatActivity {
                 user.setRole(getResources().getString(R.string.charity));
                 session.setRole(user);
                 editRole();
+                Intent intent = new Intent(ChoosingRoleActivity.this, CharityRegistrationActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -3,22 +3,30 @@ package com.example.olfakaroui.android.UI.users;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.adapter.EventsByCauseListAdapter;
+import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.UserInfos;
+import com.example.olfakaroui.android.service.EventService;
 import com.example.olfakaroui.android.service.UserService;
+import com.example.olfakaroui.android.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class CharityProfileActivity extends AppCompatActivity {
 
@@ -30,8 +38,11 @@ public class CharityProfileActivity extends AppCompatActivity {
     User charity = new User();
     UserInfos infos = new UserInfos();
     User current = new User();
+    String token;
     boolean isFollowed = false;
-
+    RecyclerView mRecyclerView;
+    StaggeredGridLayoutManager mLayoutManager;
+    EventsByCauseListAdapter adapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +51,10 @@ public class CharityProfileActivity extends AppCompatActivity {
         int id = getIntent().getIntExtra("charity", 0);
         /*SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(current);*/
+        token = SessionManager.getToken(getApplicationContext());
         //int id = 5;
-        current.setId(6);
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.getLogin(current);
         avatarView = findViewById(R.id.charity_avatar);
         name = findViewById(R.id.charity_name);
         followers = findViewById(R.id.charity_followers);
@@ -49,17 +62,54 @@ public class CharityProfileActivity extends AppCompatActivity {
         events = findViewById(R.id.charity_events);
         share = findViewById(R.id.share_charity);
         follow = findViewById(R.id.follow);
+        mRecyclerView = findViewById(R.id.charity_profile_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         UserService.getInstance().getUser(id, new UserService.UserServiceGetUserCallBack() {
             @Override
             public void onResponse(User u) {
                 charity = u;
+                Log.d("charity", " "+charity.getId());
+                if(current.getRole().equals("charity"))
+                {
+                    follow.setVisibility(View.GONE);
+
+                }
+                else
+                {
+                    EventService.getInstance().getEventsByUser(charity.getId(), new EventService.EventServiceGetCallBack() {
+                        @Override
+                        public void onResponse(List<Event> events) {
+                            adapter =  new EventsByCauseListAdapter(CharityProfileActivity.this,events);
+                            mRecyclerView.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+
+                    });
+                }
                 name.setText(charity.getFirstName());
                 following.setText(String.valueOf(charity.getFollowing().size()));
                 followers.setText(String.valueOf(charity.getFollowers().size()));
                 events.setText(String.valueOf(charity.getEvents().size()));
+                events.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(current.getRole().equals("user"))
+                        {
+                            Intent intent = new Intent(CharityProfileActivity.this,CharityEventsListActivity.class);
+                            intent.putExtra("user",charity);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
 
                 following.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -134,7 +184,7 @@ public class CharityProfileActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            UserService.getInstance().follow(id, current.getId(), new UserService.UserServiceFollowCallBack() {
+                            UserService.getInstance().follow(id, current.getId(), token ,current.getFirstName()+ " " + current.getLastName(),new UserService.UserServiceFollowCallBack() {
                                 @Override
                                 public void onResponse() {
                                 }

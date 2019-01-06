@@ -1,10 +1,9 @@
-package com.example.olfakaroui.android.utils;
+package com.example.olfakaroui.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.entity.User;
 
 public class SessionManager {
@@ -31,6 +30,7 @@ public class SessionManager {
     public void setLogin(boolean isLoggedIn, User user, boolean createdAccount) {
 
         editor.putString(_context.getResources().getString(R.string.user_name), user.getFirstName());
+        editor.putString("social", user.getSocialPlatform());
         editor.putInt(_context.getResources().getString(R.string.user_id), user.getId());
         editor.putString(_context.getResources().getString(R.string.user_lastname), user.getLastName());
         editor.putString(_context.getResources().getString(R.string.user_photo), user.getPhoto());
@@ -62,13 +62,33 @@ public class SessionManager {
         if(prefs.getBoolean(_context.getResources().getString(R.string.isconnected), false))
         {
             user.setFirstName(prefs.getString(_context.getResources().getString(R.string.user_name), null));
+            user.setSocialPlatform(prefs.getString("social", null));
             user.setLastName(prefs.getString(_context.getResources().getString(R.string.user_lastname), null));
             user.setId(prefs.getInt(_context.getResources().getString(R.string.user_id), 0));
             user.setRole(prefs.getString(_context.getResources().getString(R.string.user_role), null));
             user.setPhoto(prefs.getString(_context.getResources().getString(R.string.user_photo), null));
+            Log.d(TAG, "User data retrieved!");
             return true;
         }
         return false;
+
+    }
+    public void logoff()
+    {
+        pref.edit().clear().commit();
+    }
+
+    public static String getToken(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("token", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        return  preferences.getString("FIREBASE_TOKEN", null);
+
+
+    }
+    public static void setToken(String token, Context context) {
+
+        SharedPreferences preferences = context.getSharedPreferences("token", Context.MODE_PRIVATE);
+        preferences.edit().putString("FIREBASE_TOKEN", token).apply();
 
     }
 

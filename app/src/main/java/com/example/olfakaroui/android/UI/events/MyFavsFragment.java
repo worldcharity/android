@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.adapter.MoreEventAdapter;
 import com.example.olfakaroui.android.adapter.MyEventsAdapter;
 import com.example.olfakaroui.android.adapter.MyFavEventsAdapter;
@@ -68,7 +69,8 @@ public class MyFavsFragment extends Fragment {
         final List<Event> events = new ArrayList<>();
         final MyFavEventsAdapter adapter = new MyFavEventsAdapter(events, getActivity());
         recyclerView.setAdapter(adapter);
-        user.setId(6);
+        SessionManager sessionManager = new SessionManager(getActivity());
+        sessionManager.getLogin(user);
         UserService.getInstance().getUser(user.getId(), new UserService.UserServiceGetUserCallBack() {
             @Override
             public void onResponse(User user) {

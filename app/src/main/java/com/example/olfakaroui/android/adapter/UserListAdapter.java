@@ -15,14 +15,11 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UI.users.CharityProfileActivity;
-import com.example.olfakaroui.android.UrlConst;
-import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;
-import com.example.olfakaroui.android.entity.Vote;
 import com.example.olfakaroui.android.service.UserService;
+import com.example.olfakaroui.android.SessionManager;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +29,7 @@ public class UserListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     User current = new User();
+    String token;
     Pair<Integer,Integer> paire;
     HashMap<Integer,Pair<Integer,Integer>> infos = new HashMap<>();
 
@@ -62,7 +60,9 @@ public class UserListAdapter extends BaseAdapter {
         final ViewHolder holder;
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(position, paire);
-        current.setId(6);
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(current);
+        token = SessionManager.getToken(context);
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.charity_item, null);
@@ -77,16 +77,6 @@ public class UserListAdapter extends BaseAdapter {
 
         }
         User user = this.listData.get(position);
-        holder.charityImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CharityProfileActivity.class);
-                intent.putExtra("charity", user.getId());
-                ((Activity) context).startActivityForResult(intent, 2);
-
-            }
-        });
-
 
         Picasso.get().load(user.getPhoto()).resize(525, 559).centerCrop().into(holder.charityImage);
         if(user.getPhoto() == null)
@@ -143,7 +133,7 @@ public class UserListAdapter extends BaseAdapter {
                 }
                 else
                 {
-                    UserService.getInstance().follow(user.getId(), current.getId(), new UserService.UserServiceFollowCallBack() {
+                    UserService.getInstance().follow(user.getId(), current.getId(),token, current.getFirstName()+ " "+ current.getLastName(), new UserService.UserServiceFollowCallBack() {
                         @Override
                         public void onResponse() {
                         }
@@ -167,6 +157,22 @@ public class UserListAdapter extends BaseAdapter {
 
             }
         });
+        if(current.getRole().equals("charity"))
+        {
+            holder.follow.setVisibility(View.GONE);
+        }
+        else
+        {
+            holder.charityImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CharityProfileActivity.class);
+                    intent.putExtra("charity", user.getId());
+                    ((Activity) context).startActivityForResult(intent, 2);
+
+                }
+            });
+        }
         return convertView;
     }
 

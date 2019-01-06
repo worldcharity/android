@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ScrollView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.adapter.DonationPagerAdapter;
 import com.example.olfakaroui.android.adapter.DonationTypesAdapter;
 import com.example.olfakaroui.android.entity.Collab;
@@ -45,9 +46,8 @@ public class DonateActivity extends AppCompatActivity implements DonateFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
         mEvent = (Event) getIntent().getSerializableExtra("event");
-        //SessionManager sessionManager = new SessionManager(this);
-        //sessionManager.getLogin(current);
-        current.setId(6);
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.getLogin(current);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Donate to "+ mEvent.getName());
         mDonationTabLayout = findViewById(R.id.event_donation_tab_layout);
@@ -90,8 +90,6 @@ public class DonateActivity extends AppCompatActivity implements DonateFragment.
                 Collab collab = new Collab();
                 collab.setEvent(mEvent);
                 collab.setCollab_by(current);
-                //SessionManager sessionManager = new SessionManager(context);
-                //sessionManager.getLogin(user);
                 collab.setAmount(am);
                 collab.setCollab_type(selectedDonationType);
                 collab.setBody(description);

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.adapter.PendingCollabsAdapter;
 import com.example.olfakaroui.android.entity.Collab;
 import com.example.olfakaroui.android.entity.User;
@@ -81,9 +82,8 @@ public class PendingCollabsFragment extends Fragment implements SwipeItemHelper.
         addevent.setText(content);
         BitmapDrawable myBackground = new BitmapDrawable(PictureRendrer.decodeSampledBitmapFromResource(getResources(), R.drawable.app_background, 100, 100));
         image.setBackgroundDrawable(myBackground);
-        //final SessionManager session = new SessionManager(this.getActivity());
-        //session.getLogin(user);
-        user.setId(5);
+        SessionManager session = new SessionManager(this.getActivity());
+        session.getLogin(user);
         EventService.getInstance().getPendingCollabs(user.getId(), new EventService.EventServiceGetPendingCollabsCallBack() {
             @Override
             public void onResponse(List<Collab> collabs) {

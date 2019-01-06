@@ -30,7 +30,7 @@ public class CharityEventsListActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.charity_events_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         final List<Event> events = new ArrayList<>();
-        final MoreEventAdapter adapter = new MoreEventAdapter(events, this);
+        MoreEventAdapter adapter = new MoreEventAdapter(events, this);
         recyclerView.setAdapter(adapter);
         User user = (User) getIntent().getSerializableExtra(EXTRA_EVENT_USER);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

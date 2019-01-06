@@ -14,8 +14,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
+import com.example.olfakaroui.android.UI.Login.LoginActivity;
 import com.example.olfakaroui.android.UI.events.EventsByCauseFragment;
 import com.example.olfakaroui.android.UI.events.HomePageFragment;
 import com.example.olfakaroui.android.UI.events.MyFavsFragment;
@@ -25,11 +28,16 @@ import com.example.olfakaroui.android.UI.posts.CausesDisplayFragment;
 import com.example.olfakaroui.android.UI.users.CharitiesListFragment;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.utils.BottomNavigationBehavior;
+import com.facebook.AccessToken;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements HomePageFragment.OnFragmentInteractionListener,
         EventsByCauseFragment.OnFragmentInteractionListener, CharitiesListFragment.OnFragmentInteractionListener,
         MyEventsFragment.OnFragmentInteractionListener,
-        PendingCollabsFragment.OnFragmentInteractionListener, MyFavsFragment.OnFragmentInteractionListener{
+        PendingCollabsFragment.OnFragmentInteractionListener, MyFavsFragment.OnFragmentInteractionListener,
+        MyProfileFragment.OnFragmentInteractionListener{
 
     private ActionBar toolbar;
     private Fragment fragment;
@@ -37,13 +45,25 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
     FloatingActionButton fab;
     User user = new User();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //SessionManager sessionManager = new SessionManager(this);
-        //sessionManager.getLogin(user);
-        user.setRole("user");
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.getLogin(user);
+        if(user.getSocialPlatform().equals("facebook"))
+        {
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            if(accessToken==null || accessToken.isExpired()){
+                sessionManager.logoff();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        }
+
         toolbar = getSupportActionBar();
 
 
@@ -120,7 +140,9 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                     loadFragment(fragment);
                     return true;
                 case R.id.nav_settings:
-                    toolbar.setTitle("Settings");
+                    toolbar.hide();
+                    fragment = new MyProfileFragment();
+                    loadFragment(fragment);
                     return true;
             }
             return false;

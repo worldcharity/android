@@ -35,6 +35,7 @@ public class UrlConst {
     public static String PENDING_COLLABS = SERVER+ "collabs/bycharitypending/";
     public static String UPDATE_COLLAB = SERVER+ "collab/update/";
     public static String HIDE_COMMENT = SERVER+ "comment/hide/";
+    public static String EVENT_COLLABS = SERVER + "collabs/byevent/";
     /////////////////////////// votes //////////////////////////////
     public static String addVote = SERVER + "votecomment";
     public static String updateVote = SERVER + "vote";

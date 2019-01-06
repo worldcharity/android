@@ -47,6 +47,10 @@ public class UserService {
         void onResponse(UserInfos infos);
         void onFailure(String error);
     }
+    public interface UserServiceCheckUserCallBack{
+        void onResponse(User user, boolean isAdded);
+        void onFailure(String error);
+    }
     public interface UserServiceGetUserCallBack{
         void onResponse(User user);
         void onFailure(String error);
@@ -99,12 +103,65 @@ public class UserService {
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
+    public void checkUser(User user, final UserServiceCheckUserCallBack callBack){
+        StringRequest putRequest = new StringRequest(Request.Method.POST, UrlConst.checkUser,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean createdAccount = jsonObject.getBoolean("created");
+                            Log.d("created", createdAccount+" ");
+                            GsonBuilder builder = new GsonBuilder();
+                            Gson mGson = builder.create();
+                            User checked = mGson.fromJson(jsonObject.getString("user"), User.class);
+                            callBack.onResponse(checked,createdAccount);
+                        } catch (JSONException e) {
+                            callBack.onFailure(e.toString());
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        callBack.onFailure(error.toString());
+
+                    }
+                }
+        ) {
+
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<>();
+                params.put("social_id", user.getSocialId());
+                params.put("social_platform", user.getSocialPlatform());
+                params.put("first_name", user.getFirstName());
+                params.put("last_name", user.getLastName());
+                params.put("photo", user.getPhoto());
+
+                return params;
+            }
+
+        };
+
+        putRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(putRequest);
+
+    }
+
 
     public void getInfos(int userId, final UserServiceGetInfosCallBack callBack){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.USER_INFOS+userId,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("userinfooo", UrlConst.USER_INFOS+userId);
                         Log.d("userinfooo", response);
                             GsonBuilder builder = new GsonBuilder();
                             Gson mGson = builder.create();
@@ -226,7 +283,7 @@ public class UserService {
 
     }
 
-    public void follow(int userId, int currentUser, final UserServiceFollowCallBack callBack){
+    public void follow(int userId, int currentUser, String token, String name, final UserServiceFollowCallBack callBack){
         StringRequest postRequest = new StringRequest(Request.Method.POST, UrlConst.FOLLOW,
                 new Response.Listener<String>()
                 {
@@ -250,6 +307,8 @@ public class UserService {
                 Map<String, String>  params = new HashMap<String,String>();
                 params.put("userId", String.valueOf(userId));
                 params.put("SubId", String.valueOf(currentUser));
+                params.put("token", token);
+                params.put("name", name);
                 return params;
             }
         };

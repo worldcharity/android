@@ -44,6 +44,8 @@ public class User implements Serializable {
     private List<Event> favs = new ArrayList<>();
     @SerializedName("Events")
     private List<Event> events = new ArrayList<>();
+    @SerializedName("Posts")
+    private List<Post> posts = new ArrayList<>();
 
 
 
@@ -197,6 +199,15 @@ public class User implements Serializable {
         this.favs = favs;
     }
 
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -210,4 +221,5 @@ public class User implements Serializable {
 
         return Objects.hash(getId());
     }
+
 }

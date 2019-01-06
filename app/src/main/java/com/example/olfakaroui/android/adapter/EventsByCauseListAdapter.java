@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.UI.events.EventDetailActivity;
 import com.example.olfakaroui.android.UrlConst;
-import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.Vote;
 import com.example.olfakaroui.android.service.InteractionService;
-import com.example.olfakaroui.android.utils.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -45,8 +43,8 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
 
             this.listData = listData;
             this.context = context;
-            //SessionManager sessionManager = new SessionManager(context);
-            //sessionManager.getLogin(current);
+            SessionManager sessionManager = new SessionManager(context);
+            sessionManager.getLogin(current);
         }
 
         @Override
@@ -60,9 +58,6 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
         public void onBindViewHolder(ViewHolder holder, int position) {
             Event event = listData.get(position);
 
-            current.setId(6);
-            current.setLastName("Karoui");
-            current.setFirstName("Olfa");
 
             paire = new Pair<Integer, Integer>(0,-1);
             infos.put(position, paire);
@@ -78,7 +73,7 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                     //context.startActivity(intent);
                 }
             });
-
+            holder.likesnbr.setText(String.valueOf(event.getVotes().size()));
             holder.eventName.setText(event.getName());
             Picasso.get().load(UrlConst.IMAGES+event.getPhotos().get(0).getPhoto()).resize(525, 559).centerCrop().into(holder.eventImage);
             holder.eventMonth.setText(new SimpleDateFormat("MMM").format(event.getStartingDate()));
@@ -134,6 +129,7 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                         paire = new Pair<Integer, Integer>(1,event.getVotes().size() - 1);
                         infos.put(position, paire);
                         addVote(vo);
+                        holder.likesnbr.setText(String.valueOf(event.getVotes().size()));
                         //holder.like.setChecked(true);
                         //holder.like.setImageResource(R.drawable.ic_like_selected_24dp);
                         //holder.like.setColorFilter(context.getResources().getColor(R.color.colorAccent));
@@ -141,10 +137,12 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
                     }
                     else if(infos.get(position).first == 1)
                     {
-                        event.getVotes().remove(infos.get(position).second);
+
                         removeVote(event.getVotes().get(infos.get(position).second));
+                        event.getVotes().remove(event.getVotes().get(infos.get(position).second));
                         paire = new Pair<Integer, Integer>(0,-1);
                         infos.put(position, paire);
+                        holder.likesnbr.setText(String.valueOf(event.getVotes().size()));
                         //holder.like.setImageResource(R.drawable.ic_like_unselected_24dp);
                         //holder.like.setColorFilter(context.getResources().getColor(R.color.colorPrimaryDark));
                     }
@@ -193,7 +191,7 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView eventName;
         TextView eventMonth;
-        TextView eventDate;
+        TextView eventDate, likesnbr;
         CheckBox like,bookmark;
         ImageView eventImage, share;
 
@@ -206,6 +204,7 @@ public class EventsByCauseListAdapter extends RecyclerView.Adapter<EventsByCause
             share = itemView.findViewById(R.id.share);
             like = itemView.findViewById(R.id.like);
             bookmark = itemView.findViewById(R.id.bookmark);
+            likesnbr = itemView.findViewById(R.id.likesNbr);
 
         }
     }

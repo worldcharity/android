@@ -5,41 +5,27 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.error.VolleyError;
-import com.android.volley.request.StringRequest;
-import com.example.olfakaroui.android.AppController;
-import com.example.olfakaroui.android.UI.users.CharityProfileActivity;
+import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.UI.users.UserProfileActivity;
 import com.example.olfakaroui.android.entity.Comment;
-import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.UserInfos;
 import com.example.olfakaroui.android.entity.Vote;
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.UrlConst;
-import com.example.olfakaroui.android.service.EventService;
 import com.example.olfakaroui.android.service.InteractionService;
 import com.example.olfakaroui.android.service.UserService;
-import com.example.olfakaroui.android.utils.SessionManager;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
 
@@ -51,10 +37,11 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     Pair<Integer,Integer> paire;
     HashMap<Integer,Pair<Integer,Integer>> infos = new HashMap<>();
     HashMap<Integer,Integer> votes = new HashMap<>();
-    public CommentListAdapter(List<Comment> listData) {
+    public CommentListAdapter(List<Comment> listData, Context mcontext) {
         this.listData = listData;
-        //SessionManager sessionManager = new SessionManager(context);
-        //sessionManager.getLogin(user);
+        context = mcontext;
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(user);
     }
 
     @Override
@@ -69,10 +56,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(position, paire);
-        user = new User();
-        user.setId(6);
-        user.setLastName("Karoui");
-        user.setFirstName("Olfa");
         Comment comment = listData.get(position);
         holder.body.setText(comment.getBody());
         holder.username.setText(comment.getPosted_by().getFirstName() + " " + comment.getPosted_by().getLastName() );
@@ -80,7 +63,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("user", user.getId());
+                intent.putExtra("user", comment.getPosted_by().getId());
                 ((Activity) context).startActivityForResult(intent, 2);
 
 
