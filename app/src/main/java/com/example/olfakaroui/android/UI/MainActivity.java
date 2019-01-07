@@ -14,11 +14,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.SessionManager;
-import com.example.olfakaroui.android.UI.Login.LoginActivity;
+import com.example.olfakaroui.android.UI.login.LoginActivity;
 import com.example.olfakaroui.android.UI.events.EventsByCauseFragment;
 import com.example.olfakaroui.android.UI.events.HomePageFragment;
 import com.example.olfakaroui.android.UI.events.MyFavsFragment;
@@ -29,9 +28,6 @@ import com.example.olfakaroui.android.UI.users.CharitiesListFragment;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.utils.BottomNavigationBehavior;
 import com.facebook.AccessToken;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements HomePageFragment.OnFragmentInteractionListener,
         EventsByCauseFragment.OnFragmentInteractionListener, CharitiesListFragment.OnFragmentInteractionListener,
@@ -52,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         setContentView(R.layout.activity_main);
         SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(user);
-        if(user.getSocialPlatform().equals("facebook"))
+        user.setRole("charity");
+        /*if(user.getSocialPlatform().equals("facebook"))
         {
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             if(accessToken==null || accessToken.isExpired()){
@@ -62,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                 startActivity(intent);
                 finish();
             }
-        }
+        }*/
+
 
         toolbar = getSupportActionBar();
 

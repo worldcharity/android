@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android.UI.Login;
+package com.example.olfakaroui.android.UI.login;
 
 
 import android.app.ProgressDialog;
@@ -10,15 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.error.VolleyError;
-import com.android.volley.request.StringRequest;
-import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UI.MainActivity;
-import com.example.olfakaroui.android.UrlConst;
-import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.service.UserService;
@@ -43,13 +36,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -147,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.v("LoginActivity", response.toString());
+                                Log.v("LoginActivity1", response.toString());
 
 
                                 // Application code
@@ -175,8 +164,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
-                Log.v("LoginActivity", exception.getCause().toString());
+                // App code Log.v("LoginActivity", exception.getCause().toString());
 
             }
         });

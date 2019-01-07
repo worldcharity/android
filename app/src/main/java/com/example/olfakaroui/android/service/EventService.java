@@ -11,6 +11,7 @@ import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.Collab;
+import com.example.olfakaroui.android.entity.DonationType;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
 import com.google.gson.Gson;
@@ -20,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,6 +42,20 @@ public class EventService {
 
     public interface EventServiceGetCallBack{
         void onResponse(List<Event> events);
+        void onFailure(String error);
+    }
+    public interface EventServiceAddDonationCallBack{
+        void onResponse(String okey);
+        void onFailure(String error);
+    }
+    public interface EventServiceAddEventCallBack{
+        void onResponse(Event okey);
+        void onFailure(String error);
+    }
+
+
+    public interface EventServiceGetDonationTypesCallBack{
+        void onResponse(List<DonationType> types);
         void onFailure(String error);
     }
     public interface EventServiceGetPendingCollabsCallBack{
@@ -64,6 +81,139 @@ public class EventService {
 
     public interface EventServiceAddCollabCallBack{
         void onResponse(String responses);void onFailure(String error);
+    }
+    public void getDonationTypes(final EventServiceGetDonationTypesCallBack callBack){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.DONATION_TAYPES,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        List events = new ArrayList(Arrays.asList(mGson.fromJson(response, DonationType[].class)));
+                        callBack.onResponse(events);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callBack.onFailure(error.toString());
+
+            }
+        }
+        );
+        stringRequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+    }
+    public void addDonationEvent(int event, int donation, String goal, final EventService.EventServiceAddDonationCallBack callBack){
+        StringRequest dr = new StringRequest(Request.Method.POST, UrlConst.ADD_DONATION_EVENT,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+                        callBack.onResponse(" ");
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String,String>();
+                params.put("typeId", String.valueOf(donation));
+                params.put("eventId", String.valueOf(event));
+                params.put("goal",  goal);
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(dr);
+
+    }
+    public void addEventLocation(int event, double lat,double lng, final EventService.EventServiceAddDonationCallBack callBack){
+        StringRequest dr = new StringRequest(Request.Method.POST, UrlConst.ADD_EVENT_LOCATION+event+"/"+lng+"/"+lat,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        callBack.onResponse(" ");
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+
+                Map<String, String>  params = new HashMap<String,String>();
+                params.put("longitude", String.valueOf(lng));
+                params.put("latitude", String.valueOf(lat));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(dr);
+
+    }
+    public void addEvent(Event event, int cause,int user, final EventService.EventServiceAddEventCallBack callBack){
+        StringRequest dr = new StringRequest(Request.Method.POST, UrlConst.ADD_EVENT,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        Event e = mGson.fromJson(response, Event.class);
+                        callBack.onResponse(e);
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                DateFormat formatter= new SimpleDateFormat("MM/dd/yyyy hh:mm:ss Z");
+                Log.d("cause", " "+cause);
+                Map<String, String>  params = new HashMap<String,String>();
+                params.put("description", event.getDescription());
+                params.put("type", event.getType());
+                params.put("infoline", event.getInfoline());
+                params.put("name", event.getName());
+                params.put("causeId",  String.valueOf(cause));
+                params.put("charity",  String.valueOf(user));
+                params.put("starting_date",  formatter.format(event.getStartingDate()));
+                params.put("ending_date",  formatter.format(event.getStartingDate()));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(dr);
+
     }
     public void getEventsByCause(int causeId, final EventServiceGetCallBack callBack){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConst.EVENTS_BY_CAUSE+causeId,

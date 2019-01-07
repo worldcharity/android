@@ -101,11 +101,13 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
                     public void onClick(View v) {
                         if(current.getRole().equals("user"))
                         {
+                            if(current.getId() != user.getId())
+                            {
                             Intent intent = new Intent(context, UserProfileActivity.class);
                             intent.putExtra("user", user.getId());
                             ((Activity) context).startActivityForResult(intent, 2);
 
-                        }
+                        }}
                     }
                 });
                 if(user.getPhoto() == null)

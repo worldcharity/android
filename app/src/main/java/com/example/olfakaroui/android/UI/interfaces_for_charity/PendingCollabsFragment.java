@@ -1,6 +1,7 @@
 package com.example.olfakaroui.android.UI.interfaces_for_charity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.SessionManager;
+import com.example.olfakaroui.android.UI.MainActivity;
 import com.example.olfakaroui.android.adapter.PendingCollabsAdapter;
 import com.example.olfakaroui.android.entity.Collab;
 import com.example.olfakaroui.android.entity.User;
@@ -110,6 +112,8 @@ public class PendingCollabsFragment extends Fragment implements SwipeItemHelper.
         addevent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChooseCauseAddEventActivity.class);
+                startActivity(intent);
 
             }
         });

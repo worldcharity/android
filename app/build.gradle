@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.synnapps:carouselview:0.1.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.bignerdranch.android:recyclerview-multiselect:0.2'
     implementation 'com.pnikosis:materialish-progress:1.7'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.8.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-geocoder:1.0.+@aar'

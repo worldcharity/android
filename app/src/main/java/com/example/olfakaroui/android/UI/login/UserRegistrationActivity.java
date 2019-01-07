@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android.UI.Login;
+package com.example.olfakaroui.android.UI.login;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UI.MainActivity;
-import com.example.olfakaroui.android.adapter.CausesListAdapter;
 import com.example.olfakaroui.android.adapter.CausesListForRegistrationAdapter;
 import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;

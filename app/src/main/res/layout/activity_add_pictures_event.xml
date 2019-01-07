@@ -1,9 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UI.interfaces_for_charity.AddPicturesEventActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/gv"
+        android:numColumns="3"
+        android:layout_weight="1">
+
+    </GridView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="Select images"
+            android:paddingHorizontal="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorBackground"
+            android:background="@drawable/rounededbutton"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/confirmphotos"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="Next"
+            android:paddingHorizontal="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorBackground"
+            android:background="@drawable/rounededbutton"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.ContentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/donationitem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/carddonation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardBackgroundColor="@color/cardview_light_background"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearGoal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/typeofdonation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:text="TYPE"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+        <!--   <android.support.design.widget.TextInputLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="15dp"
+              android:textAlignment="center"
+              android:visibility="invisible">
+
+              <android.support.design.widget.TextInputEditText
+                  android:id="@+id/goalofdonation"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginEnd="40dp"
+                  android:layout_marginStart="40dp"
+                  android:ems="10"
+                  android:hint="Goal"
+                  android:inputType="phone"
+                  android:textAlignment="center" />
+          </android.support.design.widget.TextInputLayout>-->
+      </android.support.v7.widget.CardView>
+  </android.support.v7.widget.ContentFrameLayout>

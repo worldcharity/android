@@ -9,22 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.SessionManager;
-import com.example.olfakaroui.android.UI.Login.LoginActivity;
+import com.example.olfakaroui.android.UI.login.LoginActivity;
 import com.example.olfakaroui.android.UI.users.CharityEventsListActivity;
-import com.example.olfakaroui.android.UI.users.CharityProfileActivity;
 import com.example.olfakaroui.android.UI.users.FollowersFollowingActivity;
 import com.example.olfakaroui.android.UI.users.UserCollabsListActivity;
-import com.example.olfakaroui.android.UI.users.UserProfileActivity;
-import com.example.olfakaroui.android.adapter.PostsListAdapter;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.UserInfos;
 import com.example.olfakaroui.android.service.UserService;
@@ -94,6 +89,7 @@ public class MyProfileFragment extends Fragment {
             public void onClick(View v) {
                 SessionManager sessionManager = new SessionManager(getActivity());
                 sessionManager.logoff();
+
                 LoginManager.getInstance().logOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

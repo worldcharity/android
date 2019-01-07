@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.Login.ConfirmationPhotoActivity">
+    tools:context=".UI.login.ConfirmationPhotoActivity">
     <TextView
         android:id="@+id/messageconf"
         android:layout_width="wrap_content"

@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.interfaces_for_charity.AddDonationTypesActivity">
+    tools:context=".UI.interfaces_for_charity.DonationConfirmationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/messagePrefs"
             android:layout_width="wrap_content"
@@ -18,23 +19,24 @@
             android:gravity="center"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="40dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/montserrat"
-            android:text="Choose the kind of help you need"
+            android:text="Please confirm your choices"
             android:textSize="24sp" />
 
+
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/donationRecycler"
+            android:id="@+id/rvdonconf"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:gravity="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="350dp">
 
         </android.support.v7.widget.RecyclerView>
 
-
+        <Button
+            android:id="@+id/confirmdonationeventfinal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm" />
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>

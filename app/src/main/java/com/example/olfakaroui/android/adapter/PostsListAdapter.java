@@ -87,11 +87,13 @@ public class PostsListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if(current.getRole().equals("user"))
                 {
+                    if(current.getId() != post.getUser().getId())
+                    {
                     Intent intent = new Intent(context, UserProfileActivity.class);
                     intent.putExtra("user", post.getUser().getId());
                     ((Activity) context).startActivityForResult(intent, 2);
 
-                }
+                }}
             }
         });
         holder.bodyView.setText(post.getBody());

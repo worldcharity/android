@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme"
         android:value="@string/facebook_app_id"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UI.Login.LoginActivity" />
+        <activity android:name=".UI.login.LoginActivity" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
@@ -58,7 +58,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".UI.Login.ChoosingRoleActivity" />
+        <activity android:name=".UI.login.ChoosingRoleActivity" />
         <activity
             android:name=".UI.MainActivity"
             android:windowSoftInputMode="adjustNothing">
@@ -68,11 +68,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.Login.WelcomeActivity" />
-        <activity android:name=".UI.Login.CharityRegistrationActivity" />
-        <activity android:name=".UI.Login.UserRegistrationActivity" />
-        <activity android:name=".UI.Login.ConfirmationPhotoActivity" />
-        <activity android:name=".UI.Login.ChooseLocationCharityActivity" />
+        <activity android:name=".UI.login.WelcomeActivity" />
+        <activity android:name=".UI.login.CharityRegistrationActivity" />
+        <activity android:name=".UI.login.UserRegistrationActivity" />
+        <activity android:name=".UI.login.ConfirmationPhotoActivity" />
+        <activity android:name=".UI.login.ChooseLocationCharityActivity" />
         <activity
             android:name=".UI.events.EventDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -128,7 +128,13 @@
         <activity android:name=".UI.interfaces_for_charity.ChooseCauseAddEventActivity" />
         <activity android:name=".UI.interfaces_for_charity.AddEventFormActivity" />
         <activity android:name=".UI.interfaces_for_charity.AddPicturesEventActivity" />
-        <activity android:name=".UI.interfaces_for_charity.AddDonationTypesActivity"></activity>
+        <activity android:name=".UI.interfaces_for_charity.AddDonationTypesActivity" />
+        <activity android:name=".UI.interfaces_for_charity.DonationConfirmationActivity" />
+        <activity
+            android:name=".UI.interfaces_for_charity.AddEventLocationActivity"
+            android:label="@string/title_activity_add_event_location" />
+        <activity android:name=".UI.posts.PostDetailActivity" />
+        <activity android:name=".UI.posts.AddPostActivity"></activity>
     </application>
 
 </manifest>

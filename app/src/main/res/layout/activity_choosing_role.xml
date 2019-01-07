@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/choosing_role_view"
     android:theme="@style/AppTheme.NoActionBar"
-    tools:context=".UI.Login.ChoosingRoleActivity">
+    tools:context=".UI.login.ChoosingRoleActivity">
 
     <ImageView
         android:id="@+id/iconRole"

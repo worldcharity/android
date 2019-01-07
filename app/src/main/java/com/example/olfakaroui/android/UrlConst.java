@@ -11,8 +11,13 @@ public class UrlConst {
     /////////////////////////// events //////////////////////////////
 
     public static String EVENTS_BY_CAUSE = SERVER + "events/bycause/";
+    public static String ADD_EVENT = SERVER + "events/add";
+    public static String ADD_EVENT_LOCATION = SERVER + "eventmodif/";
     public static String EVENTS_BY_TYPE = SERVER + "events/bytype/";
     public static String ALL_EVENTS = SERVER + "allevents";
+    public static String DONATION_TAYPES = SERVER + "donationtypes";
+    public static String ADD_DONATION_EVENT = SERVER + "addTypes";
+    public static String ADD_PIC = SERVER + "eventphotos/";
 
 
     /////////////////////////// users //////////////////////////////
@@ -28,6 +33,7 @@ public class UrlConst {
     public static String UNFAV = SERVER + "users/unfav/";
     public static String CHARITY_EVENTS = SERVER + "events/byuser/";
     public static String ALL_CHARITIES= SERVER + "users/charities";
+    public static String ADD_CHARITY_LOCATION = SERVER + "userloc/";
 
     /////////////////////////// collabs //////////////////////////////
     public static String ADD_COLLAB = SERVER + "collabs";

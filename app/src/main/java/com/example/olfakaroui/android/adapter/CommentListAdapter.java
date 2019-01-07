@@ -62,10 +62,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         holder.username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("user", comment.getPosted_by().getId());
-                ((Activity) context).startActivityForResult(intent, 2);
-
+                if(user.getId() != comment.getPosted_by().getId())
+                {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("user", comment.getPosted_by().getId());
+                    ((Activity) context).startActivityForResult(intent, 2);
+                }
 
             }
         });

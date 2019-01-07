@@ -1,4 +1,4 @@
-package com.example.olfakaroui.android.UI.Login;
+package com.example.olfakaroui.android.UI.login;
 
 import android.Manifest;
 import android.content.CursorLoader;
@@ -11,9 +11,13 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,40 +26,41 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.example.olfakaroui.android.AppController;
 import com.example.olfakaroui.android.R;
-import com.example.olfakaroui.android.UI.MainActivity;
 import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.SessionManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
-public class ConfirmationPhotoActivity extends AppCompatActivity {
+public class CharityRegistrationActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_IMG = 1;
-    private Button btnUpload,get;
+    String imgDecodableString;
     private Uri selectedImage;
-    private User user = new User();
+    private static final String TAG = CharityRegistrationActivity.class.getSimpleName();
+    private ProgressBar progressBar;
+    private String filePath = null;
+    private TextView txtPercentage;
+    private ImageView imgPreview;
+    private EditText name,description;
+    private Button btnUpload;
+    long totalSize = 0;
+    Button back;
+    User user = new User();
+    private String url = UrlConst.userModif;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirmation_photo);
+        setContentView(R.layout.activity_charity_registration);
         getSupportActionBar().hide();
-        btnUpload = findViewById(R.id.confirmation);
-        get = findViewById(R.id.button_logo);
-
+        name = findViewById(R.id.name_charity_reg);
+        description = findViewById(R.id.description_charity_reg);
         SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(user);
-
-        get.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadImagefromGallery(view);
-            }
-        });
+        btnUpload = findViewById(R.id.charity_reg);
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,20 +69,17 @@ public class ConfirmationPhotoActivity extends AppCompatActivity {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                     Bitmap lastBitmap = null;
                     lastBitmap = bitmap;
+                    //encoding image to string
                     String image = getStringImage(selectedImage);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                             checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                     {
                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, RESULT_LOAD_IMG);
                     }
-                    else
-                    {
+                    else {
                         SendImage(image);
-                        Intent intent = new Intent(ConfirmationPhotoActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-
+                        Intent myIntent = new Intent(CharityRegistrationActivity.this, ConfirmationPhotoActivity.class);
+                        startActivity(myIntent);
                     }
 
                 } catch (IOException e) {
@@ -87,22 +89,16 @@ public class ConfirmationPhotoActivity extends AppCompatActivity {
             }
         });
     }
-    public void loadImagefromGallery(View view) {
 
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            // When an Image is picked
             if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
                     && null != data) {
-
+                // Get the Image from data
                 selectedImage = data.getData();
-                ImageView imgView = (ImageView) findViewById(R.id.imageView);
+                ImageView imgView = (ImageView) findViewById(R.id.logoImg);
                 imgView.setImageURI(selectedImage);
 
             } else {
@@ -114,8 +110,8 @@ public class ConfirmationPhotoActivity extends AppCompatActivity {
                     .show();
         }
     }
-
     public String getStringImage(Uri contentUri) {
+
         String[] proj = { MediaStore.Images.Media.DATA };
         CursorLoader loader = new CursorLoader(getApplicationContext(),contentUri, proj, null, null, null);
         Cursor cursor = loader.loadInBackground();
@@ -124,34 +120,39 @@ public class ConfirmationPhotoActivity extends AppCompatActivity {
         String result = cursor.getString(column_index);
         cursor.close();
         return result;
+
+
     }
 
+    public void loadImagefromGallery(View view) {
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+    }
+
+
     private void SendImage( final String image) {
-        final SimpleMultiPartRequest stringRequest = new SimpleMultiPartRequest(Request.Method.POST, UrlConst.confirmationPhoto +user.getId(),
+        url += user.getId() +"/"+name.getText()+"/"+description.getText();
+        final SimpleMultiPartRequest stringRequest = new SimpleMultiPartRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        Log.d("uploade",response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ConfirmationPhotoActivity.this, "No internet connection", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CharityRegistrationActivity.this, "No internet connection", Toast.LENGTH_LONG).show();
 
                     }
                 });
 
         stringRequest.addFile("uploadfile", image);
+        Log.d("imageeee","hhh");
+        //  stringRequest.add("","parametre", )
         stringRequest.addMultipartParam("body","form-data","d");
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
-
 }

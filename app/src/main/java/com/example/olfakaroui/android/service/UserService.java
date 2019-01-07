@@ -67,9 +67,48 @@ public class UserService {
         void onResponse();
         void onFailure(String error);
     }
+    public interface UserServiceLocCallBack{
+        void onResponse(String s);
+        void onFailure(String error);
+    }
     public interface UserServiceFollowCallBack{
         void onResponse();
         void onFailure(String error);
+    }
+
+    public void addCharityLocation(int event, double lat,double lng, final UserService.UserServiceLocCallBack callBack){
+        StringRequest dr = new StringRequest(Request.Method.POST, UrlConst.ADD_CHARITY_LOCATION+event+"/"+lng+"/"+lat,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        callBack.onResponse(" ");
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+
+                Map<String, String>  params = new HashMap<String,String>();
+                params.put("longitude", String.valueOf(lng));
+                params.put("latitude", String.valueOf(lat));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(dr);
+
     }
 
     public void getPrefrences(int userId, final UserServiceGetCallBack callBack){
