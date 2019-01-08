@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.SessionManager;
+import com.example.olfakaroui.android.UI.posts.PostDetailActivity;
 import com.example.olfakaroui.android.UI.users.UserProfileActivity;
 import com.example.olfakaroui.android.entity.Post;
 import com.example.olfakaroui.android.entity.User;
@@ -97,6 +98,14 @@ public class PostsListAdapter extends BaseAdapter {
             }
         });
         holder.bodyView.setText(post.getBody());
+        holder.bodyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PostDetailActivity.class);
+                intent.putExtra("post", post);
+                context.startActivity(intent);
+            }
+        });
         holder.commentsView.setText("likes");
         if(post.getVotes().size()==0)
         {

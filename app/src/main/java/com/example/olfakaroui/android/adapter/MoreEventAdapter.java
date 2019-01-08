@@ -155,6 +155,13 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
         eventViewHolder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                share.putExtra(Intent.EXTRA_SUBJECT, event.getName());
+                share.putExtra(Intent.EXTRA_TEXT, UrlConst.IMAGES+event.getPhotos().get(0));
+                context.startActivity(Intent.createChooser(share, "Share link!"));
+
 
             }
         });

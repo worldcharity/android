@@ -93,5 +93,9 @@
     </string-array>
     <string name="title_activity_add_event_location">Map</string>
 
+    <string name="longtext">Soon Lara spotted other landmarks—an outcropping of
+    e that all the time, conjuring images of giants and monsters in the landscape. He could perceive the spirits, called numina, that dwelled in rocks and trees. Sometimes he could speak to them and hear what they had to say. The river was his oldest friend and told him where the fishing would be best. From whispers in the wind he could foretell the next day’s weather. Because of such skills, Larth was the leader of the group.</string>
+    <string name="title_activity_locate_charity">Map</string>
+
 
 </resources>

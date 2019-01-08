@@ -3,6 +3,8 @@ package com.example.olfakaroui.android.UI.events;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -212,7 +214,7 @@ public class EventDetailActivity extends AppCompatActivity
             }
         });
 
-        SpannableString content = new SpannableString(mEvent.getLongitude() + " "+ mEvent.getLatitude());
+        SpannableString content = new SpannableString(getCompleteAddressString(mEvent.getLatitude(),mEvent.getLongitude()));
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 
         mAddressTextView.setText(content);
@@ -329,6 +331,19 @@ public class EventDetailActivity extends AppCompatActivity
         share = menu.findItem(R.id.toolbar_share);
         like = menu.findItem(R.id.toolbar_like);
         donate =  menu.findItem(R.id.toolbar_donate);
+        share.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                share.putExtra(Intent.EXTRA_SUBJECT, mEvent.getName());
+                share.putExtra(Intent.EXTRA_TEXT, UrlConst.IMAGES+mEvent.getPhotos().get(0));
+                EventDetailActivity.this.startActivity(Intent.createChooser(share, "Share link!"));
+
+                return false;
+            }
+        });
         long timeDiff = mEvent.getStartingDate().getTime() - new Date().getTime();
         if(timeDiff <= 0){
             donate.setVisible(false);
@@ -536,5 +551,28 @@ public class EventDetailActivity extends AppCompatActivity
         });
     }
 
+            private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+                String strAdd = "";
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+                    if (addresses != null) {
+                        Address returnedAddress = addresses.get(0);
+                        StringBuilder strReturnedAddress = new StringBuilder("");
+
+                        for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                        }
+                        strAdd = strReturnedAddress.toString();
+
+                    } else {
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+                return strAdd;
+            }
 
         }

@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.UI.events.EventDetailActivity;
+import com.example.olfakaroui.android.UI.events.EventLocationActivity;
+import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.EventsByCauseListAdapter;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
@@ -33,7 +36,7 @@ public class CharityProfileActivity extends AppCompatActivity {
 
     ImageView avatarView;
     TextView name,followers,following,events;
-    ImageView share;
+    ImageView share,location;
     CheckBox follow;
     User charity = new User();
     UserInfos infos = new UserInfos();
@@ -211,10 +214,25 @@ public class CharityProfileActivity extends AppCompatActivity {
             }
 
         });
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CharityProfileActivity.this,LocateCharityActivity.class);
+                intent.putExtra("charity",charity);
+                startActivity(intent);
+            }
+        });
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                share.putExtra(Intent.EXTRA_SUBJECT, charity.getFirstName());
+                share.putExtra(Intent.EXTRA_TEXT, UrlConst.IMAGES+charity.getPhoto());
+                CharityProfileActivity.this.startActivity(Intent.createChooser(share, "Share link!"));
+
 
             }
         });

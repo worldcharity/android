@@ -28,6 +28,7 @@ import com.example.olfakaroui.android.UI.users.CharitiesListFragment;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.utils.BottomNavigationBehavior;
 import com.facebook.AccessToken;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity implements HomePageFragment.OnFragmentInteractionListener,
         EventsByCauseFragment.OnFragmentInteractionListener, CharitiesListFragment.OnFragmentInteractionListener,
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
     BottomNavigationView navigation;
     FloatingActionButton fab;
     User user = new User();
+    public static GoogleApiClient mGoogleApiClient;
 
 
     @Override
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         setContentView(R.layout.activity_main);
         SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(user);
-        user.setRole("charity");
         /*if(user.getSocialPlatform().equals("facebook"))
         {
             AccessToken accessToken = AccessToken.getCurrentAccessToken();

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.olfakaroui.android.R;
+import com.example.olfakaroui.android.UrlConst;
 import com.example.olfakaroui.android.adapter.PostsListAdapter;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.UserInfos;
@@ -198,6 +199,13 @@ public class UserProfileActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                share.putExtra(Intent.EXTRA_SUBJECT, user.getFirstName()+" "+user.getLastName());
+                share.putExtra(Intent.EXTRA_TEXT, UrlConst.IMAGES+user.getPhoto());
+                UserProfileActivity.this.startActivity(Intent.createChooser(share, "Share link!"));
+
 
             }
         });

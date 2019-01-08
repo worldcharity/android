@@ -15,6 +15,8 @@ public class Post implements Comparable<Post>, Serializable {
     private int id;
     @SerializedName("body")
     private String body;
+    @SerializedName("title")
+    private String title;
     @SerializedName("createdAt")
     private Date postingDate;
     @SerializedName("user")
@@ -90,6 +92,14 @@ public class Post implements Comparable<Post>, Serializable {
     public int compareTo(@NonNull Post post) {
         int ret = post.getVotes().size()-this.getVotes().size();
         return ret;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
 

@@ -12,6 +12,7 @@ public class UrlConst {
 
     public static String EVENTS_BY_CAUSE = SERVER + "events/bycause/";
     public static String ADD_EVENT = SERVER + "events/add";
+    public static String ADD_POST = SERVER + "posts/add";
     public static String ADD_EVENT_LOCATION = SERVER + "eventmodif/";
     public static String EVENTS_BY_TYPE = SERVER + "events/bytype/";
     public static String ALL_EVENTS = SERVER + "allevents";

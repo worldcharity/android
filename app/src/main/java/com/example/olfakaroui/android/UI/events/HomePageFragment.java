@@ -25,6 +25,7 @@ import com.example.olfakaroui.android.SessionManager;
 import com.example.olfakaroui.android.entity.Cause;
 import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.service.UserService;
+import com.example.olfakaroui.android.utils.GpsLocationTracker;
 import com.example.olfakaroui.android.utils.PictureRendrer;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
     LinearLayout linearLayout;
 
     User user = new User();
-    ImageView image;
+    ImageView image, nearby;
     List<Cause> prefs;
     TextView seeallevents;
     Fragment first,second,third,fourth,fifth;
@@ -89,6 +90,29 @@ public class HomePageFragment extends Fragment implements EventsByCauseFragment.
         linearLayout = fragment.findViewById(R.id.fragment_container);
         seeallevents = fragment.findViewById(R.id.all_events_button);
         image = fragment.findViewById(R.id.banner);
+        nearby = fragment.findViewById(R.id.nearby);
+        nearby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("click", "onClick: ");
+                GpsLocationTracker mGpsLocationTracker = new GpsLocationTracker(getActivity());
+
+                if (mGpsLocationTracker.canGetLocation())
+                {
+
+                    Intent intent = new Intent(getActivity(), NearByActivity.class);
+                    Log.d("location", mGpsLocationTracker.getLongitude()+" "+mGpsLocationTracker.getLatitude());
+                    intent.putExtra("lng",mGpsLocationTracker.getLongitude());
+                    intent.putExtra("lat",mGpsLocationTracker.getLatitude());
+                    startActivity(intent);
+
+                }
+                else
+                {
+                    mGpsLocationTracker.showSettingsAlert();
+                }
+            }
+        });
         SpannableString content = new SpannableString("see all events");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         seeallevents.setText(content);

@@ -24,6 +24,8 @@ import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.entity.UserInfos;
 import com.example.olfakaroui.android.service.UserService;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 
 public class MyProfileFragment extends Fragment {
@@ -43,7 +45,6 @@ public class MyProfileFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public MyProfileFragment() {
@@ -91,6 +92,10 @@ public class MyProfileFragment extends Fragment {
                 sessionManager.logoff();
 
                 LoginManager.getInstance().logOut();
+                if(MainActivity.mGoogleApiClient != null)
+                {
+                    Auth.GoogleSignInApi.signOut(MainActivity.mGoogleApiClient);
+                }
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

@@ -13,8 +13,12 @@ import com.example.olfakaroui.android.entity.Post;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PostService {
 
@@ -30,6 +34,51 @@ public class PostService {
     public interface PostServiceGetCallBack{
         void onResponse(List<Post> posts);
         void onFailure(String error);
+    }
+
+    public interface PostServiceAddCallBack{
+        void onResponse(Post posts);
+        void onFailure(String error);
+    }
+
+
+    public void addPost(Post post , final PostService.PostServiceAddCallBack callBack){
+        StringRequest dr = new StringRequest(Request.Method.POST, UrlConst.ADD_POST,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson mGson = builder.create();
+                        Post e = mGson.fromJson(response, Post.class);
+                        callBack.onResponse(e);
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String,String>();
+                params.put("title", post.getTitle());
+                params.put("body", post.getBody());
+                params.put("causeId", String.valueOf(post.getCause().getId()));
+                params.put("userId", String.valueOf(post.getUser().getId()));
+
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(dr);
+
     }
     public void getPosts(int causeId, final PostService.PostServiceGetCallBack callBack){
 

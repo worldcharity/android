@@ -55,6 +55,7 @@ dependencies {
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.roomorama:caldroid:3.0.1'
     implementation('com.github.nkzawa:socket.io-client:0.5.0') {
         exclude group: 'org.json', module: 'json'
     }

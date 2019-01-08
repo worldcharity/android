@@ -249,7 +249,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     user.setRole(u.getRole());
 
                     session.setLogin(true, u, isAdded);
-
+                    MainActivity.mGoogleApiClient = mGoogleApiClient;
                     if(isAdded)
                     {
                         Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
