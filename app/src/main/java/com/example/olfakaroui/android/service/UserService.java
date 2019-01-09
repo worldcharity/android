@@ -281,6 +281,7 @@ public class UserService {
                     public void onResponse(String response) {
 
                         GsonBuilder builder = new GsonBuilder();
+                        Log.d("collabs by user", response);
                         Gson mGson = builder.create();
                         List<Collab> collabs = Arrays.asList(mGson.fromJson(response, Collab[].class));
                         callBack.onResponse(collabs);
@@ -295,6 +296,7 @@ public class UserService {
             }
         }
         );
+        stringRequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }

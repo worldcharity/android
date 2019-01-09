@@ -66,8 +66,11 @@ public class AddEventLocationActivity extends FragmentActivity implements OnMapR
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
+        mMap.setMinZoomPreference(6.0f);
+        mMap.setMaxZoomPreference(14.0f);
         mMap.addMarker(new MarkerOptions().position(sydney).title(""));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.setOnMapClickListener(this);
     }
     @Override
     public void onMapClick(LatLng latLng) {

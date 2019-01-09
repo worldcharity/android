@@ -40,8 +40,11 @@ public class CommentListForCharityAdapter extends RecyclerView.Adapter<CommentLi
     Pair<Integer,Integer> paire;
     HashMap<Integer,Pair<Integer,Integer>> infos = new HashMap<>();
     HashMap<Integer,Integer> votes = new HashMap<>();
-    public CommentListForCharityAdapter(List<Comment> listData) {
+    public CommentListForCharityAdapter(List<Comment> listData, Context context) {
         this.listData = listData;
+        this.context = context;
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.getLogin(user);
         //SessionManager sessionManager = new SessionManager(context);
         //sessionManager.getLogin(user);
     }
@@ -58,8 +61,7 @@ public class CommentListForCharityAdapter extends RecyclerView.Adapter<CommentLi
 
         paire = new Pair<Integer, Integer>(0,-1);
         infos.put(position, paire);
-        SessionManager sessionManager = new SessionManager(context);
-        sessionManager.getLogin(user);
+
 
         Comment comment = listData.get(position);
         holder.body.setText(comment.getBody());

@@ -66,6 +66,7 @@ public class AddEventFormActivity extends AppCompatActivity {
                             event.setInfoline(info.getText().toString());
                             event.setStartingDate(date_start);
                             event.setEndingDate(date_end);
+                            event.setType(sp.getSelectedItem().toString());
                             SessionManager sessionManager = new SessionManager(AddEventFormActivity.this);
                             sessionManager.getLogin(user);
                             EventService.getInstance().addEvent(event,cause, user.getId(), new EventService.EventServiceAddEventCallBack() {

@@ -82,7 +82,14 @@ public class PostsListAdapter extends BaseAdapter {
 
         Post post = this.listData.get(position);
 
-        holder.titleView.setText(post.getUser().getFirstName() + " " +post.getUser().getLastName());
+        if(post.getUser().getRole().equals("user"))
+        {
+            holder.titleView.setText(post.getUser().getFirstName() + " " +post.getUser().getLastName());
+        }
+        else
+        {
+            holder.titleView.setText(post.getUser().getFirstName());
+        }
         holder.titleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

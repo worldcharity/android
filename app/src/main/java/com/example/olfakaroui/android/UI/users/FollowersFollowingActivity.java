@@ -10,13 +10,14 @@ import android.widget.GridView;
 
 import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.adapter.UserListAdapter;
+import com.example.olfakaroui.android.adapter.UserListFollowAdapter;
 import com.example.olfakaroui.android.entity.User;
 
 public class FollowersFollowingActivity extends AppCompatActivity {
 
     private GridView gridView;
     User user = new User();
-    UserListAdapter adapter;
+    UserListFollowAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +32,12 @@ public class FollowersFollowingActivity extends AppCompatActivity {
         int what = getIntent().getIntExtra("liste", -1);
         if(what == 0)
         {
-            adapter = new UserListAdapter(FollowersFollowingActivity.this, user.getFollowing());
+            adapter = new UserListFollowAdapter(FollowersFollowingActivity.this, user.getFollowing());
             getSupportActionBar().setTitle(user.getFirstName()+" 's followings");
         }
         if(what == 1)
         {
-            adapter = new UserListAdapter(FollowersFollowingActivity.this, user.getFollowers());
+            adapter = new UserListFollowAdapter(FollowersFollowingActivity.this, user.getFollowers());
             getSupportActionBar().setTitle(user.getFirstName()+" 's followers");
         }
         gridView.setAdapter(adapter);

@@ -49,7 +49,6 @@ public class PhotosGalleryActivity extends AppCompatActivity {
                 imagePopup.setHideCloseIcon(false);
                 imagePopup.setImageOnClickClose(true);
                 imagePopup.initiatePopupWithGlide(UrlConst.IMAGES+photo.getPhoto());
-                //imagePopup.initiatePopupWithPicasso(UrlConst.IMAGES+photo.getPhoto());
                 imagePopup.viewPopup();
 
 

@@ -62,6 +62,7 @@ public class DonationConfirmationAdapter extends RecyclerView.Adapter<DonationCo
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         String name1 = this.don.get(position);
+        Log.d("donation id", name.get(position)+" ");
         String nameandgoal1 = this.nameandgoal.get(name.get(position));
         holder.nomView.setText(name1);
         holder.goalView.setText(nameandgoal1);

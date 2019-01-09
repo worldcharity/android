@@ -32,12 +32,11 @@ public class MyProfileFragment extends Fragment {
 
 
     ImageView avatarView;
-    TextView name,followers,following,collabs;
+    TextView name,followers,following,collabs, col;
     RatingBar rating;
     ImageView signout;
     User user = new User();
     UserInfos infos = new UserInfos();
-    User current = new User();
     String token;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -75,7 +74,7 @@ public class MyProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_my_profile, container, false);
         SessionManager sessionManager = new SessionManager(getActivity());
-        sessionManager.getLogin(current);
+        sessionManager.getLogin(user);
         avatarView = view.findViewById(R.id.user_avatar);
         name = view.findViewById(R.id.user_name);
         followers = view.findViewById(R.id.user_followers);
@@ -83,7 +82,7 @@ public class MyProfileFragment extends Fragment {
         rating = view.findViewById(R.id.user_rating);
         collabs = view.findViewById(R.id.user_collabs);
         signout = view.findViewById(R.id.signout);
-
+        col = view.findViewById(R.id.col);
 
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,11 +102,10 @@ public class MyProfileFragment extends Fragment {
             }
         });
 
-        UserService.getInstance().getUser(current.getId(), new UserService.UserServiceGetUserCallBack() {
+        UserService.getInstance().getUser(user.getId(), new UserService.UserServiceGetUserCallBack() {
             @Override
             public void onResponse(User u) {
                 user = u;
-
                 name.setText(user.getFirstName()+ " "+ user.getLastName());
                 following.setText(String.valueOf(user.getFollowing().size()));
                 followers.setText(String.valueOf(user.getFollowers().size()));
@@ -133,13 +131,13 @@ public class MyProfileFragment extends Fragment {
                 collabs.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(current.getRole().equals("user"))
+                        if(user.getRole().equals("user"))
                         {
                             Intent intent = new Intent(getActivity(),UserCollabsListActivity.class);
                             intent.putExtra("user",user);
                             startActivity(intent);
                         }
-                        if(current.getRole().equals("charity"))
+                        if(user.getRole().equals("charity"))
                         {
                             Intent intent = new Intent(getActivity(),CharityEventsListActivity.class);
                             intent.putExtra("user",user);
@@ -158,12 +156,14 @@ public class MyProfileFragment extends Fragment {
                 }
                 else
                 {
+                    Log.d("picture", user.getPhoto());
                     Picasso.get().load(user.getPhoto()).noFade().resize(525, 559).centerCrop().into(avatarView);
 
                 }
-                if(current.getRole().equals("charity"))
+                if(user.getRole().equals("charity"))
                 {
                     collabs.setText(String.valueOf(user.getEvents().size()));
+                    name.setText(user.getFirstName());
                 }
 
 
@@ -175,9 +175,9 @@ public class MyProfileFragment extends Fragment {
             }
 
         });
-        if(current.getRole().equals("user"))
+        if(user.getRole().equals("user"))
         {
-        UserService.getInstance().getInfos(current.getId(), new UserService.UserServiceGetInfosCallBack() {
+        UserService.getInstance().getInfos(user.getId(), new UserService.UserServiceGetInfosCallBack() {
             @Override
             public void onResponse(UserInfos u) {
                 infos = u;
@@ -192,9 +192,10 @@ public class MyProfileFragment extends Fragment {
 
         });
         }
-        if(current.getRole().equals("charity"))
+        if(user.getRole().equals("charity"))
         {
             rating.setVisibility(View.GONE);
+            col.setText("Events");
 
         }
 

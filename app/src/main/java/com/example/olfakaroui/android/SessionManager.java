@@ -68,6 +68,7 @@ public class SessionManager {
             user.setRole(prefs.getString(_context.getResources().getString(R.string.user_role), null));
             user.setPhoto(prefs.getString(_context.getResources().getString(R.string.user_photo), null));
             Log.d(TAG, "User data retrieved!");
+            Log.d(TAG, "User ID! "+user.getId());
             return true;
         }
         return false;

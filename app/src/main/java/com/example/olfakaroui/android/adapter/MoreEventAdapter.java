@@ -204,7 +204,6 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String query = charSequence.toString();
-                Log.d("query", query);
                 FilterResults results = new FilterResults();
                 List<Event> filtered = new ArrayList<>();
                 if (query.isEmpty()) {
@@ -212,7 +211,7 @@ public class MoreEventAdapter extends RecyclerView.Adapter<MoreEventAdapter.Even
                     results.values = itemsFiltered;
 
                 } else {
-                    Log.d("size", itemsFiltered.size()+" ");
+
                     for (Event event : itemsFiltered) {
                         if (event.getName().toLowerCase().contains(query.toLowerCase()))
                         {

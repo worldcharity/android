@@ -135,6 +135,7 @@ public class EventService {
                 return params;
             }
         };
+        dr.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(dr);
 
     }

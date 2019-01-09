@@ -62,8 +62,10 @@ public class PostDetailActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Comment c) {
                             post.getComments().add(c);
+                            commentaire.getText().clear();
                             adapter.listData = post.getComments();
                             adapter.notifyItemInserted(post.getComments().size());
+
                         }
 
                         @Override

@@ -40,6 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+
         final Map<String, String> data = remoteMessage.getData();
         if (Integer.valueOf(data.get("notif_type")) == 1) {
 

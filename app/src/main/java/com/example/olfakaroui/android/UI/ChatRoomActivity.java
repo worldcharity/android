@@ -62,7 +62,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getApplicationContext());
         myRecylerView.setLayoutManager(mLayoutManager);
         myRecylerView.setItemAnimator(new DefaultItemAnimator());
-
+        chatBoxAdapter = new ChatRoomAdapter(MessageList, this);
+        myRecylerView.setAdapter(chatBoxAdapter);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,9 +119,9 @@ public class ChatRoomActivity extends AppCompatActivity {
                             String message = data.getString("message");
                             Message m = new Message(nickname,message);
                             MessageList.add(m);
-                            chatBoxAdapter = new ChatRoomAdapter(MessageList, ChatRoomActivity.this);
-                            chatBoxAdapter.notifyDataSetChanged();
-                            myRecylerView.setAdapter(chatBoxAdapter);
+                            chatBoxAdapter.MessageList  = MessageList;
+                            chatBoxAdapter.notifyItemInserted(MessageList.size());
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();

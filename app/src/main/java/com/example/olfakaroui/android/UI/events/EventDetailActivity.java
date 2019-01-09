@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -184,13 +185,13 @@ public class EventDetailActivity extends AppCompatActivity
                 {
                     Intent intent = new Intent(EventDetailActivity.this, CommentsActivity.class);
                     intent.putExtra(CommentsActivity.EXTRA_EVENT_CATEGORY, mEvent);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 }
                 else
                 {
                     Intent intent = new Intent(EventDetailActivity.this, CommentsForCharityActivity.class);
                     intent.putExtra(CommentsForCharityActivity.EXTRA_EVENT_CATEGORY, mEvent);
-                    startActivity(intent);
+                    startActivityForResult(intent,2);
                 }
 
 
@@ -323,9 +324,10 @@ public class EventDetailActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.event_interaction_bar, menu);
         if(current.getRole().equals("user"))
         {
-            getMenuInflater().inflate(R.menu.event_interaction_bar, menu);
+
 
         bookmark = menu.findItem(R.id.toolbar_bookmark);
         share = menu.findItem(R.id.toolbar_share);
@@ -449,6 +451,9 @@ public class EventDetailActivity extends AppCompatActivity
         }
         else
         {
+            bookmark = menu.findItem(R.id.toolbar_bookmark).setVisible(false);
+            share = menu.findItem(R.id.toolbar_share).setVisible(false);
+            like = menu.findItem(R.id.toolbar_like).setVisible(false);
             donate =  menu.findItem(R.id.toolbar_donate);
             donate.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -573,6 +578,62 @@ public class EventDetailActivity extends AppCompatActivity
 
                 }
                 return strAdd;
+            }
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                super.onActivityResult(requestCode, resultCode, data);
+                if (requestCode == 1) {
+
+                    if(resultCode == RESULT_OK){
+                        mEvent = (Event) data.getSerializableExtra("event");
+                        SpannableString content1;
+                        if(mEvent.getComments().size() > 1)
+                        {
+                            content1 = new SpannableString(mEvent.getComments().size() + " comments");
+
+                        }
+                        else if(mEvent.getComments().size() == 1)
+                        {
+                            content1 = new SpannableString(mEvent.getComments().size() + " comment");
+                        }
+                        else
+                        {
+                            content1 = new SpannableString("no comment");
+                        }
+                        content1.setSpan(new UnderlineSpan(), 0, content1.length(), 0);
+                        comments.setText(content1);
+
+                    }
+                    if (resultCode == RESULT_CANCELED) {
+                        //Do nothing?
+                    }
+                }
+                if (requestCode == 2) {
+
+                    if(resultCode == RESULT_OK){
+                        mEvent = (Event) data.getSerializableExtra("event");
+                        SpannableString content1;
+                        if(mEvent.getComments().size() > 1)
+                        {
+                            content1 = new SpannableString(mEvent.getComments().size() + " comments");
+
+                        }
+                        else if(mEvent.getComments().size() == 1)
+                        {
+                            content1 = new SpannableString(mEvent.getComments().size() + " comment");
+                        }
+                        else
+                        {
+                            content1 = new SpannableString("no comment");
+                        }
+                        content1.setSpan(new UnderlineSpan(), 0, content1.length(), 0);
+                        comments.setText(content1);
+
+                    }
+                    if (resultCode == RESULT_CANCELED) {
+                        //Do nothing?
+                    }
+                }
             }
 
         }

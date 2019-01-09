@@ -37,6 +37,8 @@ import com.example.olfakaroui.android.service.PostService;
 public class PostsTabsFragment extends Fragment {
 
     Cause cause;
+    ViewPager viewPager;
+    TabLayout tabLayout;
 
     public PostsTabsFragment() {
         // Required empty public constructor
@@ -50,7 +52,7 @@ public class PostsTabsFragment extends Fragment {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         //getActivity().setActionBar(toolbar);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
+        tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Trending"));
         tabLayout.addTab(tabLayout.newTab().setText("All"));
         tabLayout.addTab(tabLayout.newTab().setText("News"));
@@ -58,8 +60,8 @@ public class PostsTabsFragment extends Fragment {
 
         toolbar.inflateMenu(R.menu.post);
         toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
-        final ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager = (ViewPager) view.findViewById(R.id.pager);
+        PagerAdapter adapter = new PagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         Intent i = getActivity().getIntent();
         cause  = (Cause) i.getSerializableExtra("cause");
         adapter.setCause(cause);
@@ -94,10 +96,6 @@ public class PostsTabsFragment extends Fragment {
                 final Dialog dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.add_post_dialog);
                 dialog.setTitle("Share your thoughts");
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                View v = getActivity().getWindow().getDecorView();
-                v.setBackgroundResource(android.R.color.transparent);
-
                 TextInputEditText title = dialog.findViewById(R.id.title_add);
                 TextInputEditText body = dialog.findViewById(R.id.body_add);
                 Button cancel = dialog.findViewById(R.id.cancel_add);
@@ -125,6 +123,9 @@ public class PostsTabsFragment extends Fragment {
                             PostService.getInstance().addPost(post,new PostService.PostServiceAddCallBack() {
                                 @Override
                                 public void onResponse(Post p) {
+                                    PagerAdapter adapter = new PagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+                                    adapter.setCause(cause);
+                                    viewPager.setAdapter(adapter);
                                     Intent intent = new Intent(getActivity(), PostDetailActivity.class);
                                     intent.putExtra("post", p);
                                     dialog.dismiss();

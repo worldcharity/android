@@ -10,6 +10,7 @@ import com.example.olfakaroui.android.R;
 import com.example.olfakaroui.android.UI.users.UserCollabsListActivity;
 import com.example.olfakaroui.android.adapter.PendingCollabsAdapter;
 import com.example.olfakaroui.android.adapter.UserCollabsAdapter;
+import com.example.olfakaroui.android.adapter.UserCollabsMyEventAdapter;
 import com.example.olfakaroui.android.entity.Collab;
 import com.example.olfakaroui.android.entity.Event;
 import com.example.olfakaroui.android.entity.User;
@@ -22,20 +23,20 @@ import java.util.List;
 public class EventCollabsActivity extends AppCompatActivity {
 
     Event event = new Event();
-    UserCollabsAdapter adapter;
+    UserCollabsMyEventAdapter adapter;
     List<Collab> col;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_collabs);
-        RecyclerView recyclerView = findViewById(R.id.activity_mycollabs_list);
+        RecyclerView recyclerView = findViewById(R.id.activity_collabs_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         event = (Event) getIntent().getSerializableExtra("event");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Donations");
-        EventService.getInstance().getPendingCollabs(event.getId(), new EventService.EventServiceGetPendingCollabsCallBack() {
+        EventService.getInstance().getEventCollabs(event.getId(), new EventService.EventServiceGetPendingCollabsCallBack() {
             @Override
             public void onResponse(List<Collab> collabs) {
                 col = collabs;
@@ -48,7 +49,7 @@ public class EventCollabsActivity extends AppCompatActivity {
                     }
                 }
                 col = filtered;
-                adapter = new UserCollabsAdapter(col, EventCollabsActivity.this);
+                adapter = new UserCollabsMyEventAdapter(col, EventCollabsActivity.this);
                 recyclerView.setLayoutManager(new LinearLayoutManager(EventCollabsActivity.this));
                 recyclerView.setAdapter(adapter);
 

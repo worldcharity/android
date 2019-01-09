@@ -1,5 +1,7 @@
 package com.example.olfakaroui.android.UI.interfaces_for_charity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,7 +44,7 @@ public class CommentsForCharityActivity extends AppCompatActivity implements Swi
         RecyclerView recyclerView = findViewById(R.id.comments_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new CommentListForCharityAdapter(event.getComments());
+        adapter = new CommentListForCharityAdapter(event.getComments(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -57,6 +59,10 @@ public class CommentsForCharityActivity extends AppCompatActivity implements Swi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
+                Intent resultIntent = new Intent();
+                event.setComments(adapter.listData);
+                resultIntent.putExtra("event", event);
+                setResult(Activity.RESULT_OK, resultIntent);
                 finish();
                 return true;
             default:

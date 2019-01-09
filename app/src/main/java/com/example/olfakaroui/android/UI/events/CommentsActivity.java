@@ -1,5 +1,7 @@
 package com.example.olfakaroui.android.UI.events;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -58,6 +60,7 @@ public class CommentsActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Comment c) {
                                 event.getComments().add(c);
+                                commentaire.getText().clear();
                                 adapter.listData = event.getComments();
                                 adapter.notifyItemInserted(event.getComments().size());
                             }
@@ -77,6 +80,9 @@ public class CommentsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("event", event);
+                setResult(Activity.RESULT_OK, resultIntent);
                 finish();
                 return true;
             default:

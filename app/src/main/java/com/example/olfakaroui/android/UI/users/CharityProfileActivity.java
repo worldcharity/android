@@ -65,6 +65,7 @@ public class CharityProfileActivity extends AppCompatActivity {
         events = findViewById(R.id.charity_events);
         share = findViewById(R.id.share_charity);
         follow = findViewById(R.id.follow);
+        location = findViewById(R.id.locate_charity);
         mRecyclerView = findViewById(R.id.charity_profile_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");

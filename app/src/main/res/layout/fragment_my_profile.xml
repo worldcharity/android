@@ -87,8 +87,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Contributions"
+                        android:id="@+id/col"
                         android:fontFamily="@font/montserrat"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/user_collabs"
                         android:layout_width="wrap_content"
@@ -113,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat"
                         android:text="Followers"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         />
                     <TextView
                         android:id="@+id/user_followers"
@@ -136,9 +137,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" "
+                        android:text="Following"
                         android:fontFamily="@font/montserrat"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         />
                     <TextView
                         android:id="@+id/user_following"

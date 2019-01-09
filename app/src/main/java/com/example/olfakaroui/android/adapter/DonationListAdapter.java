@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bignerdranch.android.multiselector.ModalMultiSelectorCallback;
 import com.bignerdranch.android.multiselector.MultiSelector;
@@ -80,11 +81,19 @@ public class DonationListAdapter extends RecyclerView.Adapter<DonationListAdapte
                 mMultiSelector.clearSelections();// (2)
                 Intent i = new Intent(context.getApplicationContext(), DonationConfirmationActivity.class);
                 i.putExtra("goals",nameandgoal);
-                i.putStringArrayListExtra("names", (ArrayList<String>)selected);
                 i.putIntegerArrayListExtra("ids",(ArrayList<Integer>)name);
                 i.putStringArrayListExtra("don",(ArrayList<String >)selected);
                 i.putExtra("event", eventId);
-                context.startActivity(i);
+                if(name.size()>0)
+                {
+                    context.startActivity(i);
+
+                }
+                else
+                {
+                    Toast.makeText(context, "Please make sure to entre goal in your selections",
+                            Toast.LENGTH_LONG).show();
+                }
                 return true;
 
 
@@ -98,6 +107,7 @@ public class DonationListAdapter extends RecyclerView.Adapter<DonationListAdapte
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
         name = new ArrayList<>();
+        selected = new ArrayList<>();
         goalwritten= new ArrayList<>();
         nameandgoal = new HashMap<>();
         this.eventId = eventId;
@@ -164,7 +174,7 @@ public class DonationListAdapter extends RecyclerView.Adapter<DonationListAdapte
                     nomView.setTextColor(Color.WHITE);
                     card.setCardBackgroundColor(context.getResources().getColor(R.color.colorAccent));
                     click=1;
-                    goal.setHint("Goal");
+                    goal.setHint("enter your goal");
                     goal.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     goal.setTextColor(Color.WHITE);
                     goal.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -182,17 +192,15 @@ public class DonationListAdapter extends RecyclerView.Adapter<DonationListAdapte
 
                         @Override
                         public void afterTextChanged(Editable editable) {
-                            if(!goal.getText().toString().trim().isEmpty())
-                            {
-                                nameandgoal.put(id,goal.getText().toString());
-                            }
+
+                                    nameandgoal.put(id,goal.getText().toString());
+
                         }
                     });
-                    if(!goal.getText().toString().trim().isEmpty())
-                    {
+
                    name.add(id);
                    selected.add(nomView.getText().toString());
-                    }
+
 
                 }
                 else if (click ==1)
@@ -201,12 +209,13 @@ public class DonationListAdapter extends RecyclerView.Adapter<DonationListAdapte
                     nomView.setTextColor(oldColors);
                     click=0;
                     card.setCardBackgroundColor(oldcolrs2);
-                    if(!goal.getText().toString().trim().isEmpty())
-                    {
+
                         name.remove(id);
                         selected.remove(nomView.getText().toString());
+                    if(!goal.getText().toString().trim().isEmpty()) {
                         nameandgoal.remove(id);
                     }
+
                     lin.removeView(goal);
 
 

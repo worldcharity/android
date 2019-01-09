@@ -29,6 +29,7 @@ import com.example.olfakaroui.android.entity.User;
 import com.example.olfakaroui.android.utils.BottomNavigationBehavior;
 import com.facebook.AccessToken;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity implements HomePageFragment.OnFragmentInteractionListener,
         EventsByCauseFragment.OnFragmentInteractionListener, CharitiesListFragment.OnFragmentInteractionListener,
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         setContentView(R.layout.activity_main);
         SessionManager sessionManager = new SessionManager(this);
         sessionManager.getLogin(user);
-        /*if(user.getSocialPlatform().equals("facebook"))
+        if(user.getSocialPlatform().equals("facebook"))
         {
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             if(accessToken==null || accessToken.isExpired()){
@@ -60,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                 startActivity(intent);
                 finish();
             }
-        }*/
+        }
 
-
+        FirebaseApp.initializeApp(this);
         toolbar = getSupportActionBar();
 
 
@@ -127,10 +128,10 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                     loadFragment(fragment);
                     return true;
                 case R.id.nav_charities:
-                    toolbar.show();
+                    toolbar.hide();
                     fragment = new CharitiesListFragment();
                     loadFragment(fragment);
-                    toolbar.setTitle("Charities");
+                    //toolbar.setTitle("Charities");
                     return true;
                 case R.id.nav_causes:
                     toolbar.setTitle("Causes");
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                 transaction.replace(R.id.frame_container, fragment);
                 transaction.addToBackStack(null);
                 transaction.commitAllowingStateLoss();
-                Log.d("reloaaaaaaaad", "hello");
+
             }
             if (resultCode == RESULT_CANCELED) {
                 //Do nothing?

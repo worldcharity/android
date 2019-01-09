@@ -28,7 +28,7 @@ import java.util.List;
 
 
 public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyViewHolder> {
-    private List<Message> MessageList;
+    public List<Message> MessageList;
     public Context context;
     int lastPosition = -1;
     User current = new User();
@@ -52,7 +52,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
         }
     }
 
-    public ChatRoomAdapter(List<Message>MessagesList, Context c) {
+    public ChatRoomAdapter(List<Message> MessagesList, Context c) {
 
         this.MessageList = MessagesList;
         context = c;
@@ -72,7 +72,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
 
 
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.push_left_in);
-        animation.setDuration(500);
+        animation.setDuration(200);
         itemView.startAnimation(animation);
 
         return new ChatRoomAdapter.MyViewHolder(itemView);
@@ -95,7 +95,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
         UserService.getInstance().getUser(Integer.parseInt(m.getNickname()), new UserService.UserServiceGetUserCallBack() {
             @Override
             public void onResponse(User user) {
-                holder.username.setText(user.getFirstName() + " "+ user.getLastName());
+                holder.username.setText(user.getFirstName());
                 holder.username.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -131,9 +131,9 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
         });
 
         holder.message.setText(m.getMessage() );
-        if(m.getNickname().equals(String.valueOf(current.getId())))
+        if(!m.getNickname().equals(String.valueOf(current.getId())))
         {
-            holder.card.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryLight));
+            holder.username.setTextColor(context.getResources().getColor(R.color.colorAccent));
         }
 
         setAnimation(holder.card, position);

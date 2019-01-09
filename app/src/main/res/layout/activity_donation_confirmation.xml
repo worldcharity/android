@@ -36,7 +36,15 @@
         <Button
             android:id="@+id/confirmdonationeventfinal"
             android:layout_width="match_parent"
+            android:background="@drawable/rounededbutton"
             android:layout_height="wrap_content"
-            android:text="Confirm" />
+            android:fontFamily="@font/montserrat"
+            android:textColor="@android:color/white"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true"
+            android:text="Confirm and move to last step"
+            />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

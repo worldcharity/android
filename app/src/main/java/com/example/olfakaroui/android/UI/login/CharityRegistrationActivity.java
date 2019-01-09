@@ -133,12 +133,12 @@ public class CharityRegistrationActivity extends AppCompatActivity {
 
 
     private void SendImage( final String image) {
-        url += user.getId() +"/"+name.getText()+"/"+description.getText();
+        url += user.getId() +"/"+name.getText().toString()+"/"+description.getText().toString();
         final SimpleMultiPartRequest stringRequest = new SimpleMultiPartRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("uploade",response);
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -150,7 +150,7 @@ public class CharityRegistrationActivity extends AppCompatActivity {
                 });
 
         stringRequest.addFile("uploadfile", image);
-        Log.d("imageeee","hhh");
+
         //  stringRequest.add("","parametre", )
         stringRequest.addMultipartParam("body","form-data","d");
         AppController.getInstance().addToRequestQueue(stringRequest);

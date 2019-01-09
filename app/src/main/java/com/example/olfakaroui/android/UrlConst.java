@@ -1,7 +1,7 @@
 package com.example.olfakaroui.android;
 
 public class UrlConst {
-    public static String SERVER = "http://10.0.2.2:3000/";
+    public static String SERVER = "http://192.168.43.172:3000/";
     public static String IMAGES = SERVER + "image/";
 
     public static String checkUser = SERVER + "user";
