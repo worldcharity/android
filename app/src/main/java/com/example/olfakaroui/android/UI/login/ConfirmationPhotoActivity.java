@@ -102,7 +102,7 @@ public class ConfirmationPhotoActivity extends AppCompatActivity {
                     && null != data) {
 
                 selectedImage = data.getData();
-                ImageView imgView = (ImageView) findViewById(R.id.imageView);
+                ImageView imgView = (ImageView) findViewById(R.id.confirmation_picture);
                 imgView.setImageURI(selectedImage);
 
             } else {

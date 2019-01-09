@@ -30,6 +30,7 @@ import com.example.olfakaroui.android.utils.BottomNavigationBehavior;
 import com.facebook.AccessToken;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements HomePageFragment.OnFragmentInteractionListener,
         EventsByCauseFragment.OnFragmentInteractionListener, CharitiesListFragment.OnFragmentInteractionListener,
@@ -63,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
             }
         }
 
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("user_"+user.getId());
         toolbar = getSupportActionBar();
 
 
